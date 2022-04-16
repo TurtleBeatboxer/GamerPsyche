@@ -1,0 +1,51 @@
+<div class="container">
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+    <label>
+      *Imię
+      <input type="text" formControlName="firstName" required>
+    </label>
+
+    <label>
+      Nazwisko
+      <input type="text" formControlName="lastName">
+    </label>
+
+    <label>
+      *Login
+      <input type="text" formControlName="login" required>
+    </label>
+
+    <label>
+      *Email
+      <input type="text" formControlName="email" required>
+    </label>
+
+    <label>
+      *Hasło
+      <input type="password" formControlName="password" required>
+    </label>
+
+    <div formGroupName="address">
+      <h3>Adres</h3>
+
+      <label>
+        *Miasto
+        <input type="text" formControlName="city" required>
+      </label>
+
+      <label>
+        Ulica
+        <input type="text" formControlName="street">
+      </label>
+
+    </div>
+
+    <button type="submit" [disabled]="!profileForm.valid">Zarejestruj się</button>
+  </form>
+
+  <hr>
+  <p>
+    * Pola obowiązkowe
+  </p>
+
+</div>
