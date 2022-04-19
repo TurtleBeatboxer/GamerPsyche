@@ -48,7 +48,7 @@ public class MailService {
         Message message = new MimeMessage(session);
         message.setFrom(new InternetAddress(alertEmail));
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientAddress));
-        message.setSubject("Mail from TODO Project");
+        message.setSubject("Mail from Origami Project");
 
         String uuidString = prepareUUID();
         String activationLink = prepareActivationLink(uuidString);
@@ -84,7 +84,7 @@ public class MailService {
 
         builder.append("Dzień dobry ")
                 .append("\n")
-                .append("Zostałeś zarejestrowany w bazie Todo Project")
+                .append("Zostałeś zarejestrowany w bazie OrigamiProject")
                 .append("\n")
                 .append("Kliknij w poniższy link aby aktywować konto: ")
                 .append("\n")
