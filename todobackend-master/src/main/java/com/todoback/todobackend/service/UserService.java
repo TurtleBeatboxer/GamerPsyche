@@ -8,12 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.mail.MessagingException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class UserService {
@@ -56,7 +54,7 @@ public class UserService {
             // jesli uzytkownik jest aktywowany
             if (userOptional.get().isActivated()) {
                 PasswordEncoder encoder = new BCryptPasswordEncoder();
-               // jesli haslo uzytkownika jest poprawne
+                // jesli haslo uzytkownika jest poprawne
                 if (userOptional.get().getUsername().equals(user.getUsername()) && encoder.matches(user.getPassword(), userOptional.get().getPassword())) {
                     authenticationDTO.setSuccess(true);
                 } else {
@@ -74,9 +72,9 @@ public class UserService {
         return authenticationDTO;
     }
 
-    public void activateUser(String activationId){
+    public void activateUser(String activationId) {
         Optional<User> userOptional = userRepository.findByActivationId(activationId);
-        if (userOptional.isPresent()){
+        if (userOptional.isPresent()) {
             User user = userOptional.get();
             user.setActivated(true);
             userRepository.save(user);
@@ -85,26 +83,10 @@ public class UserService {
 
     public int prepareUserIdFromUsername(String username) {
         Optional<User> userOptional = userRepository.findByUsername(username);
-        if (userOptional.isPresent()){
+        if (userOptional.isPresent()) {
             return userOptional.get().getId().intValue();
         } else {
             return -1;
         }
-    }
-
-    public List<User> prepareUsersWithGivenIds(Set<Integer> ids){
-        List<User> users = new ArrayList<>();
-        for (Integer id : ids) {
-            Optional<User> optionalUserById = userRepository.findById(Long.valueOf(id));
-            if (optionalUserById.isPresent()){
-                users.add(optionalUserById.get());
-            }
-        }
-        return users;
-    }
-
-    public int prepareAllUserNumber(){
-        List<User> users = userRepository.findAll();
-        return users.size();
     }
 }

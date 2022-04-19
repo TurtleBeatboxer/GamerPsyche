@@ -102,9 +102,6 @@ public class MailService {
         Random random = new Random();
         return String.valueOf(random.nextInt(9000) + 1000);
     }
-    public int prepareUserNumber() {
-        List<User> userList = userRepository.findAll();
-        return userList.size();
-    }
+
 }
 //
