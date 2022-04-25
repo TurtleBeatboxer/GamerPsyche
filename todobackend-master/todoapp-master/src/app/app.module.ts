@@ -10,9 +10,19 @@ import { LoginComponent } from './login/login.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LogoutComponent } from './logout/logout.component';
 import { RegisterComponent } from './register/register.component';
-
-
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatGridListModule } from '@angular/material/grid-list';
+import {MatButtonModule} from '@angular/material/button';
+import { EmailActivationComponent } from './email-activation/email-activation.component';
+import {MatCardModule} from '@angular/material/card';
+import { ActivatedComponent } from './activated/activated.component';
+import { TestComponent } from './test/test.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,7 +30,10 @@ import { RegisterComponent } from './register/register.component';
     ListComponent,
     LoginComponent,
     LogoutComponent,
-    RegisterComponent
+    RegisterComponent,
+    EmailActivationComponent,
+    ActivatedComponent,
+    TestComponent,
   ],
   imports: [
     BrowserModule,
@@ -28,8 +41,18 @@ import { RegisterComponent } from './register/register.component';
     HttpClientModule,
     AppRoutingModule,
     ReactiveFormsModule,
-  ],
+    BrowserAnimationsModule,
+    MatFormFieldModule,
+    MatNativeDateModule,
+    MatInputModule,
+    MatSelectModule,
+    MatIconModule,
+    MatRadioModule,
+    MatGridListModule,
+    MatButtonModule,
+    MatCardModule
+    ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
