@@ -2,16 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from '../service/login.service';
 
-//  **        **
-//  ***       **
-//  ****      **
-//  ** **     **
-//  **  **    **
-//  **   **   **
-//  **    **  **
-//  **     *****
-//  **      **** IGGERS FUCK NIGGERS
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
