@@ -2,6 +2,24 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormArray, FormBuilder } from '@angular/forms';
 
+/*
+  dobra generalnie pawel to zmienilem
+  Address byly czyli street i city
+  na lolUsername i lolServer
+  z tym ze lolServer jest typu wyliczeniowego to
+  chuj wie co szczerze zrob zeby sie nie wysypalo i
+  wiedz ze zrobilem zmiany w czyms co musisz przeslac do DTO
+  dasz rade
+  przeczytassz jave
+  jakby cos bylo skrajnie zjebane to powiedz
+  naprawie albo sie zrevertuje
+  jakby to jeszcze gdzies bylo to ty bedziesz wiedzial
+  lepiej zeby juz byla moja czesc zrobiona to nie bedziesz czekal
+  albo robil czegos awkward
+
+  pozdrawiam
+*/
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -16,11 +34,13 @@ export class RegisterComponent implements OnInit {
     email: ['', Validators.required],
     password: ['', Validators.required],
     address: this.fb.group({
+      //jebac tego adresa
       city: ['', Validators.required],
       street: [''],
+      //wy pier da laj z tym hujstwem
     })
   });
-  
+
   constructor(private fb: FormBuilder, private http: HttpClient) { }
 
   ngOnInit(): void {
