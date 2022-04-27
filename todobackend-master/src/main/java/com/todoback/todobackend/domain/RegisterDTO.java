@@ -2,19 +2,19 @@ package com.todoback.todobackend.domain;
 
 public class RegisterDTO {
 
-    private Address address;
+    private LOLData lolData;
     private String email;
     private String firstName;
     private String lastName;
     private String login;
     private String password;
 
-    public Address getAddress() {
-        return address;
+    public LOLData getLolData() {
+        return lolData;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setLolData(LOLData lolData) {
+        this.lolData = lolData;
     }
 
     public String getEmail() {

@@ -17,10 +17,10 @@ public class User {
     private String email;
     private String firstName;
     private String lastName;
-    private String city;
-    private String street;
     private String activationId;
     private String codeNumber;
+    private String lolUsername;
+    private LOLData.LOLServer lolServer;
     private boolean activated;
 
 
@@ -100,19 +100,20 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getCity() {
-        return city;
+    public String getLOLUsername() {
+        return lolUsername;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setLolUsername(String lolUsername) {
+        this.lolUsername = lolUsername;
     }
 
-    public String getStreet() {
-        return street;
+    public LOLData.LOLServer getLOLServer() {
+        return lolServer;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
+    public void setLOLServer(LOLData.LOLServer lolServer) {
+        this.lolServer = lolServer;
     }
+
 }
