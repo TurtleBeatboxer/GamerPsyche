@@ -41,7 +41,5 @@ public class LOLData {
     //czy huj wie co lista jest z lolfandom
     //mozliwa bedzie potrzeba zrobienia COMPARATORA do ENUMA bo chyba tak najlatwiej porownac
     //eee wszystko jest raczej gotowe do podpiecia dla Pawla
-    public enum LOLServer {
-        BR, EUNE, EUW, LAN, LAS, NA, OCE, RU, TR, JP, KR, PBE;
-    }
+
 }
