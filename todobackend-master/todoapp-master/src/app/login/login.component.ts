@@ -5,21 +5,18 @@ import { LoginService } from '../service/login.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-
   public username = '';
   public password = '';
   public invalidLogin = false;
 
-  constructor(public loginService: LoginService, public router: Router) { }
+  constructor(public loginService: LoginService, public router: Router) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   public checkLogin() {
-    this.loginService.authenticate(this.username, this.password)
+    this.loginService.authenticate(this.username, this.password);
   }
-
 }

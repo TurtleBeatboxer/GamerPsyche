@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormArray, FormBuilder } from '@angular/forms';
+<<<<<<< HEAD
 
 /*
   dobra generalnie pawel to zmienilem
@@ -20,19 +21,22 @@ import { Validators, FormArray, FormBuilder } from '@angular/forms';
   pozdrawiam
 */
 
+=======
+import { Router } from '@angular/router';
+>>>>>>> GP-65FIX
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit {
-
   profileForm = this.fb.group({
     firstName: ['', Validators.required],
     lastName: [''],
     login: ['', Validators.required],
     email: ['', Validators.required],
     password: ['', Validators.required],
+<<<<<<< HEAD
     address: this.fb.group({
       //jebac tego adresa
       city: ['', Validators.required],
@@ -42,15 +46,27 @@ export class RegisterComponent implements OnInit {
   });
 
   constructor(private fb: FormBuilder, private http: HttpClient) { }
+=======
+    lolData: this.fb.group({
+      lolServer: ['', Validators.required],
+      lolUsername: ['', Validators.required],
+    }),
+  });
+>>>>>>> GP-65FIX
 
-  ngOnInit(): void {
-  }
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {}
 
   onSubmit(): void {
-    this.http.post<any>('http://localhost:8080/user/register', this.profileForm.value).subscribe(
-      () => console.log('rejestracja')
-    )
+    this.http
+      .post<any>('http://localhost:8080/user/register', this.profileForm.value)
+      .subscribe(() => console.log('rejestracja'));
     alert('Zatwierdzono formularz');
+    this.router.navigate(['/emailsent']);
   }
-
 }

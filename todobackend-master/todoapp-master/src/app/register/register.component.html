@@ -1,51 +1,55 @@
 <div class="container">
+
+
+  <h1>Zarejestruj się!</h1>
   <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
-    <label>
-      *Imię
-      <input type="text" formControlName="firstName" required>
-    </label>
+    <mat-grid-list cols="1" rowHeight="375px">
+      <mat-grid-tile>
 
-    <label>
-      Nazwisko
-      <input type="text" formControlName="lastName">
-    </label>
+        <div class="example-container">
 
-    <label>
-      *Login
-      <input type="text" formControlName="login" required>
-    </label>
+          <mat-form-field appearance="fill" class="width-50">
+            <mat-label>Imię</mat-label>
+            <input matInput autocomplete="off" formControlName="firstName" required>
+          </mat-form-field>
 
-    <label>
-      *Email
-      <input type="text" formControlName="email" required>
-    </label>
+          <mat-form-field appearance="fill" class="width-50 ml-2">
+            <mat-label>Nazwisko</mat-label>
+            <input matInput autocomplete="off" formControlName="lastName" required>
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill" class="width-50">
+            <mat-label>Login</mat-label>
+            <input matInput autocomplete="off" formControlName="login" required>
+          </mat-form-field>
 
-    <label>
-      *Hasło
-      <input type="password" formControlName="password" required>
-    </label>
+          <mat-form-field appearance="fill" class="width-50 ml-2">
+            <mat-label>Hasło</mat-label>
+            <input matInput autocomplete="off" formControlName="password" required>
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill" class="width-100">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Ex. pat@example.com" autocomplete="off" formControlName="email" required>
+          </mat-form-field>
+          <br>
+          <div formGroupName="lolData">
+            <mat-form-field appearance="fill" class="width-50">
+              <mat-label>Server</mat-label>
+              <input matInput autocomplete="off" formControlName="lolServer" required>
+            </mat-form-field>
 
-    <div formGroupName="address">
-      <h3>Adres</h3>
+            <mat-form-field appearance="fill" class="width-50 ml-2">
+              <mat-label>LolUsername</mat-label>
+              <input matInput autocomplete="off" formControlName="lolUsername" required>
+            </mat-form-field>
+            <br>
+          </div>
+          <button mat-raised-button color="primary" class="register" type="submit">Zarejestruj</button>
 
-      <label>
-        *Miasto
-        <input type="text" formControlName="city" required>
-      </label>
-
-      <label>
-        Ulica
-        <input type="text" formControlName="street">
-      </label>
-
-    </div>
-
-    <button type="submit" [disabled]="!profileForm.valid">Zarejestruj się</button>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
   </form>
-
-  <hr>
-  <p>
-    * Pola obowiązkowe
-  </p>
 
 </div>
