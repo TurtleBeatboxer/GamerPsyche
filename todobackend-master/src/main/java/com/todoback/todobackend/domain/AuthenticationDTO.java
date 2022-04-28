@@ -1,6 +1,6 @@
 package com.todoback.todobackend.domain;
 
-public class AuthenticationDTO {
+public class    AuthenticationDTO {
 
     private int id;
     private String username;

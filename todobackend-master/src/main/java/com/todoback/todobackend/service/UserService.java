@@ -27,11 +27,11 @@ public class UserService {
         if (userOptional.isEmpty()) {
             User user = new User();
             user.setUsername(registerDTO.getLogin());
-            user.setCity(registerDTO.getAddress().getCity());
-            user.setStreet(registerDTO.getAddress().getStreet());
             user.setEmail(registerDTO.getEmail());
             user.setFirstName(registerDTO.getFirstName());
             user.setLastName(registerDTO.getLastName());
+            user.setLolUsername(registerDTO.getLolData().getLolUsername());
+            user.setLOLServer(registerDTO.getLolData().getLolServer());
             PasswordEncoder encoder = new BCryptPasswordEncoder();
             user.setPassword(encoder.encode(registerDTO.getPassword()));
             User savedUser = userRepository.save(user);

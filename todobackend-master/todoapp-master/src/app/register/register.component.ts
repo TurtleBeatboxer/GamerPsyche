@@ -14,9 +14,9 @@ export class RegisterComponent implements OnInit {
     login: ['', Validators.required],
     email: ['', Validators.required],
     password: ['', Validators.required],
-    address: this.fb.group({
-      city: ['', Validators.required],
-      street: [''],
+    lolData: this.fb.group({
+      lolServer: ['', Validators.required],
+      lolUsername: ['', Validators.required],
     }),
   });
 
