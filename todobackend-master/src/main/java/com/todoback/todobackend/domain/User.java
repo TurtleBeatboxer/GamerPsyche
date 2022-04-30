@@ -20,11 +20,7 @@ public class User {
     private String activationId;
     private String codeNumber;
     private String lolUsername;
-<<<<<<< HEAD
-    private LOLData.LOLServer lolServer;
-=======
     private LOLServer lolServer;
->>>>>>> GP-65FIX
     private boolean activated;
 
 
@@ -112,20 +108,11 @@ public class User {
         this.lolUsername = lolUsername;
     }
 
-<<<<<<< HEAD
-    public LOLData.LOLServer getLOLServer() {
-        return lolServer;
-    }
-
-    public void setLOLServer(LOLData.LOLServer lolServer) {
-=======
     public LOLServer getLOLServer() {
         return lolServer;
     }
 
     public void setLOLServer(LOLServer lolServer) {
->>>>>>> GP-65FIX
         this.lolServer = lolServer;
     }
-
 }
