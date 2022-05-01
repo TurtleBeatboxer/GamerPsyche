@@ -8,14 +8,12 @@ import { LogoutComponent } from './logout/logout.component';
 import { RegisterComponent } from './register/register.component';
 import { EmailActivationComponent } from './email-activation/email-activation.component';
 import { ActivatedComponent } from './activated/activated.component';
-import { TestComponent } from './test/test.component';
 
 const routes: Routes = [
   { path: '', component: ListComponent, canActivate: [AuthGuardService] },
   { path: 'emailsent', component: EmailActivationComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'activated', component: ActivatedComponent},
-  { path: 'testkurwa', component: TestComponent},
+  { path: 'activated', component: ActivatedComponent },
   {
     path: 'logout',
     component: LogoutComponent,

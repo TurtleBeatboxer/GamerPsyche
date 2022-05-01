@@ -10,46 +10,52 @@
 
           <mat-form-field appearance="fill" class="width-50">
             <mat-label>Imię</mat-label>
-            <input matInput autocomplete="off" formControlName="firstName" required>
+            <input matInput autocomplete="off" formControlName="firstName">
           </mat-form-field>
 
           <mat-form-field appearance="fill" class="width-50 ml-2">
             <mat-label>Nazwisko</mat-label>
-            <input matInput autocomplete="off" formControlName="lastName" required>
+            <input matInput autocomplete="off" formControlName="lastName">
           </mat-form-field>
           <br>
           <mat-form-field appearance="fill" class="width-50">
             <mat-label>Login</mat-label>
-            <input matInput autocomplete="off" formControlName="login" required>
+            <input matInput autocomplete="off" formControlName="login">
           </mat-form-field>
 
           <mat-form-field appearance="fill" class="width-50 ml-2">
             <mat-label>Hasło</mat-label>
-            <input matInput autocomplete="off" formControlName="password" required>
+            <input type='password' matInput autocomplete="off" formControlName="password" placeholder="Min. 8 znaków (Cyfry i litery)">
+            <mat-error *ngIf="profileForm.get('password').errors">{{ this.profileForm.get('password').hasError('pattern')  ? 'Nieprawidłowe hasło' : '' }}</mat-error>
           </mat-form-field>
           <br>
           <mat-form-field appearance="fill" class="width-100">
             <mat-label>Email</mat-label>
-            <input matInput placeholder="Ex. pat@example.com" autocomplete="off" formControlName="email" required>
+            <input matInput placeholder="Ex. pat@example.com" autocomplete="off" formControlName="email">
+            <mat-error *ngIf="profileForm.get('email').errors">{{ this.profileForm.get('email').hasError('email')  ? 'Adres email nieprawidłowy' : '' }}</mat-error>
           </mat-form-field>
           <br>
           <div formGroupName="lolData">
             <mat-form-field appearance="fill" class="width-50">
-              <mat-label>Server</mat-label>
-              <input matInput autocomplete="off" formControlName="lolServer" required>
+              <mat-label>Serwer</mat-label>
+              <mat-select formControlName="lolServer">
+                <mat-option *ngFor="let server of servers" [value]="server.value">
+                  {{server.value}}
+                </mat-option>
+              </mat-select>
+
             </mat-form-field>
 
             <mat-form-field appearance="fill" class="width-50 ml-2">
-              <mat-label>LolUsername</mat-label>
-              <input matInput autocomplete="off" formControlName="lolUsername" required>
+              <mat-label>Nazwa użytkownika LOL  </mat-label>
+              <input matInput autocomplete="off" formControlName="lolUsername">
             </mat-form-field>
             <br>
           </div>
-          <button mat-raised-button color="primary" class="register" type="submit">Zarejestruj</button>
+          <button mat-raised-button color="primary" class="register" type="submit" [disabled]="profileForm.invalid">Zarejestruj</button>
 
         </div>
       </mat-grid-tile>
     </mat-grid-list>
   </form>
-
 </div>
