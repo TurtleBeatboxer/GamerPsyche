@@ -24,3 +24,7 @@ h1 {
   text-align: center;
   padding-top: 25px;
 }
+
+mat-form-field {
+  padding-bottom: 3px;
+}

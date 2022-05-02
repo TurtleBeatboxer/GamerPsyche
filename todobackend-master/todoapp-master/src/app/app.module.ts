@@ -18,11 +18,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatGridListModule } from '@angular/material/grid-list';
-import {MatButtonModule} from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { EmailActivationComponent } from './email-activation/email-activation.component';
-import {MatCardModule} from '@angular/material/card';
+import { MatCardModule } from '@angular/material/card';
 import { ActivatedComponent } from './activated/activated.component';
-import { TestComponent } from './test/test.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,7 +33,6 @@ import { TestComponent } from './test/test.component';
     RegisterComponent,
     EmailActivationComponent,
     ActivatedComponent,
-    TestComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,8 +49,8 @@ import { TestComponent } from './test/test.component';
     MatRadioModule,
     MatGridListModule,
     MatButtonModule,
-    MatCardModule
-    ],
+    MatCardModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
