@@ -25,6 +25,11 @@ import { ActivatedComponent } from './activated/activated.component';
 import {MatMenuModule} from '@angular/material/menu';
 import { ProfileComponent } from './profile/profile.component';
 import { ChangePasswordComponent } from './change-password/change-password.component'
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatDialogModule} from '@angular/material/dialog';
+import { DialogComponent } from './dialog/dialog.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,6 +42,7 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
     ActivatedComponent,
     ProfileComponent,
     ChangePasswordComponent,
+    DialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,7 +60,10 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
     MatGridListModule,
     MatButtonModule,
     MatCardModule,
-    MatMenuModule
+    MatMenuModule,
+    MatExpansionModule,
+    MatTabsModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent],

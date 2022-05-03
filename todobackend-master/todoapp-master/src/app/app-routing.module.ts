@@ -10,6 +10,7 @@ import { EmailActivationComponent } from './email-activation/email-activation.co
 import { ActivatedComponent } from './activated/activated.component';
 import { ProfileComponent } from './profile/profile.component';
 
+
 const routes: Routes = [
   { path: 'main', component: ListComponent, canActivate: [AuthGuardService] },
   { path: 'emailsent', component: EmailActivationComponent },
