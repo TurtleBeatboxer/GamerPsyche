@@ -8,18 +8,21 @@ import { LogoutComponent } from './logout/logout.component';
 import { RegisterComponent } from './register/register.component';
 import { EmailActivationComponent } from './email-activation/email-activation.component';
 import { ActivatedComponent } from './activated/activated.component';
+import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
-  { path: '', component: ListComponent, canActivate: [AuthGuardService] },
+  { path: 'main', component: ListComponent, canActivate: [AuthGuardService] },
   { path: 'emailsent', component: EmailActivationComponent },
   { path: 'login', component: LoginComponent },
   { path: 'activated', component: ActivatedComponent },
+  { path: 'profil', component: ProfileComponent},
   {
     path: 'logout',
     component: LogoutComponent,
     canActivate: [AuthGuardService],
   },
   { path: 'register', component: RegisterComponent },
+  { path: '**', redirectTo: '/login' }
 ];
 
 @NgModule({

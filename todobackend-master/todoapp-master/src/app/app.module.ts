@@ -22,7 +22,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { EmailActivationComponent } from './email-activation/email-activation.component';
 import { MatCardModule } from '@angular/material/card';
 import { ActivatedComponent } from './activated/activated.component';
-
+import {MatMenuModule} from '@angular/material/menu';
+import { ProfileComponent } from './profile/profile.component';
+import { ChangePasswordComponent } from './change-password/change-password.component'
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,6 +35,8 @@ import { ActivatedComponent } from './activated/activated.component';
     RegisterComponent,
     EmailActivationComponent,
     ActivatedComponent,
+    ProfileComponent,
+    ChangePasswordComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,6 +54,7 @@ import { ActivatedComponent } from './activated/activated.component';
     MatGridListModule,
     MatButtonModule,
     MatCardModule,
+    MatMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent],

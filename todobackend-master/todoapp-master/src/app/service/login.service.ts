@@ -19,14 +19,15 @@ export class LoginService {
   public authenticate(username: string, password: string){
     this.user = new User(username, password);
     this.http.post<AuthenticationDTO>('http://localhost:8080/user/authenticate', this.user).subscribe(
-      x => this.authenticationProcess(x)
+      x => {console.log(x)
+        this.authenticationProcess(x)}
     )
   }
 
   public authenticationProcess(authenticationDTO: AuthenticationDTO): Boolean {
     if(authenticationDTO.success){
       sessionStorage.setItem('username', this.user.username);
-      this.router.navigate(['']);
+      this.router.navigate(['/main']);
       return true;
     } else if (authenticationDTO.success === false && authenticationDTO.message){
       alert(authenticationDTO.message)
