@@ -32,6 +32,7 @@ export class ChangePasswordComponent implements OnInit {
      if(this.changeForm.invalid){
       const dialogRef = this.dialog.open(DialogComponent);
      }
-     this.http.post(`http://localhost:8080/user/${this.userService.user.username}`, this.changeForm.value).subscribe((x)=>console.log(x))
+     this.http.post(``, this.changeForm.value).subscribe((x)=>console.log(x))
+     //Trzeba zrobić na backendzie cos do tego.
   }
 }

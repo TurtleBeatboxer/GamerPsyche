@@ -5,14 +5,18 @@
   </button>
   <mat-menu #menu="matMenu">
     <a routerLink="/profil">
-    <button mat-menu-item>
+      <button mat-menu-item>
         <span>Profil</span>
-    </button>
-  </a>
+      </button>
+    </a>
     <a routerLink="/logout">
-    <button mat-menu-item>
-     <span>Wyloguj</span>
-    </button>
-  </a>
+      <button mat-menu-item>
+        <span>Wyloguj</span>
+      </button>
+    </a>
   </mat-menu>
 </div>
+
+
+<button (click)="loginData()">LoginData</button>
+<p>geloo</p>

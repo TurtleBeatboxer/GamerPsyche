@@ -5,19 +5,15 @@ import { LoginService } from '../service/login.service';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  styleUrls: ['./profile.component.css'],
 })
 export class ProfileComponent implements OnInit {
+  constructor(private UserService: LoginService, private http: HttpClient) {}
 
-  constructor(private UserService: LoginService, private http: HttpClient) { }
-
-  ngOnInit(): void {
-  }
-  onClick(){
-
+  ngOnInit(): void {}
+  onClick() {
     this.http
-      .get<any>('http://localhost:8080/user/id/admin1')
+      .get('http://localhost:8080/user/admin1')
       .subscribe((x) => console.log(x));
-
   }
 }

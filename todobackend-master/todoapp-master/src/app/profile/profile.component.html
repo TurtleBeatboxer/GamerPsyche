@@ -13,9 +13,11 @@
 </mat-accordion> -->
 
 <mat-tab-group>
-  <mat-tab label="Profil"> P   rofil czy coś</mat-tab>
-  <mat-tab label="Ustawienia">      coś tu będzie</mat-tab>
+  <mat-tab label="Profil"> P rofil czy coś</mat-tab>
+  <mat-tab label="Ustawienia"> <button (click)='onClick()'>Test</button></mat-tab>
   <mat-tab label="Zmień hasło">
     <app-change-password></app-change-password>
   </mat-tab>
 </mat-tab-group>
+
+<button mat-button routerLink="/main">Wróć</button>

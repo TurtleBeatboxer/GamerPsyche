@@ -28,3 +28,7 @@ h1 {
 mat-form-field {
   padding-bottom: 3px;
 }
+
+h3 {
+  text-align: center;
+}

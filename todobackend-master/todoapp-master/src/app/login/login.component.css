@@ -1,4 +1,4 @@
-html {
+/* html {
   background-color: #56baed;
 }
 
@@ -175,7 +175,7 @@ input[type="password"]::placeholder {
 }
 
 /* Simple CSS3 Fade-in Animation */
-@-webkit-keyframes fadeIn {
+/* @-webkit-keyframes fadeIn {
   from {
     opacity: 0;
   }
@@ -240,29 +240,50 @@ input[type="password"]::placeholder {
 }
 
 /* Simple CSS3 Fade-in Animation */
-.underlineHover:after {
-  display: block;
-  left: 0;
-  bottom: -10px;
-  width: 0;
-  height: 2px;
-  background-color: #56baed;
-  content: "";
-  transition: width 0.2s;
-}
 
-.underlineHover:hover {
-  color: #0d0d0d;
-}
-
-.underlineHover:hover:after {
-  width: 100%;
-}
-
-*:focus {
+/* *:focus {
   outline: none;
 }
 
 #icon {
   width: 60%;
+} */
+*/ */ .example-radio-button {
+  margin-left: 7px;
+}
+
+.width-50 {
+  width: 49%;
+}
+.ml-1 {
+  margin-left: 1%;
+}
+.ml-2 {
+  margin-left: 2%;
+}
+.width-100 {
+  width: 100%;
+}
+.width-25 {
+  width: 25%;
+}
+.example-container {
+  width: 25%;
+}
+
+.change {
+  width: 100%;
+  height: 45px;
+}
+
+mat-form-field {
+  padding-bottom: 4px;
+}
+
+h1 {
+  text-align: center;
+}
+.changeForm {
+  margin-top: 40px;
+  text-align: center;
 }
