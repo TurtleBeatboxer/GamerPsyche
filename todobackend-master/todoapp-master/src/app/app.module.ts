@@ -22,6 +22,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { EmailActivationComponent } from './email-activation/email-activation.component';
 import { MatCardModule } from '@angular/material/card';
 import { ActivatedComponent } from './activated/activated.component';
+import {MatMenuModule} from '@angular/material/menu';
+import { ProfileComponent } from './profile/profile.component';
+import { ChangePasswordComponent } from './change-password/change-password.component'
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatDialogModule} from '@angular/material/dialog';
+import { DialogComponent } from './dialog/dialog.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +40,9 @@ import { ActivatedComponent } from './activated/activated.component';
     RegisterComponent,
     EmailActivationComponent,
     ActivatedComponent,
+    ProfileComponent,
+    ChangePasswordComponent,
+    DialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,6 +60,10 @@ import { ActivatedComponent } from './activated/activated.component';
     MatGridListModule,
     MatButtonModule,
     MatCardModule,
+    MatMenuModule,
+    MatExpansionModule,
+    MatTabsModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent],
