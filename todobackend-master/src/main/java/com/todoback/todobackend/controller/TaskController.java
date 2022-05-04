@@ -38,4 +38,9 @@ public class TaskController {
             return userService.prepareUserIdFromUsername(username);
         }
 
+        @GetMapping("/user/{username}")
+        public User getUserData(@PathVariable String username) {
+            return userService.getUserDataByUsername(username);
+        }
+
     }
