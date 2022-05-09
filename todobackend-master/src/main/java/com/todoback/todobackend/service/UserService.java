@@ -69,6 +69,7 @@ public class UserService {
         } else {
             authenticationDTO.setSuccess(false);
         }
+
         return authenticationDTO;
     }
 
@@ -87,6 +88,15 @@ public class UserService {
             return userOptional.get().getId().intValue();
         } else {
             return -1;
+        }
+    }
+
+    public User getUserDataByUsername(String userName){
+        Optional<User> userOptional = userRepository.findByUsername(userName);
+        if (userOptional.isPresent()) {
+            return userOptional.get();
+        } else {
+            return null;
         }
     }
 }

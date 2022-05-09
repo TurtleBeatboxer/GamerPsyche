@@ -1,7 +1,8 @@
-.container {
-    max-width: 1000px;
+
+.aButton {
+  position: absolute;
+  right: 20px;
+  top: 10px;
 }
 
-button {
-    margin: 2px;
-}
+
