@@ -32,3 +32,24 @@ mat-form-field {
 h3 {
   text-align: center;
 }
+
+a {
+
+
+  color: black;
+  padding: 1em 1.5em;
+  position: relative;
+  text-decoration: none;
+
+}
+
+a:hover {
+  text-decoration: underline;
+  cursor: pointer;
+  color: #3f51b5;
+}
+
+a:active {
+  box-shadow: none;
+  top: 5px;
+}

@@ -13,11 +13,11 @@
 </mat-accordion> -->
 
 <mat-tab-group>
-  <mat-tab label="Profil"> P rofil czy coś</mat-tab>
-  <mat-tab label="Ustawienia"> <button (click)='onClick()'>Test</button></mat-tab>
+  <mat-tab label="Profil"><p>{{ this.UserService.userData.email + ' ' + this.UserService.userData.firstName + ' ' + this.UserService.userData.lastName + ' ' + this.UserService.userData.lolserver + ' ' + this.UserService.userData.lolusername + ' ' + this.UserService.userData.username }}</p></mat-tab>
+  <mat-tab label="Ustawienia"></mat-tab>
   <mat-tab label="Zmień hasło">
     <app-change-password></app-change-password>
   </mat-tab>
 </mat-tab-group>
 
-<button mat-button routerLink="/main">Wróć</button>
+<button mat-raised-button color="primary" routerLink="/main">Wróć</button>

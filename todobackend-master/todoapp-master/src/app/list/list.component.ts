@@ -19,11 +19,11 @@ export class ListComponent implements OnInit {
       const username = sessionStorage.getItem('username');
       this.http
         .get<UserDATA>(`http://localhost:8080/user/${username}`)
-        .subscribe((x) => (this.loginService.userData = x));
+        .subscribe((x) => {this.loginService.userData = x
+        console.log(this.loginService.userData)
+        });
     }
   }
 
-  loginData() {
-    console.log(this.loginService.userData);
-  }
+
 }
