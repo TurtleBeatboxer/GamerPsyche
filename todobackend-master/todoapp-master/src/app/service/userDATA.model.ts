@@ -6,8 +6,8 @@ export interface IUserDATA {
   lastName: string;
   activationId: string;
   codeNumber: string;
-  lolUsername: string;
-  lolServer: string;
+  lolusername: string;
+  lolserver: string;
   activated: boolean;
 }
 
@@ -20,8 +20,8 @@ export class UserDATA implements IUserDATA {
     public lastName: string,
     public activationId: string,
     public codeNumber: string,
-    public lolUsername: string,
-    public lolServer: string,
+    public lolusername: string,
+    public lolserver: string,
     public activated: boolean
   ) {}
 }
