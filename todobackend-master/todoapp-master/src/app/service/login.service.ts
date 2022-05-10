@@ -6,6 +6,8 @@ import { from } from 'rxjs';
 import { User, IUser } from '../login/user.model';
 import { AuthenticationDTO } from '../list/authenticationDTO.model';
 import { UserDATA } from './userDATA.model';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from '../dialog/dialog.component';
 @Injectable({
   providedIn: 'root',
 })
@@ -13,7 +15,7 @@ export class LoginService {
   userData: UserDATA;
   user: User;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, public dialog: MatDialog) {}
 
   public authenticate(username: string, password: string) {
     this.user = new User(username, password);
@@ -25,12 +27,7 @@ export class LoginService {
       .subscribe((x) => {
         console.log(x);
         this.authenticationProcess(x);
-        this.http
-          .get<UserDATA>(`http://localhost:8080/user/${this.user.username}`)
-          .subscribe((x) => {
-            this.userData = x;
-            console.log(x);
-          });
+
       });
   }
 
@@ -39,15 +36,8 @@ export class LoginService {
       sessionStorage.setItem('username', this.user.username);
       this.router.navigate(['/main']);
       return true;
-    } else if (
-      authenticationDTO.success === false &&
-      authenticationDTO.message
-    ) {
-      alert(authenticationDTO.message);
-      return false;
-    } else {
-      return false;
     }
+    const dialogRef = this.dialog.open(DialogComponent);
   }
 
   public isUserLoggedIn() {
