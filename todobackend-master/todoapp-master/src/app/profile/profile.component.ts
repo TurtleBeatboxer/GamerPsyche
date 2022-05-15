@@ -8,12 +8,10 @@ import { LoginService } from '../service/login.service';
   styleUrls: ['./profile.component.css'],
 })
 export class ProfileComponent implements OnInit {
-  constructor(private UserService: LoginService, private http: HttpClient) {}
+  constructor() {}
 
-  ngOnInit(): void {}
-  onClick() {
-    this.http
-      .get('http://localhost:8080/user/admin1')
-      .subscribe((x) => console.log(x));
+  ngOnInit(): void {
+
   }
+
 }

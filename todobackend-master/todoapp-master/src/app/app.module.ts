@@ -29,6 +29,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatDialogModule} from '@angular/material/dialog';
 import { DialogComponent } from './dialog/dialog.component';
+import { ProfileTabComponent } from './profile/profile-tab/profile-tab.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { DialogComponent } from './dialog/dialog.component';
     ProfileComponent,
     ChangePasswordComponent,
     DialogComponent,
+    ProfileTabComponent,
   ],
   imports: [
     BrowserModule,

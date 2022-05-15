@@ -11,13 +11,16 @@
     <app-change-password></app-change-password>
   </mat-expansion-panel>
 </mat-accordion> -->
-
 <mat-tab-group>
-  <mat-tab label="Profil"> P rofil czy coś</mat-tab>
-  <mat-tab label="Ustawienia"> <button (click)='onClick()'>Test</button></mat-tab>
-  <mat-tab label="Zmień hasło">
-    <app-change-password></app-change-password>
+  <mat-tab label="Profil">
+    <app-profile-tab></app-profile-tab>
   </mat-tab>
+  <mat-tab label="Ustawienia"></mat-tab>
+
+
 </mat-tab-group>
 
-<button mat-button routerLink="/main">Wróć</button>
+<div class="container">
+
+  <button mat-raised-button color="primary" routerLink="/main">Wróć</button>
+</div>
