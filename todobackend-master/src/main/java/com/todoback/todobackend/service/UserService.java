@@ -102,14 +102,13 @@ public class UserService {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         Optional<User> userOptional = userRepository.findByUsername(changePasswordDTO.getUsername());
 
-        String oPE = passwordEncoder.encode(changePasswordDTO.getOldPassword());
         String nPE = passwordEncoder.encode(changePasswordDTO.getNewPassword());
         ValidatePasswordDTO validatePasswordDTO = new ValidatePasswordDTO();
 
         if (!userOptional.isPresent()) {
             return "nie ma takiego uzytkownika! CHUJ CI W DUPE! KURWA!";
         }
-        if (!oPE.equals(userOptional.get().getPassword())){
+        if (!passwordEncoder.matches(changePasswordDTO.getOldPassword(), userOptional.get().getPassword())){
             return "złe hasło aktualne do konta!";
         }
         validatePasswordDTO.setUsername(changePasswordDTO.getUsername());
