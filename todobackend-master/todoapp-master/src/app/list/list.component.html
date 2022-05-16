@@ -1,6 +1,20 @@
-<div *ngIf="loginService.isUserLoggedIn()" class="container" >
+<div class="content">
 
-<h1> Jestes zalogowany </h1>
-
-
+  <button mat-icon-button [matMenuTriggerFor]="menu" class="aButton">
+    <mat-icon class="aIcon">account_circle</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <a routerLink="/profil">
+      <button mat-menu-item>
+        <span>Profil</span>
+      </button>
+    </a>
+    <a routerLink="/logout">
+      <button mat-menu-item>
+        <span>Wyloguj</span>
+      </button>
+    </a>
+  </mat-menu>
 </div>
+
+

@@ -1,0 +1,26 @@
+<!-- Zależy od tego jak bedzie wyglądać reszta -->
+<!-- <mat-accordion>
+  <mat-expansion-panel hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        This is the expansion title
+      </mat-panel-title>
+
+    </mat-expansion-panel-header>
+
+    <app-change-password></app-change-password>
+  </mat-expansion-panel>
+</mat-accordion> -->
+<mat-tab-group>
+  <mat-tab label="Profil">
+    <app-profile-tab></app-profile-tab>
+  </mat-tab>
+  <mat-tab label="Ustawienia"></mat-tab>
+
+
+</mat-tab-group>
+
+<div class="container">
+
+  <button mat-raised-button color="primary" routerLink="/main">Wróć</button>
+</div>

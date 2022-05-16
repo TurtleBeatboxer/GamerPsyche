@@ -1,4 +1,4 @@
-html {
+/*html {
   background-color: #56baed;
 }
 
@@ -13,7 +13,7 @@ a {
   text-decoration: none;
   font-weight: 400;
 }
-
+/*
 h2 {
   text-align: center;
   font-size: 16px;
@@ -106,7 +106,8 @@ input[type="reset"]:active {
   transform: scale(0.95);
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="password"] {
   background-color: #f6f6f6;
   border: none;
   color: #0d0d0d;
@@ -127,12 +128,14 @@ input[type="text"] {
   border-radius: 5px 5px 5px 5px;
 }
 
-input[type="text"]:focus {
+input[type="text"]:focus,
+input[type="password"]:focus {
   background-color: #fff;
   border-bottom: 2px solid #5fbae9;
 }
 
-input[type="text"]:placeholder {
+input[type="text"]::placeholder,
+input[type="password"]::placeholder {
   color: #cccccc;
 }
 
@@ -172,7 +175,7 @@ input[type="text"]:placeholder {
 }
 
 /* Simple CSS3 Fade-in Animation */
-@-webkit-keyframes fadeIn {
+/* @-webkit-keyframes fadeIn {
   from {
     opacity: 0;
   }
@@ -237,29 +240,85 @@ input[type="text"]:placeholder {
 }
 
 /* Simple CSS3 Fade-in Animation */
-.underlineHover:after {
-  display: block;
-  left: 0;
-  bottom: -10px;
-  width: 0;
-  height: 2px;
-  background-color: #56baed;
-  content: "";
-  transition: width 0.2s;
-}
 
-.underlineHover:hover {
-  color: #0d0d0d;
-}
-
-.underlineHover:hover:after {
-  width: 100%;
-}
-
-*:focus {
+/* *:focus {
   outline: none;
 }
 
 #icon {
   width: 60%;
+} */
+*/ */ .example-radio-button {
+  margin-left: 7px;
 }
+
+.width-50 {
+  width: 49%;
+}
+.ml-1 {
+  margin-left: 1%;
+}
+.ml-2 {
+  margin-left: 2%;
+}
+.width-100 {
+  width: 100%;
+}
+.width-25 {
+  width: 25%;
+}
+.example-container {
+  width: 25%;
+}
+
+.change {
+  width: 100%;
+  height: 45px;
+}
+
+mat-form-field {
+  padding-bottom: 4px;
+}
+
+h1 {
+  text-align: center;
+}
+.changeForm {
+  margin-top: 40px;
+  text-align: center;
+}
+
+/* a:link{
+
+  color: #92badd;
+  text-decoration: none;
+  font-weight: 400;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: black;
+}
+ */
+
+ a {
+
+
+  color: black;
+  padding: 1em 1.5em;
+  position: relative;
+  text-decoration: none;
+
+}
+
+a:hover {
+  text-decoration: underline;
+  cursor: pointer;
+  color: #3f51b5;
+}
+
+a:active {
+  box-shadow: none;
+  top: 5px;
+}
+

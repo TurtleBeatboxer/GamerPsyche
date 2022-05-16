@@ -1,0 +1,20 @@
+<div class="container">
+
+<p *ngIf="this.loginService.userData">{{this.loginService.userData.email + '' + this.loginService.userData.username + ' ' + this.loginService.userData.firstName + ' ' + this.loginService.userData.lastName + ' ' + this.loginService.userData.lolusername + ' ' + this.loginService.userData.lolserver}}</p>
+<div class="accor">
+
+  <mat-accordion>
+    <mat-expansion-panel hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Hasło
+        </mat-panel-title>
+        <mat-panel-description>
+          Kliknij aby zmienić hasło
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <app-change-password></app-change-password>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
+</div>
