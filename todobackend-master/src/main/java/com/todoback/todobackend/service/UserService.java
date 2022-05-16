@@ -1,8 +1,6 @@
 package com.todoback.todobackend.service;
 
-import com.todoback.todobackend.domain.AuthenticationDTO;
-import com.todoback.todobackend.domain.RegisterDTO;
-import com.todoback.todobackend.domain.User;
+import com.todoback.todobackend.domain.*;
 import com.todoback.todobackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -98,5 +96,36 @@ public class UserService {
         } else {
             return null;
         }
+    }
+
+    public String validateChangePasswordDTO (ChangePasswordDTO changePasswordDTO) {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        Optional<User> userOptional = userRepository.findByUsername(changePasswordDTO.getUsername());
+
+        String nPE = passwordEncoder.encode(changePasswordDTO.getNewPassword());
+        ValidatePasswordDTO validatePasswordDTO = new ValidatePasswordDTO();
+
+        if (!userOptional.isPresent()) {
+            return "nie ma takiego uzytkownika! CHUJ CI W DUPE! KURWA!";
+        }
+        if (!passwordEncoder.matches(changePasswordDTO.getOldPassword(), userOptional.get().getPassword())){
+            return "złe hasło aktualne do konta!";
+        }
+        validatePasswordDTO.setUsername(changePasswordDTO.getUsername());
+        validatePasswordDTO.setPassword(nPE);
+        changePassword(validatePasswordDTO);
+        return"Zmiana hasla zaszla pomyslnie";
+    }
+
+    public void changePassword(ValidatePasswordDTO validatePasswordDTO){
+        Optional<User> userOptional = userRepository.findByUsername(validatePasswordDTO.getUsername());
+
+        if (userOptional.isPresent()){
+            User user = userOptional.get();
+            user.setPassword(validatePasswordDTO.getPassword());
+            userRepository.save(user);
+        }
+
+
     }
 }

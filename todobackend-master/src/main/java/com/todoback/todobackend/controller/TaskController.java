@@ -1,6 +1,7 @@
 package com.todoback.todobackend.controller;
 
 import com.todoback.todobackend.domain.AuthenticationDTO;
+import com.todoback.todobackend.domain.ChangePasswordDTO;
 import com.todoback.todobackend.domain.RegisterDTO;
 import com.todoback.todobackend.domain.User;
 import com.todoback.todobackend.service.UserService;
@@ -41,6 +42,12 @@ public class TaskController {
         @GetMapping("/user/{username}")
         public User getUserData(@PathVariable String username) {
             return userService.getUserDataByUsername(username);
+        }
+
+        //template url
+        @PostMapping("/user/change-password")
+        public String changePassword (@RequestBody ChangePasswordDTO changePasswordDTO) {
+            return userService.validateChangePasswordDTO(changePasswordDTO);
         }
 
     }

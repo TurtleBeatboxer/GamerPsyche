@@ -21,6 +21,7 @@ export class ChangePasswordComponent implements OnInit {
       oldPassword: ['', [Validators.required, Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)]],
       newPassword: ['', [Validators.required, Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)]],
       newPasswordR: ['', [Validators.required, Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)]],
+      username: [sessionStorage.getItem('username')],
     },
     {
       validator: this.customValidator.MatchPassword('newPassword', 'newPasswordR')
@@ -32,7 +33,9 @@ export class ChangePasswordComponent implements OnInit {
      if(this.changeForm.invalid){
       const dialogRef = this.dialog.open(DialogComponent);
      }
-     this.http.post(``, this.changeForm.value).subscribe((x)=>console.log(x))
+     this.http.post(`http://localhost:8080/user/change-password`, this.changeForm.value)
+     .subscribe((x)=>console.log(x))
      //Trzeba zrobić na backendzie cos do tego.
+     //mnie nie wkurwiaj
   }
 }

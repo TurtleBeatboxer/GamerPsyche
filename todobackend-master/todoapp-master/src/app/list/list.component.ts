@@ -25,5 +25,8 @@ export class ListComponent implements OnInit {
     // }
   }
 
+  loginData() {
+    console.log(this.loginService.userData);
+  }
 
 }
