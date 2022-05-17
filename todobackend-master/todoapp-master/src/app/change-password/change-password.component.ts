@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatAccordion } from '@angular/material/expansion';
 import { DialogComponent } from '../dialog/dialog.component';
 import { CustomValidationService } from '../service/customvalidation.service';
 import { LoginService } from '../service/login.service';
@@ -18,24 +19,59 @@ export class ChangePasswordComponent implements OnInit {
 
   ngOnInit(): void {
     this.changeForm = this.fb.group({
-      oldPassword: ['', [Validators.required, Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)]],
-      newPassword: ['', [Validators.required, Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)]],
-      newPasswordR: ['', [Validators.required, Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)]],
+      oldPassword: ['', [Validators.required, ]],
+      newPassword: ['', [Validators.required, ]],
+      newPasswordR: ['', [Validators.required]],
       username: [sessionStorage.getItem('username')],
     },
     {
       validator: this.customValidator.MatchPassword('newPassword', 'newPasswordR')
     }
     )
+    this.changeForm.markAsPristine()
   }
 
   onSubmit(){
      if(this.changeForm.invalid){
       const dialogRef = this.dialog.open(DialogComponent);
+      return
      }
-     this.http.post(`http://localhost:8080/user/change-password`, this.changeForm.value)
-     .subscribe((x)=>console.log(x))
+     if(this.changeForm.value){
+     let data = {oldPassword: this.changeForm.value.oldPassword,
+      newPassword:  this.changeForm.value.newPassword,
+      newPasswordR: this.changeForm.value.newPasswordR,
+      username: sessionStorage.getItem('username')
+}
+     this.http.post(`http://localhost:8080/user/change-password`, data)
+     .subscribe(x => console.log(x))
      //Trzeba zrobić na backendzie cos do tego.
      //mnie nie wkurwiaj
+
+
+
+    ChangePasswordComponent.resetForm(this.changeForm)
+}
+  }
+
+   static resetForm(form: FormGroup) {
+    let control: AbstractControl = null;
+    form.reset()
+    form.markAsUntouched();
+    Object.keys(form.controls).forEach((name) => {
+      control = form.controls[name];
+      control.setErrors(null);
+    });
   }
 }
+
+// prawidowa walidacja
+// this.changeForm = this.fb.group({
+//   oldPassword: ['', [Validators.required, Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)]],
+//   newPassword: ['', [Validators.required, Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)]],
+//   newPasswordR: ['', [Validators.required, Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)]],
+//   username: [sessionStorage.getItem('username')],
+// },
+// {
+//   validator: this.customValidator.MatchPassword('newPassword', 'newPasswordR')
+// }
+// )
