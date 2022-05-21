@@ -2,7 +2,7 @@ package com.todoback.todobackend.domain;
 
 
 
-public class ChangePasswordDTO {
+public class    ChangePasswordDTO {
     String oldPassword;
     String newPassword;
     String newPasswordR;

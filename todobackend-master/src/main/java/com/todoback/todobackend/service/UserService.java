@@ -98,23 +98,29 @@ public class UserService {
         }
     }
 
-    public String validateChangePasswordDTO (ChangePasswordDTO changePasswordDTO) {
+    public MessageDTO validateChangePasswordDTO (ChangePasswordDTO changePasswordDTO) {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         Optional<User> userOptional = userRepository.findByUsername(changePasswordDTO.getUsername());
-
+        MessageDTO messDTO = new MessageDTO();
         String nPE = passwordEncoder.encode(changePasswordDTO.getNewPassword());
         ValidatePasswordDTO validatePasswordDTO = new ValidatePasswordDTO();
 
         if (!userOptional.isPresent()) {
-            return "nie ma takiego uzytkownika! CHUJ CI W DUPE! KURWA!";
+            messDTO.setSuccess(false);
+            messDTO.setMessage("nie ma takiego uzytkownika! CHUJ CI W DUPE! KURWA!");
+            return messDTO;
         }
         if (!passwordEncoder.matches(changePasswordDTO.getOldPassword(), userOptional.get().getPassword())){
-            return "złe hasło aktualne do konta!";
+            messDTO.setSuccess(false);
+            messDTO.setMessage("złe hasło aktualne do konta!");
+            return messDTO;
         }
         validatePasswordDTO.setUsername(changePasswordDTO.getUsername());
         validatePasswordDTO.setPassword(nPE);
         changePassword(validatePasswordDTO);
-        return"Zmiana hasla zaszla pomyslnie";
+        messDTO.setMessage("Zmiana hasla zaszla pomyslnie");
+        messDTO.setSuccess(true);
+        return messDTO;
     }
 
     public void changePassword(ValidatePasswordDTO validatePasswordDTO){
