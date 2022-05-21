@@ -3,11 +3,11 @@ import { Route } from '@angular/compiler/src/core';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { from } from 'rxjs';
-import { User, IUser } from '../login/user.model';
-import { AuthenticationDTO } from '../list/authenticationDTO.model';
+import { User, IUser } from './user.model';
+import { AuthenticationDTO } from './authenticationDTO.model';
 import { UserDATA } from './userDATA.model';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogComponent } from '../dialog/dialog.component';
+import { DialogComponent } from '../UtilityComponents/dialog/dialog.component';
 @Injectable({
   providedIn: 'root',
 })
