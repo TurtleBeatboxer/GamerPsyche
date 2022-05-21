@@ -1,9 +1,6 @@
 package com.todoback.todobackend.controller;
 
-import com.todoback.todobackend.domain.AuthenticationDTO;
-import com.todoback.todobackend.domain.ChangePasswordDTO;
-import com.todoback.todobackend.domain.RegisterDTO;
-import com.todoback.todobackend.domain.User;
+import com.todoback.todobackend.domain.*;
 import com.todoback.todobackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -46,7 +43,7 @@ public class TaskController {
 
         //template url
         @PostMapping("/user/change-password")
-        public String changePassword (@RequestBody ChangePasswordDTO changePasswordDTO) {
+        public MessageDTO changePassword (@RequestBody ChangePasswordDTO changePasswordDTO) {
             return userService.validateChangePasswordDTO(changePasswordDTO);
         }
 
