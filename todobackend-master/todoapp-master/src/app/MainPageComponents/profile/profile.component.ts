@@ -1,6 +1,4 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { LoginService } from '../service/login.service';
 
 @Component({
   selector: 'app-profile',
@@ -10,8 +8,5 @@ import { LoginService } from '../service/login.service';
 export class ProfileComponent implements OnInit {
   constructor() {}
 
-  ngOnInit(): void {
-
-  }
-
+  ngOnInit(): void {}
 }
