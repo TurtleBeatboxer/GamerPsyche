@@ -24,7 +24,7 @@ import { MatCardModule } from '@angular/material/card';
 import { ActivatedComponent } from './RegisterComponents/activated/activated.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { ProfileComponent } from './MainPageComponents/profile/profile.component';
-import { ChangePasswordComponent } from './change-password/change-password.component';
+import { ChangePasswordComponent } from './MainPageComponents/profile/profile-tab/change-password/change-password.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule } from '@angular/material/dialog';
