@@ -1,2 +1,5 @@
-package com.todoback.todobackend.service;public class TestScrap {
+package com.todoback.todobackend.service;
+
+public interface TestScrap {
+    void scrapData();
 }

@@ -1,6 +1,6 @@
 package com.todoback.todobackend.service;
 
 
-public interface LOLScrap {
+public interface LOLScrapService {
     void scrapData();
 }

@@ -1,17 +1,22 @@
 package com.todoback.todobackend.controller;
 
 import com.todoback.todobackend.domain.*;
+import com.todoback.todobackend.service.impl.TestScrapImpl;
 import com.todoback.todobackend.service.UserService;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.List;
-    @RestController
+@RestController
 public class TaskController {
 
         @Autowired
         UserService userService;
+        @Autowired
+        TestScrapImpl testScrapImpl;
 
         @PostMapping("/user/authenticate")
         public AuthenticationDTO authenticateUser(@RequestBody User user) {

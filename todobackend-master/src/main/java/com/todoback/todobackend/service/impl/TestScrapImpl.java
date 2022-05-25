@@ -1,5 +1,6 @@
-package com.todoback.todobackend.service;
+package com.todoback.todobackend.service.impl;
 
+import com.todoback.todobackend.service.TestScrap;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -10,17 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class TestScrap {
+public class TestScrapImpl implements TestScrap {
     private final ChromeDriver driver;
 
-    public TestScrap(ChromeDriver driver) {
+    public TestScrapImpl(ChromeDriver driver) {
         this.driver = driver;
     }
-    @PostConstruct
-    public void dupaDupa() {
-        System.out.println("Dupa");
-    }
-    @PostConstruct
+@PostConstruct
     public void scrapData() {
             driver.navigate().to("https://www.youtube.com/gaming/games/");
             WebElement bodyCookies = driver.findElement(By.tagName("body"));
@@ -32,9 +29,6 @@ public class TestScrap {
             List<WebElement> gameTitle = bodyGames.findElements(By.id("title"));
             List<WebElement> viewerCount = bodyGames.findElements(By.xpath("//span[@class='style-scope yt-formatted-string']"));
             List<WebElement> thumbnailLink = bodyGames.findElements(By.xpath("//img[@class='style-scope yt-img-shadow']"));
-            for (int i = 0; i < thumbnailLink.size(); i++){
-                System.out.println(thumbnailLink.get(i).getAttribute("src"));
-            }
             printWebElements(gameTitle);
             printWebElements(viewerCount);
         }
