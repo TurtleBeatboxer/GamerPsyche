@@ -15,14 +15,13 @@ public class TestScrapImpl implements TestScrap {
     private final ChromeDriver driver;
 
     public TestScrapImpl(ChromeDriver driver) {
-        this.driver = driver;
-    }
-@PostConstruct
+        this.driver = driver; }
+
     public void scrapData() {
-            driver.navigate().to("https://www.youtube.com/gaming/games/");
+            driver.navigate().to("https://mobalytics.gg/");
             WebElement bodyCookies = driver.findElement(By.tagName("body"));
             System.out.println(driver.getCurrentUrl());
-            WebElement acceptButton = bodyCookies.findElement(By.xpath("//button[@aria-label='Accept all']"));
+      /*      WebElement acceptButton = bodyCookies.findElement(By.xpath("//button[@aria-label='Accept all']"));
             acceptButton.click();
             System.out.println(driver.getCurrentUrl());
             WebElement bodyGames = driver.findElement(By.tagName("body"));
@@ -30,7 +29,7 @@ public class TestScrapImpl implements TestScrap {
             List<WebElement> viewerCount = bodyGames.findElements(By.xpath("//span[@class='style-scope yt-formatted-string']"));
             List<WebElement> thumbnailLink = bodyGames.findElements(By.xpath("//img[@class='style-scope yt-img-shadow']"));
             printWebElements(gameTitle);
-            printWebElements(viewerCount);
+            printWebElements(viewerCount);*/
         }
         public void printWebElements(List<WebElement> webElementList) {
             List<String> stringToOutput = new ArrayList<>();
