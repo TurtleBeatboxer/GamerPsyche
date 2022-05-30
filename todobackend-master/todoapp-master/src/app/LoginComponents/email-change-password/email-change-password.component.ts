@@ -6,6 +6,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CustomValidationService } from '../../service/customvalidation.service';
 import { UtilityService } from '../../service/utility.service';
 
@@ -20,7 +21,8 @@ export class EmailChangePasswordComponent implements OnInit {
     private fb: FormBuilder,
     private customValidator: CustomValidationService,
     private http: HttpClient,
-    private utility: UtilityService
+    private utility: UtilityService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -39,7 +41,9 @@ export class EmailChangePasswordComponent implements OnInit {
   }
 
   onSubmit() {
-    this.http.post('', this.changeForm.value);
+    let changeId: string = this.route.snapshot.paramMap.get('id')
+    console.log(typeof(changeId));
+    this.http.post(`http://localhost:8080/user/email/changePassword/${changeId}`, this.changeForm.value.newPasswordR).subscribe(x => console.log(x))
     this.utility.resetForm(this.changeForm);
   }
 }

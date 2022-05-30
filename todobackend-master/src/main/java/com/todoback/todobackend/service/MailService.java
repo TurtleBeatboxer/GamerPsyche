@@ -1,5 +1,6 @@
 package com.todoback.todobackend.service;
 
+import com.todoback.todobackend.domain.MessageDTO;
 import com.todoback.todobackend.domain.User;
 import com.todoback.todobackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,16 +99,18 @@ public class MailService {
         return builder.toString();
     }
    public String prepareMessage(String link){
-     StringBuilder builder = new StringBuilder()
+     StringBuilder builder = new StringBuilder();
 
      builder.append("Dzień dobry")
      .append("\n")
      .append("kliknij ten link aby zmienic hasło")
      .append("\n")
-     .append(link)
+     .append(link);
+
+     return builder.toString();
    }
    public String prepareChangeString(String uuidString){
-       String str = "http://localhost:8080/user/changePassword/"
+       String str = "http://localhost:8080/user/changePassword/";
        return str + uuidString;
    }
     public String prepareUniqueCodeNumber() {
@@ -115,44 +118,56 @@ public class MailService {
         return String.valueOf(random.nextInt(9000) + 1000);
     }
 
-    public void sendChangeEmail(String email) throws MessagingException{
-        String userName = "origami.projects.mail@gmail.com";
-        String password = "DupaDupa123Pizda";
-        String alertEmail = userName;
+    public MessageDTO sendChangeEmail(String email) throws MessagingException{
+        Optional<User> userOptional = userRepository.findByEmail(email);
 
-        // NADAWCA
-        String recipientAddress = email
+        if(userOptional.isPresent()){
+            String userName = "origami.projects.mail@gmail.com";
+            String password = "DupaDupa123Pizda";
+            String alertEmail = userName;
 
-        // z dokumentacji GMAIL
-        Properties properties = new Properties();
-        properties.put("mail.smtp.starttls.enable", "true");
-        properties.put("mail.smtp.auth", "true");
-        properties.put("mail.smtp.host", "smtp.gmail.com");
-        properties.put("mail.smtp.port", "587");
+            // NADAWCA
+            String recipientAddress = email;
 
-Session session = Session.getInstance(properties,
-                new javax.mail.Authenticator() {
-                    @Override
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(userName, password);
-                    }
-                });
+            // z dokumentacji GMAIL
+            Properties properties = new Properties();
+            properties.put("mail.smtp.starttls.enable", "true");
+            properties.put("mail.smtp.auth", "true");
+            properties.put("mail.smtp.host", "smtp.gmail.com");
+            properties.put("mail.smtp.port", "587");
+
+            Session session = Session.getInstance(properties,
+                    new javax.mail.Authenticator() {
+                        @Override
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            return new PasswordAuthentication(userName, password);
+                        }
+                    });
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(alertEmail));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientAddress));
+            message.setSubject("Mail from Origami Project");
+
+            String uuidString = prepareUUID();
+            String activationLink = prepareChangeString(uuidString);
+            User user = userOptional.get();
+            user.setPasswordChangeId(uuidString);
+            userRepository.save(user);
+            message.setText(prepareMessage(activationLink));
+
+            // Wysyłka wiadomości
+            Transport.send(message);
+            System.out.println("Wyslano wiadomosc do " + recipientAddress);
+            MessageDTO mess = new MessageDTO();
+            mess.setSuccess(true);
+            mess.setMessage("ok");
+            return mess;
+        } else {
+            return null;
+        }
+
+
     }
-    Message message = new MimeMessage(session);
-        message.setFrom(new InternetAddress(alertEmail));
-        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientAddress));
-        message.setSubject("Mail from Origami Project");
 
-        String uuidString = prepareUUID();
-        String activationLink = prepareChangeString(uuidString);
-    
-
-        message.setText(prepareMessage(activationLink));
-
-        // Wysyłka wiadomości
-        Transport.send(message);
-        System.out.println("Wyslano wiadomosc do " + recipientAddress);
-        MessageDTO mess = new MessageDTO();
-        return mess;
 }
 //

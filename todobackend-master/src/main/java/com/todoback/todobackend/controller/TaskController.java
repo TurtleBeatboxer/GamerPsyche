@@ -38,11 +38,15 @@ public class TaskController {
             redirectView.setUrl("http://localhost:4200/activated");
             return redirectView;
         }
+
+
+
         @GetMapping("user/changePassword/{changeId}")
         public RedirectView changePass(@PathVariable String changeId) {
-            RedirectView redirectView = new RedirectView()
-            redirectView.setUrl("http://localhost:4200/user/changePassword")
-            return redirectView
+            RedirectView redirectView = new RedirectView();
+
+            redirectView.setUrl("http://localhost:4200/changePassword/" + changeId);
+            return redirectView;
         }
         @GetMapping("/user/id/{username}")
         public int prepareUserId(@PathVariable String username) {
@@ -60,9 +64,21 @@ public class TaskController {
             return userService.validateChangePasswordDTO(changePasswordDTO);
         }
 
+        @PostMapping("/user/email/changePassword/{changeId}")
+        public MessageDTO changePassEmail (@PathVariable String changeId, @RequestBody String password){
+            return userService.changePassword(changeId, password);
+        }
 
       @PostMapping("/user/changeReq")
-      public MessageDTO sendChangeEmail (@RequestBody String email) {
-          return mailService.sendChangeEmail(email)
+      public MessageDTO changeEmail (@RequestBody String email) {
+        try{
+            return mailService.sendChangeEmail(email);
+        } catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
+
+
       }
     }

@@ -21,11 +21,20 @@ public class User {
     private String codeNumber;
     private String lolUsername;
     private LOLServer lolServer;
+    private String passwordChangeId;
     private boolean activated;
 
 
     public User() {
 
+    }
+
+    public String getPasswordChangeId() {
+        return passwordChangeId;
+    }
+
+    public void setPasswordChangeId(String passwordChangeId){
+        this.passwordChangeId = passwordChangeId;
     }
 
     public String getActivationId() {
