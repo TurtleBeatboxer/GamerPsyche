@@ -27,10 +27,9 @@ public class TestScrapImpl implements TestScrap {
     @PostConstruct
     public void scrapData() {
         List<RecentActivity> ActivityList = new ArrayList<>();
-        WebDriver driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.navigate().to("https://app.mobalytics.gg/lol/profile/eune/koczokok/overview");
-        WebElement body = driver.findElement(By.tagName("body"));
+        this.driver.manage().window().maximize();
+        this.driver.navigate().to("https://app.mobalytics.gg/lol/profile/eune/koczokok/overview");
+        WebElement body = this.driver.findElement(By.tagName("body"));
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("/html/body/div[1]/div[1]/div[1]/div[4]/div/div/header/div[1]/div/div/div[2]/div/button")));
@@ -43,32 +42,28 @@ public class TestScrapImpl implements TestScrap {
         body.sendKeys(Keys.PAGE_DOWN);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                 "/html/body/div[1]/div[1]/div[1]/div[4]/div/div/main/div[1]/div[5]/div[1]/div[1]/div/*[name()='svg']")));
-        WebElement bigone = driver.findElement(By.xpath(
+        WebElement table = this.driver.findElement(By.xpath(
                 "/html/body/div[1]/div[1]/div[1]/div[4]/div/div/main/div[1]/div[5]/div[1]/div[1]/div/*[name()='svg']/*[name()='g'][2]"));
-        List<WebElement> gs = bigone.findElements(By.xpath("./*"));
-        System.out.println(gs.size());
-        outerloop: for (int i = 1; i <= gs.size(); i++) {
+        List<WebElement> columns = table.findElements(By.xpath("./*"));
+
+        for (int i = 1; i <= columns.size(); i++) {
             String path = String.format(
                     "/html/body/div[1]/div[1]/div[1]/div[4]/div/div/main/div[1]/div[5]/div[1]/div[1]/div/*[name()='svg']/*[name()='g'][2]/*[name()='g'][%d]",
                     i);
-            WebElement small = driver.findElement(By.xpath(path));
-            List<WebElement> s = small.findElements(By.xpath("./*"));
-            System.out.println(s.size());
-            for (int j = 1; j <= s.size(); j++) {
+            WebElement row = this.driver.findElement(By.xpath(path));
+            List<WebElement> rowNumber = row.findElements(By.xpath("./*"));
+            for (int j = 1; j <= rowNumber.size(); j++) {
 
                 String string = String.format(
                         "/html/body/div[1]/div[1]/div[1]/div[4]/div/div/main/div[1]/div[5]/div[1]/div[1]/div/*[name()='svg']/*[name()='g'][2]/*[name()='g'][%d]/*[name()='rect'][%2d]",
                         i, j);
-                System.out.println(string);
-                driver.findElement(By.xpath(string)).click();
-                String attribute = driver.findElement(By.xpath(string)).getAttribute("aria-describedby");
+                this.driver.findElement(By.xpath(string)).click();
+                String attribute = this.driver.findElement(By.xpath(string)).getAttribute("aria-describedby");
                 if (attribute != null) {
                     wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(attribute)));
                     WebElement e = body.findElement(By.id(attribute));
                     List<WebElement> el = e.findElements(By.xpath("./*"));
-
                     RecentActivity rect = new RecentActivity();
-
                     String d = el.get(0).getText();
                     String data[] = d.split("\\r?\\n");
                     rect.setDate(data[1]);
@@ -83,7 +78,7 @@ public class TestScrapImpl implements TestScrap {
         }
         printActivity(ActivityList);
         
-        driver.close();
+        this.driver.close();
     
 
     }

@@ -121,7 +121,9 @@ public class UserService {
         }
         validatePasswordDTO.setUsername(changePasswordDTO.getUsername());
         validatePasswordDTO.setPassword(nPE);
-        //changePassword(validatePasswordDTO);
+        User user = userOptional.get();
+        user.setPassword(nPE);
+        userRepository.save(user);
         messDTO.setMessage("Zmiana hasla zaszla pomyslnie");
         messDTO.setSuccess(true);
         return messDTO;
