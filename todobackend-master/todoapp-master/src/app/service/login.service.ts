@@ -19,6 +19,7 @@ export class LoginService {
 
   public authenticate(username: string, password: string) {
     this.user = new User(username, password);
+    console.log(this.user)
     this.http
       .post<AuthenticationDTO>(
         'http://localhost:8080/user/authenticate',
