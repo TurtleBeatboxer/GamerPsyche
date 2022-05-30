@@ -1,6 +1,7 @@
 package com.todoback.todobackend.service.impl;
 
 import com.todoback.todobackend.domain.RecentActivity;
+import com.todoback.todobackend.domain.WinRateDTO;
 import com.todoback.todobackend.service.TestScrap;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -24,7 +25,7 @@ public class TestScrapImpl implements TestScrap {
         this.driver = driver;
     }
 
-    @PostConstruct
+    //@PostConstruct
     public void scrapData() {
         List<RecentActivity> ActivityList = new ArrayList<>();
         this.driver.manage().window().maximize();
@@ -80,6 +81,36 @@ public class TestScrapImpl implements TestScrap {
         
         this.driver.close();
     
+
+    }
+
+    public WinRateDTO scrapWinRate(){
+        WebDriver driver = new ChromeDriver();
+        driver.navigate().to("https://app.mobalytics.gg/lol/profile/eune/koczokok/overview");
+        driver.manage().window().maximize();
+        WebElement body = driver.findElement(By.tagName("body"));
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("/html/body/div[1]/div[1]/div[1]/div[4]/div/div/header/div[1]/div/div/div[2]/div/button")));
+        WebElement refreshButton = body.findElement(
+                By.xpath("/html/body/div[1]/div[1]/div[1]/div[4]/div/div/header/div[1]/div/div/div[2]/div/button"));
+        refreshButton.click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@aria-label='Consent']")));
+        WebElement cookieButton = body.findElement(By.xpath("//button[@aria-label='Consent']"));
+        cookieButton.click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[1]/div[1]/div[1]/div[4]/div/div/main/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div/div[3]/div[1]/span[4]/span")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[1]/div[1]/div[1]/div[4]/div/div/main/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]/div/div[3]/div[1]/span[4]/span")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[1]/div[1]/div[1]/div[4]/div/div/main/div[1]/div[1]/div[1]/div[1]/div[2]/div[3]/div/div[2]/div[1]/span[4]/span")));
+        WebElement rankedSolo = body.findElement(By.xpath("/html/body/div[1]/div[1]/div[1]/div[4]/div/div/main/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div/div[3]/div[1]/span[4]/span"));
+        WebElement rankedFlex = body.findElement(By.xpath("/html/body/div[1]/div[1]/div[1]/div[4]/div/div/main/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]/div/div[3]/div[1]/span[4]/span"));
+        WebElement normalDraft = body.findElement(By.xpath("/html/body/div[1]/div[1]/div[1]/div[4]/div/div/main/div[1]/div[1]/div[1]/div[1]/div[2]/div[3]/div/div[2]/div[1]/span[4]/span"));
+        System.out.println(normalDraft.getText() + rankedFlex.getText() + rankedSolo.getText());
+        driver.close();
+        WinRateDTO data = new WinRateDTO();
+        data.setRankedSolo(rankedSolo.getText());
+        data.setRankedFlex(rankedFlex.getText());
+        data.setNormalDraft(normalDraft.getText());
+        return data;
 
     }
 

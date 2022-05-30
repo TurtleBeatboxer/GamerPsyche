@@ -76,9 +76,15 @@ public class TaskController {
         } catch(Exception e){
             e.printStackTrace();
             return null;
+        }}
+
+        @GetMapping("user/getWinrate")
+        public void sendWinRate (){
+            return TestScrapImpl.scrapWinRate();
         }
 
 
 
-      }
+
+
     }
