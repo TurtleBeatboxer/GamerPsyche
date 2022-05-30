@@ -3,6 +3,7 @@ package com.todoback.todobackend.controller;
 import com.todoback.todobackend.domain.*;
 import com.todoback.todobackend.service.impl.TestScrapImpl;
 import com.todoback.todobackend.service.UserService;
+import com.todoback.todobackend.service.MailService;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ public class TaskController {
 
         @Autowired
         UserService userService;
+        @Autowired
+        MailService mailService;
         @Autowired
         TestScrapImpl testScrapImpl;
 
@@ -35,7 +38,12 @@ public class TaskController {
             redirectView.setUrl("http://localhost:4200/activated");
             return redirectView;
         }
-
+        @GetMapping("user/changePassword/{changeId}")
+        public RedirectView changePass(@PathVariable String changeId) {
+            RedirectView redirectView = new RedirectView()
+            redirectView.setUrl("http://localhost:4200/user/changePassword")
+            return redirectView
+        }
         @GetMapping("/user/id/{username}")
         public int prepareUserId(@PathVariable String username) {
             return userService.prepareUserIdFromUsername(username);
@@ -52,4 +60,9 @@ public class TaskController {
             return userService.validateChangePasswordDTO(changePasswordDTO);
         }
 
+
+      @PostMapping("/user/changeReq")
+      public MessageDTO sendChangeEmail (@RequestBody String email) {
+          return mailService.sendChangeEmail(email)
+      }
     }

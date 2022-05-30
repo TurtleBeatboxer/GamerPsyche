@@ -31,7 +31,7 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   onSubmit() {
-    //this.http.post('', this.forgotForm.value)
+    this.http.post('http://localhost:8080/user/changeReq', this.forgotForm.value).subscribe(x=> console.log(x))
     // TRZA LINK DODAC CHUJJJJJJJ PIZDA I CHUJJJJJJJJJ i od komentowac cnie
     this.utility.resetForm(this.forgotForm);
 
