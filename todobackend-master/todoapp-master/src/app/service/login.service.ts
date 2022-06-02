@@ -30,12 +30,15 @@ export class LoginService {
         this.authenticationProcess(x);
 
       });
+
   }
 
   public authenticationProcess(authenticationDTO: AuthenticationDTO): Boolean {
     if (authenticationDTO.success) {
+      console.log(this.user)
       sessionStorage.setItem('username', this.user.username);
       this.router.navigate(['/main']);
+
       return true;
     }
     const dialogRef = this.dialog.open(DialogComponent);

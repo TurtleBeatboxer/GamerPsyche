@@ -10,6 +10,6 @@ export class ProfileComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.http.get("http://localhost:8080/user/getWinrate").subscribe(x => x)
+
   }
 }

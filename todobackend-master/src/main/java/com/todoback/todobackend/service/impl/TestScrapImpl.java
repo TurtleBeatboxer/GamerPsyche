@@ -85,7 +85,7 @@ public class TestScrapImpl implements TestScrap {
     }
 
     public WinRateDTO scrapWinRate(){
-        WebDriver driver = new ChromeDriver();
+
         driver.navigate().to("https://app.mobalytics.gg/lol/profile/eune/koczokok/overview");
         driver.manage().window().maximize();
         WebElement body = driver.findElement(By.tagName("body"));
@@ -105,11 +105,12 @@ public class TestScrapImpl implements TestScrap {
         WebElement rankedFlex = body.findElement(By.xpath("/html/body/div[1]/div[1]/div[1]/div[4]/div/div/main/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]/div/div[3]/div[1]/span[4]/span"));
         WebElement normalDraft = body.findElement(By.xpath("/html/body/div[1]/div[1]/div[1]/div[4]/div/div/main/div[1]/div[1]/div[1]/div[1]/div[2]/div[3]/div/div[2]/div[1]/span[4]/span"));
         System.out.println(normalDraft.getText() + rankedFlex.getText() + rankedSolo.getText());
-        driver.close();
+
         WinRateDTO data = new WinRateDTO();
         data.setRankedSolo(rankedSolo.getText());
         data.setRankedFlex(rankedFlex.getText());
         data.setNormalDraft(normalDraft.getText());
+        driver.close();
         return data;
 
     }

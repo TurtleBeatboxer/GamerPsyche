@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from 'src/app/service/login.service';
 
-
-
+import { WinRateDTO } from '../../service/winRateDTO.model'
+import { MainUserDTO } from '../../service/mainUserDTO.model'
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
@@ -11,6 +11,7 @@ import { LoginService } from 'src/app/service/login.service';
 })
 export class ListComponent implements OnInit {
   public messageFromServer = '';
+  private username = localStorage.getItem("username")
 
   constructor(private http: HttpClient, public loginService: LoginService) {}
 
@@ -23,7 +24,11 @@ export class ListComponent implements OnInit {
     //     console.log(this.loginService.userData)
     //     });
     // }
-    this.http.get<WinRateDTO>("http://localhost:8080/user/getWinrate").subscribe(x=> console.log(x))
+    //this.http.get<WinRateDTO>("http://localhost:8080/user/getWinrate").subscribe(x=> console.log(x))
+    let username = sessionStorage.getItem("username")
+this.http.get<MainUserDTO>(`http://localhost:8080/user/getMainData/${username}`).subscribe(x =>
+    localStorage.setItem("email", x.email)
+)
   }
 
   loginData() {

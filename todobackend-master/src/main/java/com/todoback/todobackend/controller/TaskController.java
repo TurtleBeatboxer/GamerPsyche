@@ -1,6 +1,7 @@
 package com.todoback.todobackend.controller;
 
 import com.todoback.todobackend.domain.*;
+import com.todoback.todobackend.service.TestScrap;
 import com.todoback.todobackend.service.impl.TestScrapImpl;
 import com.todoback.todobackend.service.UserService;
 import com.todoback.todobackend.service.MailService;
@@ -80,10 +81,13 @@ public class TaskController {
 
         @GetMapping("user/getWinrate")
         public WinRateDTO sendWinRate (){
-            return TestScrapImpl.scrapWinRate();
+            return testScrap.scrapWinRate();
         }
 
-
+        @GetMapping("user/getMainData/{username}")
+        public MainUserDTO sendMainData(@PathVariable String username) {
+            return userService.sendMainData(username);
+        }
 
 
 
