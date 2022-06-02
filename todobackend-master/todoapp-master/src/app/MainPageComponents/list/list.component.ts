@@ -23,6 +23,7 @@ export class ListComponent implements OnInit {
     //     console.log(this.loginService.userData)
     //     });
     // }
+    this.http.get<WinRateDTO>("http://localhost:8080/user/getWinrate").subscribe(x=> console.log(x))
   }
 
   loginData() {

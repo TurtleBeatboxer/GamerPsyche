@@ -19,7 +19,7 @@ public class TaskController {
         @Autowired
         MailService mailService;
         @Autowired
-        TestScrapImpl testScrapImpl;
+        TestScrap testScrap;
 
         @PostMapping("/user/authenticate")
         public AuthenticationDTO authenticateUser(@RequestBody User user) {
@@ -79,7 +79,7 @@ public class TaskController {
         }}
 
         @GetMapping("user/getWinrate")
-        public void sendWinRate (){
+        public WinRateDTO sendWinRate (){
             return TestScrapImpl.scrapWinRate();
         }
 
