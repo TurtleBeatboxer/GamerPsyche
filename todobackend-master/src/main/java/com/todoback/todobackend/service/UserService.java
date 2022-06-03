@@ -159,6 +159,7 @@ public class UserService {
             userData.setLolUsername(user.getLOLUsername());
             userData.setFirstName(user.getFirstName());
             userData.setLastName(user.getLastName());
+            userData.setUsername(user.getUsername());
             System.out.println(userData + "gello");
             return userData;
         }else {

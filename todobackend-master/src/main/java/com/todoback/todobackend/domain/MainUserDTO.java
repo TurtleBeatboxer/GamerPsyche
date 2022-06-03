@@ -3,14 +3,19 @@ package com.todoback.todobackend.domain;
 public class MainUserDTO {
 
     private String lolUsername;
+    private String username;
     private LOLServer lolServer;
     private String email;
     private String firstName;
     private String lastName;
 
-
-
-
+ 
+    public void setUsername(String username){
+        this.username = usernam;
+    }
+    public String getUsername(){
+        return username;
+    }
     public String getLolUsername() {
         return lolUsername;
     }

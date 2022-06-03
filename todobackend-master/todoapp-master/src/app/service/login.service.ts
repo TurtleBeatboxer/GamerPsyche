@@ -8,6 +8,7 @@ import { AuthenticationDTO } from './authenticationDTO.model';
 import { UserDATA } from './userDATA.model';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../UtilityComponents/dialog/dialog.component';
+import { MainUserDTO } from './mainUserDTO.model'
 @Injectable({
   providedIn: 'root',
 })
@@ -38,7 +39,23 @@ export class LoginService {
       console.log(this.user)
       sessionStorage.setItem('username', this.user.username);
       this.router.navigate(['/main']);
-
+      let username = sessionStorage.getItem("username")
+      this.http.get<MainUserDTO>(`http://localhost:8080/user/getMainData/${username}`).subscribe((x) =>{
+      let user: MainUserDTO = {
+        firstName: x.firstName,
+        lastName: x.lastName,
+        email: x.email,
+        lolUsername: x.lolUsername,
+        lolServer: x.lolServer,
+        username: x.username
+      }
+      
+    
+      
+          localStorage.setItem("user", JSON.stringify(user))
+        
+    }
+      )
       return true;
     }
     const dialogRef = this.dialog.open(DialogComponent);
