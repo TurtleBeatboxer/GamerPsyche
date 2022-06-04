@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { DialogComponent } from '../../UtilityComponents/dialog/dialog.component';
 import { LoginService } from '../../service/login.service';
 import { UtilityService } from '../../service/utility.service';
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -20,7 +21,8 @@ export class LoginComponent implements OnInit {
     public router: Router,
     private fb: FormBuilder,
     private dialog: MatDialog,
-    private utility: UtilityService
+    private utility: UtilityService,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -46,4 +48,5 @@ export class LoginComponent implements OnInit {
     }
     this.utility.resetForm(this.loginForm);
   }
+
 }

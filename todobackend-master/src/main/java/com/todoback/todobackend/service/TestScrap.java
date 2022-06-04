@@ -1,9 +1,13 @@
 package com.todoback.todobackend.service;
 
+import com.todoback.todobackend.domain.LOLUserDATA;
+import com.todoback.todobackend.domain.RecentActivity;
 import com.todoback.todobackend.domain.WinRateDTO;
 
-public interface TestScrap {
-    void scrapData();
+import java.util.List;
 
-    WinRateDTO scrapWinRate();
+public interface TestScrap {
+
+
+    LOLUserDATA getLOLUserDATA(String lolServer, String lolUsername);
 }

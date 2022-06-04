@@ -25,10 +25,7 @@ export class ListComponent implements OnInit {
     //     });
     // }
     //this.http.get<WinRateDTO>("http://localhost:8080/user/getWinrate").subscribe(x=> console.log(x))
-    let username = sessionStorage.getItem("username")
-this.http.get<MainUserDTO>(`http://localhost:8080/user/getMainData/${username}`).subscribe(x =>
-    localStorage.setItem("email", x.email)
-)
+
   }
 
   loginData() {

@@ -11,7 +11,7 @@ public class MainUserDTO {
 
  
     public void setUsername(String username){
-        this.username = usernam;
+        this.username = username;
     }
     public String getUsername(){
         return username;
