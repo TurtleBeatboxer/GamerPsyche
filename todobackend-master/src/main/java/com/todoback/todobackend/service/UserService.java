@@ -148,4 +148,23 @@ public class UserService {
     return mess;
 
     }
+
+    public MainUserDTO sendMainData(String username){
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        MainUserDTO userData = new MainUserDTO();
+        if(userOptional.isPresent()){
+            User user = userOptional.get();
+            userData.setEmail(user.getEmail());
+            userData.setLolServer(user.getLOLServer());
+            userData.setLolUsername(user.getLOLUsername());
+            userData.setFirstName(user.getFirstName());
+            userData.setLastName(user.getLastName());
+            userData.setUsername(user.getUsername());
+            System.out.println(userData + "gello");
+            return userData;
+        }else {
+            return null;
+        }
+
+    }
 }

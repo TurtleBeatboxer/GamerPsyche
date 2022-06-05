@@ -1,44 +1,56 @@
 package com.todoback.todobackend.service.impl;
 
+import com.todoback.todobackend.domain.LOLUserDATA;
 import com.todoback.todobackend.domain.RecentActivity;
+import com.todoback.todobackend.domain.WinRateDTO;
 import com.todoback.todobackend.service.TestScrap;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Service
 public class TestScrapImpl implements TestScrap {
     private final ChromeDriver driver;
+    private boolean cookiesDone;
 
     public TestScrapImpl(ChromeDriver driver) {
         this.driver = driver;
+        this.cookiesDone = false;
     }
 
-    @PostConstruct
-    public void scrapData() {
+    public List<RecentActivity> scrapData(WebDriverWait wait, WebElement body) {
+        List<RecentActivity> RecentActivity = getRecentActivity(wait, body);
+        printActivity(RecentActivity);
+        return RecentActivity;
+    }
+
+
+
+    public WinRateDTO scrapWinRate(WebDriverWait wait, WebElement body){
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[1]/div[1]/div[1]/div[4]/div/div/main/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div/div[3]/div[1]/span[4]/span")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[1]/div[1]/div[1]/div[4]/div/div/main/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]/div/div[3]/div[1]/span[4]/span")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[1]/div[1]/div[1]/div[4]/div/div/main/div[1]/div[1]/div[1]/div[1]/div[2]/div[3]/div/div[2]/div[1]/span[4]/span")));
+        WebElement rankedSolo = body.findElement(By.xpath("/html/body/div[1]/div[1]/div[1]/div[4]/div/div/main/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div/div[3]/div[1]/span[4]/span"));
+        WebElement rankedFlex = body.findElement(By.xpath("/html/body/div[1]/div[1]/div[1]/div[4]/div/div/main/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]/div/div[3]/div[1]/span[4]/span"));
+        WebElement normalDraft = body.findElement(By.xpath("/html/body/div[1]/div[1]/div[1]/div[4]/div/div/main/div[1]/div[1]/div[1]/div[1]/div[2]/div[3]/div/div[2]/div[1]/span[4]/span"));
+        WinRateDTO data = new WinRateDTO();
+        data.setRankedSolo(rankedSolo.getText());
+        data.setRankedFlex(rankedFlex.getText());
+        data.setNormalDraft(normalDraft.getText());
+        return data;
+
+    }
+
+
+    public List<RecentActivity> getRecentActivity(WebDriverWait wait, WebElement body){
         List<RecentActivity> ActivityList = new ArrayList<>();
-        this.driver.manage().window().maximize();
-        this.driver.navigate().to("https://app.mobalytics.gg/lol/profile/eune/koczokok/overview");
-        WebElement body = this.driver.findElement(By.tagName("body"));
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        wait.until(ExpectedConditions.elementToBeClickable(
-                By.xpath("/html/body/div[1]/div[1]/div[1]/div[4]/div/div/header/div[1]/div/div/div[2]/div/button")));
-        WebElement refreshButton = body.findElement(
-                By.xpath("/html/body/div[1]/div[1]/div[1]/div[4]/div/div/header/div[1]/div/div/div[2]/div/button"));
-        refreshButton.click();
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@aria-label='Consent']")));
-        WebElement cookieButton = body.findElement(By.xpath("//button[@aria-label='Consent']"));
-        cookieButton.click();
         body.sendKeys(Keys.PAGE_DOWN);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                 "/html/body/div[1]/div[1]/div[1]/div[4]/div/div/main/div[1]/div[5]/div[1]/div[1]/div/*[name()='svg']")));
@@ -76,32 +88,15 @@ public class TestScrapImpl implements TestScrap {
 
             }
         }
-        printActivity(ActivityList);
-        
-        this.driver.close();
-    
-
-    }
-
-    public void printWebElements(List<WebElement> webElementList) {
-        List<String> stringToOutput = new ArrayList<>();
-        for (int i = 0; i < webElementList.size(); i++) {
-            if (!webElementList.get(i).getText().isEmpty()) {
-                stringToOutput.add(webElementList.get(i).getText());
-            }
-        }
-        for (int i = 0; i < stringToOutput.size(); i++) {
-            System.out.println(stringToOutput.get(i));
-        }
-
+        return ActivityList;
     }
 
     public void printActivity(List<RecentActivity> rect) {
         List<String> stringToOutput = new ArrayList<>();
-        for (int i = 0; i < rect.size(); i++) {
+            for (int i = 0; i < rect.size(); i++) {
 
-            stringToOutput.add(rect.get(i).getDate());
-            stringToOutput.add(rect.get(i).getGamesRatio());
+                stringToOutput.add(rect.get(i).getDate());
+                stringToOutput.add(rect.get(i).getGamesRatio());
             stringToOutput.add(rect.get(i).getHoursPlayed());
             stringToOutput.add(rect.get(i).getWinRatio());
 
@@ -111,4 +106,48 @@ public class TestScrapImpl implements TestScrap {
         }
     }
 
+    public void acceptCookies(WebDriverWait wait, WebElement body){
+
+        wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("/html/body/div[1]/div[1]/div[1]/div[4]/div/div/header/div[1]/div/div/div[2]/div/button")));
+        WebElement refreshButton = body.findElement(
+                By.xpath("/html/body/div[1]/div[1]/div[1]/div[4]/div/div/header/div[1]/div/div/div[2]/div/button"));
+        refreshButton.click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@aria-label='Consent']")));
+        WebElement cookieButton = body.findElement(By.xpath("//button[@aria-label='Consent']"));
+        cookieButton.click();
+
+
+    this.cookiesDone = true;
+
+
+    }
+
+    public WebDriverWait setWait(){
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        return wait;
+    }
+
+    public void getMobalytics(String username, String lolServer){
+        String path = String.format("https://app.mobalytics.gg/lol/profile/%s/%s/overview", lolServer, username);
+        System.out.println(path);
+        this.driver.manage().window().maximize();
+        this.driver.navigate().to(path);
+
+    }
+
+    public LOLUserDATA getLOLUserDATA(String lolServer, String lolUsername){
+
+        getMobalytics(lolUsername, lolServer);
+        WebDriverWait wait = setWait();
+        WebElement body = driver.findElement(By.tagName("body"));
+        if(this.cookiesDone == false){
+            acceptCookies(wait, body);
+        }
+        LOLUserDATA data = new LOLUserDATA();
+        data.setActivityList(scrapData(wait, body));
+        data.setUserWinrate(scrapWinRate(wait, body));
+        return data;
+
+    }
 }
