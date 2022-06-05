@@ -9,6 +9,7 @@ import { UserDATA } from './userDATA.model';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../UtilityComponents/dialog/dialog.component';
 import { MainUserDTO } from './mainUserDTO.model';
+import { LolUserDataService } from './lolUserData.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -19,7 +20,8 @@ export class LoginService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private lolUserDataService: LolUserDataService
   ) {}
 
   public authenticate(username: string, password: string) {
@@ -53,6 +55,7 @@ export class LoginService {
             lolServer: x.lolServer,
             username: x.username,
           };
+          this.lolUserDataService.getLolUserData(x.lolUsername, x.lolServer);
 
           localStorage.setItem('user', JSON.stringify(user));
         });

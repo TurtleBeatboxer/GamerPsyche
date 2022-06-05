@@ -15,9 +15,15 @@ export class RegisterComponent implements OnInit {
   profileForm = this.fb.group({
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
-    login: ['',Validators.required],
+    login: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)]],
+    password: [
+      '',
+      [
+        Validators.required,
+        Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/),
+      ],
+    ],
     lolData: this.fb.group({
       lolServer: ['', Validators.required],
       lolUsername: ['', Validators.required],
@@ -36,14 +42,12 @@ export class RegisterComponent implements OnInit {
     console.log(this.profileForm.value);
     this.http
       .post<any>('http://localhost:8080/user/register', this.profileForm.value)
-      .subscribe(() => console.log('rejestracja'));
+      .subscribe((x) => {
+        console.log('rejestracja');
+      });
     this.profileForm.reset();
     this.router.navigate(['/emailsent']);
   }
-
-
-
-
 
   servers: Server[] = [
     { value: 'EUW' },

@@ -18,13 +18,14 @@ import java.util.List;
 @Service
 public class TestScrapImpl implements TestScrap {
     private final ChromeDriver driver;
+    private boolean cookiesDone;
 
     public TestScrapImpl(ChromeDriver driver) {
         this.driver = driver;
+        this.cookiesDone = false;
     }
 
     public List<RecentActivity> scrapData(WebDriverWait wait, WebElement body) {
-
         List<RecentActivity> RecentActivity = getRecentActivity(wait, body);
         printActivity(RecentActivity);
         return RecentActivity;
@@ -33,10 +34,6 @@ public class TestScrapImpl implements TestScrap {
 
 
     public WinRateDTO scrapWinRate(WebDriverWait wait, WebElement body){
-       /* getMobalytics(username, lolServer);
-        WebDriverWait wait = setWait();
-        WebElement body = driver.findElement(By.tagName("body"));
-        acceptCookies(wait, body);*/
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[1]/div[1]/div[1]/div[4]/div/div/main/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div/div[3]/div[1]/span[4]/span")));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[1]/div[1]/div[1]/div[4]/div/div/main/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]/div/div[3]/div[1]/span[4]/span")));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div[1]/div[1]/div[1]/div[4]/div/div/main/div[1]/div[1]/div[1]/div[1]/div[2]/div[3]/div/div[2]/div[1]/span[4]/span")));
@@ -51,18 +48,6 @@ public class TestScrapImpl implements TestScrap {
 
     }
 
-    public void printWebElements(List<WebElement> webElementList) {
-        List<String> stringToOutput = new ArrayList<>();
-        for (int i = 0; i < webElementList.size(); i++) {
-            if (!webElementList.get(i).getText().isEmpty()) {
-                stringToOutput.add(webElementList.get(i).getText());
-            }
-        }
-        for (int i = 0; i < stringToOutput.size(); i++) {
-            System.out.println(stringToOutput.get(i));
-        }
-
-    }
 
     public List<RecentActivity> getRecentActivity(WebDriverWait wait, WebElement body){
         List<RecentActivity> ActivityList = new ArrayList<>();
@@ -108,10 +93,10 @@ public class TestScrapImpl implements TestScrap {
 
     public void printActivity(List<RecentActivity> rect) {
         List<String> stringToOutput = new ArrayList<>();
-        for (int i = 0; i < rect.size(); i++) {
+            for (int i = 0; i < rect.size(); i++) {
 
-            stringToOutput.add(rect.get(i).getDate());
-            stringToOutput.add(rect.get(i).getGamesRatio());
+                stringToOutput.add(rect.get(i).getDate());
+                stringToOutput.add(rect.get(i).getGamesRatio());
             stringToOutput.add(rect.get(i).getHoursPlayed());
             stringToOutput.add(rect.get(i).getWinRatio());
 
@@ -122,6 +107,7 @@ public class TestScrapImpl implements TestScrap {
     }
 
     public void acceptCookies(WebDriverWait wait, WebElement body){
+
         wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("/html/body/div[1]/div[1]/div[1]/div[4]/div/div/header/div[1]/div/div/div[2]/div/button")));
         WebElement refreshButton = body.findElement(
@@ -130,6 +116,10 @@ public class TestScrapImpl implements TestScrap {
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@aria-label='Consent']")));
         WebElement cookieButton = body.findElement(By.xpath("//button[@aria-label='Consent']"));
         cookieButton.click();
+
+
+    this.cookiesDone = true;
+
 
     }
 
@@ -147,13 +137,17 @@ public class TestScrapImpl implements TestScrap {
     }
 
     public LOLUserDATA getLOLUserDATA(String lolServer, String lolUsername){
-         getMobalytics(lolUsername, lolServer);
+
+        getMobalytics(lolUsername, lolServer);
         WebDriverWait wait = setWait();
         WebElement body = driver.findElement(By.tagName("body"));
-        acceptCookies(wait, body);
+        if(this.cookiesDone == false){
+            acceptCookies(wait, body);
+        }
         LOLUserDATA data = new LOLUserDATA();
         data.setActivityList(scrapData(wait, body));
         data.setUserWinrate(scrapWinRate(wait, body));
         return data;
+
     }
 }
