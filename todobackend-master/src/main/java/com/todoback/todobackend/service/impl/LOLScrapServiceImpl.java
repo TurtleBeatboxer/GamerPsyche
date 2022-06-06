@@ -22,7 +22,6 @@ public class LOLScrapServiceImpl implements LOLScrapService {
         this.driver = driver;
     }
 
-    @PostConstruct
     public void scrapData() {
         String testUsername = "Dupa";
         driver.navigate().to(prepareUserLink(testUsername));

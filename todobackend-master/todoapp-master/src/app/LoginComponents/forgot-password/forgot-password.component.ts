@@ -21,7 +21,8 @@ export class ForgotPasswordComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     public dialog: MatDialog,
-    private utility: UtilityService
+    private utility: UtilityService,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -31,7 +32,7 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   onSubmit() {
-    //this.http.post('', this.forgotForm.value)
+    this.http.post<String>('http://localhost:8080/user/changeReq', this.forgotForm.value.email).subscribe(x => console.log(x))
     // TRZA LINK DODAC CHUJJJJJJJ PIZDA I CHUJJJJJJJJJ i od komentowac cnie
     this.utility.resetForm(this.forgotForm);
 

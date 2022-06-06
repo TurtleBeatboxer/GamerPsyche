@@ -50,12 +50,15 @@ public class UserService {
         AuthenticationDTO authenticationDTO = new AuthenticationDTO();
         // jesli uzytkownik jest dostepny w bazie
         if (userOptional.isPresent()) {
+            System.out.println("Obecny w bazie");
             // jesli uzytkownik jest aktywowany
             if (userOptional.get().isActivated()) {
                 PasswordEncoder encoder = new BCryptPasswordEncoder();
                 // jesli haslo uzytkownika jest poprawne
+                System.out.println("Aktywny");
                 if (userOptional.get().getUsername().equals(user.getUsername()) && encoder.matches(user.getPassword(), userOptional.get().getPassword())) {
                     authenticationDTO.setSuccess(true);
+                    System.out.println("hasło git");
                 } else {
                     authenticationDTO.setSuccess(false);
                 }
@@ -118,21 +121,50 @@ public class UserService {
         }
         validatePasswordDTO.setUsername(changePasswordDTO.getUsername());
         validatePasswordDTO.setPassword(nPE);
-        changePassword(validatePasswordDTO);
+        User user = userOptional.get();
+        user.setPassword(nPE);
+        userRepository.save(user);
         messDTO.setMessage("Zmiana hasla zaszla pomyslnie");
         messDTO.setSuccess(true);
         return messDTO;
     }
 
-    public void changePassword(ValidatePasswordDTO validatePasswordDTO){
-        Optional<User> userOptional = userRepository.findByUsername(validatePasswordDTO.getUsername());
+    public MessageDTO changePassword(String changeId, String password){
+        Optional<User> userOptional = userRepository.findByPasswordChangeId(changeId);
 
+    MessageDTO mess = new MessageDTO();
         if (userOptional.isPresent()){
+            PasswordEncoder encoder = new BCryptPasswordEncoder();
             User user = userOptional.get();
-            user.setPassword(validatePasswordDTO.getPassword());
+            user.setPassword(encoder.encode(password));
             userRepository.save(user);
+            System.out.println("jest");
+            mess.setSuccess(true);
+            mess.setMessage("a");
+            return mess;
         }
+        mess.setMessage("a");
+        mess.setSuccess(false);
+    return mess;
 
+    }
+
+    public MainUserDTO sendMainData(String username){
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        MainUserDTO userData = new MainUserDTO();
+        if(userOptional.isPresent()){
+            User user = userOptional.get();
+            userData.setEmail(user.getEmail());
+            userData.setLolServer(user.getLOLServer());
+            userData.setLolUsername(user.getLOLUsername());
+            userData.setFirstName(user.getFirstName());
+            userData.setLastName(user.getLastName());
+            userData.setUsername(user.getUsername());
+            System.out.println(userData + "gello");
+            return userData;
+        }else {
+            return null;
+        }
 
     }
 }

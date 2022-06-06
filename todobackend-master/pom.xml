@@ -76,9 +76,15 @@
 			<version>3.141.59</version>
 		</dependency>
 		<dependency>
+<<<<<<< HEAD
 			<groupId>com.merakianalytics.orianna</groupId>
 			<artifactId>orianna</artifactId>
 			<version>4.0.0-SNAPSHOT</version>
+=======
+		<groupId>com.merakianalytics.orianna</groupId>
+		<artifactId>orianna</artifactId>
+		<version>4.0.0-rc8</version>
+>>>>>>> a6d617690b41853ccaa261f49b1da51764ce90d0
 		</dependency>
 	</dependencies>
 	<repositories>

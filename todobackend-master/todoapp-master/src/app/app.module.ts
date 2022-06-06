@@ -33,6 +33,7 @@ import { ProfileTabComponent } from './MainPageComponents/profile/profile-tab/pr
 import { ForgotPasswordComponent } from './LoginComponents/forgot-password/forgot-password.component';
 import { EmailChangePasswordComponent } from './LoginComponents/email-change-password/email-change-password.component';
 import { ListComponent } from './MainPageComponents/list/list.component';
+import { ProfileInfoComponent } from './MainPageComponents/profile/profile-tab/profile-info/profile-info.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { ListComponent } from './MainPageComponents/list/list.component';
     ProfileTabComponent,
     ForgotPasswordComponent,
     EmailChangePasswordComponent,
+    ProfileInfoComponent,
   ],
   imports: [
     BrowserModule,
