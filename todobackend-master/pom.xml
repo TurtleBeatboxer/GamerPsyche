@@ -75,6 +75,11 @@
 			<artifactId>selenium-java</artifactId>
 			<version>3.141.59</version>
 		</dependency>
+		<dependency>
+		<groupId>com.merakianalytics.orianna</groupId>
+		<artifactId>orianna</artifactId>
+		<version>4.0.0-rc8</version>
+		</dependency>
 	</dependencies>
 
 	<build>
