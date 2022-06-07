@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-
+    OriannaUsagePreparationService oriannaUsagePreparationService = new OriannaUsagePreparationService();
     @Autowired
     UserRepository userRepository;
 
@@ -31,6 +31,7 @@ public class UserService {
             user.setLastName(registerDTO.getLastName());
             user.setLolUsername(registerDTO.getLolData().getLolUsername());
             user.setLOLServer(registerDTO.getLolData().getLolServer());
+            user.setRiotUserId(oriannaUsagePreparationService.getRiotUserID(user));
             PasswordEncoder encoder = new BCryptPasswordEncoder();
             user.setPassword(encoder.encode(registerDTO.getPassword()));
             User savedUser = userRepository.save(user);

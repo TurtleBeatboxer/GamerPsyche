@@ -22,8 +22,29 @@ public class User {
     private String lolUsername;
     private LOLServer lolServer;
     private String passwordChangeId;
+    private String riotUserId;
     private boolean activated;
 
+
+    public String getLolUsername() {
+        return lolUsername;
+    }
+
+    public LOLServer getLolServer() {
+        return lolServer;
+    }
+
+    public void setLolServer(LOLServer lolServer) {
+        this.lolServer = lolServer;
+    }
+
+    public String getRiotUserId() {
+        return riotUserId;
+    }
+
+    public void setRiotUserId(String riotUserId) {
+        this.riotUserId = riotUserId;
+    }
 
     public User() {
 
