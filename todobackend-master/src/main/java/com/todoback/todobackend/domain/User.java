@@ -22,7 +22,6 @@ public class User {
     private String activationId;
     private String codeNumber;
     private String lolUsername;
-    private LOLServer lolServer;
     private String passwordChangeId;
     private String riotUserPuuId;
     private Region lolRegion;
@@ -41,14 +40,6 @@ public class User {
 
     public String getLolUsername() {
         return lolUsername;
-    }
-
-    public LOLServer getLolServer() {
-        return lolServer;
-    }
-
-    public void setLolServer(LOLServer lolServer) {
-        this.lolServer = lolServer;
     }
 
     public String getRiotUserPuuId() {
@@ -149,13 +140,5 @@ public class User {
 
     public void setLolUsername(String lolUsername) {
         this.lolUsername = lolUsername;
-    }
-
-    public LOLServer getLOLServer() {
-        return lolServer;
-    }
-
-    public void setLOLServer(LOLServer lolServer) {
-        this.lolServer = lolServer;
     }
 }

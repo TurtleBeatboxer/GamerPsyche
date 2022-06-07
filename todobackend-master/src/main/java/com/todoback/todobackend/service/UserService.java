@@ -29,9 +29,8 @@ public class UserService {
             user.setFirstName(registerDTO.getFirstName());
             user.setLastName(registerDTO.getLastName());
             user.setLolUsername(registerDTO.getLolData().getLolUsername());
-            user.setLOLServer(registerDTO.getLolData().getLolServer());
+            user.setLolRegion(oriannaUsagePreparationService.translateEnumServerToRiotRegion(registerDTO.getLolData().getLolServer()));
             user.setRiotUserPuuId(oriannaUsagePreparationService.getRiotUserPuuId(user));
-            user.setLolRegion(oriannaUsagePreparationService.translateEnumServerToRiotRegion(user.getLOLServer()));
             PasswordEncoder encoder = new BCryptPasswordEncoder();
             user.setPassword(encoder.encode(registerDTO.getPassword()));
             User savedUser = userRepository.save(user);
@@ -156,7 +155,6 @@ public class UserService {
         if(userOptional.isPresent()){
             User user = userOptional.get();
             userData.setEmail(user.getEmail());
-            userData.setLolServer(user.getLOLServer());
             userData.setLolUsername(user.getLOLUsername());
             userData.setFirstName(user.getFirstName());
             userData.setLastName(user.getLastName());

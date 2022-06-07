@@ -8,7 +8,7 @@ import com.todoback.todobackend.domain.User;
 public class OriannaUsagePreparationService {
 
     public String getRiotUserPuuId(User user) {
-        String RiotUserPuuId = Orianna.summonerNamed(user.getLOLUsername()).withRegion(translateEnumServerToRiotRegion(user.getLOLServer())).get().getPuuid();
+        String RiotUserPuuId = Orianna.summonerNamed(user.getLOLUsername()).withRegion(user.getLolRegion()).get().getPuuid();
         return RiotUserPuuId;
     }
 
