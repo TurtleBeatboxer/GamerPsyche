@@ -1,4 +1,4 @@
-package com.todoback.todobackend.service;
+package com.todoback.todobackend.service.orianna;
 
 import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.Region;
@@ -7,13 +7,13 @@ import com.todoback.todobackend.domain.User;
 
 public class OriannaUsagePreparationService {
 
-    public String getRiotUserID(User user) {
-        String RiotUserID = Orianna.summonerNamed(user.getLOLUsername()).withRegion(translateEnumServerToRiotServer(user.getLOLServer())).get().getAccountId();
-        return RiotUserID;
+    public String getRiotUserPuuId(User user) {
+        String RiotUserPuuId = Orianna.summonerNamed(user.getLOLUsername()).withRegion(translateEnumServerToRiotRegion(user.getLOLServer())).get().getPuuid();
+        return RiotUserPuuId;
     }
 
 
-    public Region translateEnumServerToRiotServer(LOLServer enumServerIndex) {
+    public Region translateEnumServerToRiotRegion(LOLServer enumServerIndex) {
         if (enumServerIndex == LOLServer.BR) {
             return Region.BRAZIL;
         } else if (enumServerIndex == LOLServer.EUNE) {

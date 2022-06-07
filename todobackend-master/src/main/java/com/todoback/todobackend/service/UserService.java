@@ -2,12 +2,11 @@ package com.todoback.todobackend.service;
 
 import com.todoback.todobackend.domain.*;
 import com.todoback.todobackend.repository.UserRepository;
-import org.openqa.selenium.chrome.ChromeDriver;
+import com.todoback.todobackend.service.orianna.OriannaUsagePreparationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.mail.MessagingException;
 import java.util.Optional;
@@ -31,7 +30,8 @@ public class UserService {
             user.setLastName(registerDTO.getLastName());
             user.setLolUsername(registerDTO.getLolData().getLolUsername());
             user.setLOLServer(registerDTO.getLolData().getLolServer());
-            user.setRiotUserId(oriannaUsagePreparationService.getRiotUserID(user));
+            user.setRiotUserPuuId(oriannaUsagePreparationService.getRiotUserPuuId(user));
+            user.setLolRegion(oriannaUsagePreparationService.translateEnumServerToRiotRegion(user.getLOLServer()));
             PasswordEncoder encoder = new BCryptPasswordEncoder();
             user.setPassword(encoder.encode(registerDTO.getPassword()));
             User savedUser = userRepository.save(user);
@@ -161,7 +161,7 @@ public class UserService {
             userData.setFirstName(user.getFirstName());
             userData.setLastName(user.getLastName());
             userData.setUsername(user.getUsername());
-            System.out.println(userData + "gello");
+            System.out.println(userData + "hello");
             return userData;
         }else {
             return null;

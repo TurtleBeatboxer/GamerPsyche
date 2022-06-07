@@ -1,5 +1,7 @@
 package com.todoback.todobackend.domain;
 
+import com.merakianalytics.orianna.types.common.Region;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,8 +24,19 @@ public class User {
     private String lolUsername;
     private LOLServer lolServer;
     private String passwordChangeId;
-    private String riotUserId;
+    private String riotUserPuuId;
+    private Region lolRegion;
     private boolean activated;
+
+    public Region getLolRegion() {
+        return lolRegion;
+    }
+
+    public void setLolRegion(Region lolRegion) {
+        this.lolRegion = lolRegion;
+    }
+
+
 
 
     public String getLolUsername() {
@@ -38,12 +51,12 @@ public class User {
         this.lolServer = lolServer;
     }
 
-    public String getRiotUserId() {
-        return riotUserId;
+    public String getRiotUserPuuId() {
+        return riotUserPuuId;
     }
 
-    public void setRiotUserId(String riotUserId) {
-        this.riotUserId = riotUserId;
+    public void setRiotUserPuuId(String riotUserPuuId) {
+        this.riotUserPuuId = riotUserPuuId;
     }
 
     public User() {
