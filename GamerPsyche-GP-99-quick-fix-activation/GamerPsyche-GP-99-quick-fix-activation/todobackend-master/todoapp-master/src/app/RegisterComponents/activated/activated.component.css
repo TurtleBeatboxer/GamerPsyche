@@ -1,0 +1,48 @@
+
+
+.container  {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: 400px;
+  width: 600px;
+
+  overflow: hidden;
+  border-radius: 20px;
+  cursor: pointer;
+  box-shadow: 0 0 20px 8px #d0d0d0;
+}
+
+.content {
+  position: absolute;
+  top: 50%;
+  transform: translatey(-50%);
+  text-align: justify;
+  color: black;
+  padding: 40px;
+
+}
+
+h1 {
+  font-weight: 900;
+  text-align: center;
+}
+
+h3 {
+
+}
+
+.fade-in {
+	animation: fadeIn 2s;
+  	opacity: 1;
+}
+
+@keyframes fadeIn {
+  from {
+  	opacity: 0;
+  }
+  to {
+ 	opacity: 1;
+  }
+}

@@ -1,0 +1,66 @@
+<div class="container">
+
+
+  <h1>Zarejestruj się!</h1>
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+    <mat-grid-list cols="1" rowHeight="375px">
+      <mat-grid-tile>
+
+        <div class="example-container">
+
+          <mat-form-field appearance="fill" class="width-50">
+            <mat-label>Imię</mat-label>
+            <input matInput autocomplete="off" formControlName="firstName">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="width-50 ml-2">
+            <mat-label>Nazwisko</mat-label>
+            <input matInput autocomplete="off" formControlName="lastName">
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill" class="width-50">
+            <mat-label>Login</mat-label>
+            <input matInput autocomplete="off" formControlName="login">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="width-50 ml-2">
+            <mat-label>Hasło</mat-label>
+            <input type='password' matInput autocomplete="off" formControlName="password"
+              placeholder="Min. 8 znaków (Cyfry i litery)">
+            <mat-error *ngIf="profileForm.get('password').errors">{{
+              this.profileForm.get('password').hasError('pattern') ? 'Nieprawidłowe hasło' : '' }}</mat-error>
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill" class="width-100">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Ex. pat@example.com" autocomplete="off" formControlName="email">
+            <mat-error *ngIf="profileForm.get('email').errors">{{ this.profileForm.get('email').hasError('email') ?
+              'Adres email nieprawidłowy' : '' }}</mat-error>
+          </mat-form-field>
+          <br>
+          <div formGroupName="lolData">
+            <mat-form-field appearance="fill" class="width-50">
+              <mat-label>Serwer</mat-label>
+              <mat-select formControlName="lolServer">
+                <mat-option *ngFor="let server of servers" [value]="server.value">
+                  {{server.value}}
+                </mat-option>
+              </mat-select>
+
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="width-50 ml-2">
+              <mat-label>Nazwa użytkownika LOL </mat-label>
+              <input matInput autocomplete="off" formControlName="lolUsername">
+            </mat-form-field>
+            <br>
+          </div>
+          <button mat-raised-button color="primary" class="register" type="submit"
+            [disabled]="profileForm.invalid">Zarejestruj</button>
+
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </form>
+  <h3><a routerLink="/login">Przejdź do logowania</a></h3>
+</div>
