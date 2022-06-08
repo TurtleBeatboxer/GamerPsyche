@@ -1,9 +1,9 @@
-package com.todoback.todobackend.service.impl;
+package com.todoback.todobackend.service.webapp.impl;
 
 import com.todoback.todobackend.domain.LOLUserDATA;
 import com.todoback.todobackend.domain.RecentActivity;
 import com.todoback.todobackend.domain.WinRateDTO;
-import com.todoback.todobackend.service.TestScrap;
+import com.todoback.todobackend.service.webapp.TestScrap;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
