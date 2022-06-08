@@ -21,6 +21,11 @@ public class MailService {
     UserService userService;
 
     public void sendActivationEmail(User user) throws MessagingException {
+        String uuidString = prepareUUID();
+        String activationLink = prepareActivationLink(uuidString);
+        String codeNumber = prepareUniqueCodeNumber();
+
+        assignValuesToUser(user, uuidString);
 
         String userName = "origami.projects.mail@gmail.com";
         String password = "DupaDupa123Pizda";
@@ -51,18 +56,13 @@ public class MailService {
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientAddress));
         message.setSubject("Mail from Origami Project");
 
-        String uuidString = prepareUUID();
-        String activationLink = prepareActivationLink(uuidString);
-        String codeNumber = prepareUniqueCodeNumber();
+
 
         message.setText(prepareMessageContent(activationLink, codeNumber));
 
         // Wysyłka wiadomości
         Transport.send(message);
         System.out.println("Wyslano wiadomosc do " + recipientAddress);
-
-        // Update usera
-        assignValuesToUser(user, uuidString);
 
     }
 
