@@ -1,4 +1,4 @@
-package com.todoback.todobackend.service.webapp;
+package com.todoback.todobackend.service;
 
 import com.todoback.todobackend.domain.LOLUserDATA;
 import com.todoback.todobackend.domain.RecentActivity;

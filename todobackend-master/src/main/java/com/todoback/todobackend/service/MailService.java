@@ -1,4 +1,4 @@
-package com.todoback.todobackend.service.webapp;
+package com.todoback.todobackend.service;
 
 import com.todoback.todobackend.domain.MessageDTO;
 import com.todoback.todobackend.domain.User;

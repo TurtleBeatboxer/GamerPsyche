@@ -1,4 +1,4 @@
-package com.todoback.todobackend.service.webapp;
+package com.todoback.todobackend.service;
 
 import com.merakianalytics.orianna.Orianna;
 import org.springframework.scheduling.annotation.Scheduled;
