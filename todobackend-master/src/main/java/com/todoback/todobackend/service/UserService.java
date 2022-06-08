@@ -1,5 +1,6 @@
 package com.todoback.todobackend.service;
 
+import com.merakianalytics.orianna.Orianna;
 import com.todoback.todobackend.domain.*;
 import com.todoback.todobackend.repository.UserRepository;
 import com.todoback.todobackend.service.orianna.OriannaUsagePreparationService;
@@ -31,6 +32,7 @@ public class UserService {
             user.setLolUsername(registerDTO.getLolData().getLolUsername());
             user.setLolRegion(oriannaUsagePreparationService.translateEnumServerToRiotRegion(registerDTO.getLolData().getLolServer()));
             user.setRiotUserPuuId(oriannaUsagePreparationService.getRiotUserPuuId(user));
+            System.out.println(Orianna.summonerWithPuuid(user.getRiotUserPuuId()).withRegion(user.getLolRegion()).get().getLevel());
             PasswordEncoder encoder = new BCryptPasswordEncoder();
             user.setPassword(encoder.encode(registerDTO.getPassword()));
             User savedUser = userRepository.save(user);
