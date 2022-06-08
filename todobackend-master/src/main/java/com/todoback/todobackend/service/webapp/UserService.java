@@ -1,4 +1,4 @@
-package com.todoback.todobackend.service;
+package com.todoback.todobackend.service.webapp;
 
 import com.merakianalytics.orianna.Orianna;
 import com.todoback.todobackend.domain.*;
