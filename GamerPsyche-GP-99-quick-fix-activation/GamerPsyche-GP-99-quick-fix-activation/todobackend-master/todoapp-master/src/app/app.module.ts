@@ -34,6 +34,7 @@ import { ForgotPasswordComponent } from './LoginComponents/forgot-password/forgo
 import { EmailChangePasswordComponent } from './LoginComponents/email-change-password/email-change-password.component';
 import { ListComponent } from './MainPageComponents/list/list.component';
 import { ProfileInfoComponent } from './MainPageComponents/profile/profile-tab/profile-info/profile-info.component';
+import { GravyTrainComponent } from './UtilityComponents/gravy-train/gravy-train.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { ProfileInfoComponent } from './MainPageComponents/profile/profile-tab/p
     ForgotPasswordComponent,
     EmailChangePasswordComponent,
     ProfileInfoComponent,
+    GravyTrainComponent,
   ],
   imports: [
     BrowserModule,

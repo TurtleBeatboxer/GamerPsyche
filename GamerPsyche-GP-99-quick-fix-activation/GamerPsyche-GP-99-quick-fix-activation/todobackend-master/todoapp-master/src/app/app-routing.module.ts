@@ -27,6 +27,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'forgotpassword', component: ForgotPasswordComponent},
   { path: `changePassword/:id`, component: EmailChangePasswordComponent},
+
   { path: '**', redirectTo: '/login' }
 ];
 

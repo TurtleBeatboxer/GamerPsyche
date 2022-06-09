@@ -55,7 +55,7 @@ export class LoginService {
             lolServer: x.lolServer,
             username: x.username,
           };
-          this.lolUserDataService.getLolUserData(x.lolUsername, x.lolServer);
+        //  this.lolUserDataService.getLolUserData(x.lolUsername, x.lolServer);
 
           localStorage.setItem('user', JSON.stringify(user));
         });

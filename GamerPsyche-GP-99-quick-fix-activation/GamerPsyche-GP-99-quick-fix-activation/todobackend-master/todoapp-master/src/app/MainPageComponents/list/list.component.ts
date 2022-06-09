@@ -32,4 +32,9 @@ export class ListComponent implements OnInit {
     console.log(this.loginService.userData);
   }
 
+  onClick(){
+
+    this.http.get<string>(`http://localhost:8080/user/getOrianna/${sessionStorage.getItem("username")}`).subscribe((x)=> console.log(x))
+  }
+
 }
