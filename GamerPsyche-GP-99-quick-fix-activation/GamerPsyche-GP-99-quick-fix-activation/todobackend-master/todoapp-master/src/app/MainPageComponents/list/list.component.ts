@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from 'src/app/service/login.service';
 
@@ -30,6 +30,15 @@ export class ListComponent implements OnInit {
 
   loginData() {
     console.log(this.loginService.userData);
+  }
+
+  onClick(){
+
+    //this.http.get("https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/xcTdEUlOyEXhYbEozGKpp4KdwehAXqEQ9XlY87-vERw_TtK3AF7I7AJ41gAvvZ1FERKlgBnIZFH1Ow/ids?start=0&count=20&api_key=RGAPI-57da1420-e086-4a60-a550-1a6609335bd6"
+    //).subscribe((x)=>{
+    //  console.log(x)
+    //})
+   // this.http.get<string>(`http://localhost:8080/user/getOrianna/${sessionStorage.getItem("username")}`).subscribe((x)=> console.log(x))
   }
 
 }

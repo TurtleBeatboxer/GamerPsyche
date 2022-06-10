@@ -12,22 +12,21 @@ import { ProfileComponent } from './MainPageComponents/profile/profile.component
 import { ForgotPasswordComponent } from './LoginComponents/forgot-password/forgot-password.component';
 import { EmailChangePasswordComponent } from './LoginComponents/email-change-password/email-change-password.component';
 
-
 const routes: Routes = [
   { path: 'main', component: ListComponent, canActivate: [AuthGuardService] },
   { path: 'emailsent', component: EmailActivationComponent },
   { path: 'login', component: LoginComponent },
   { path: 'activated', component: ActivatedComponent },
-  { path: 'profil', component: ProfileComponent},
+  { path: 'profil', component: ProfileComponent },
   {
     path: 'logout',
     component: LogoutComponent,
     canActivate: [AuthGuardService],
   },
   { path: 'register', component: RegisterComponent },
-  { path: 'forgotpassword', component: ForgotPasswordComponent},
-  { path: `changePassword/:id`, component: EmailChangePasswordComponent},
-  { path: '**', redirectTo: '/login' }
+  { path: 'forgotpassword', component: ForgotPasswordComponent },
+  { path: `changePassword/:id`, component: EmailChangePasswordComponent },
+  { path: '**', redirectTo: '/login' },
 ];
 
 @NgModule({
