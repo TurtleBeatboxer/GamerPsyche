@@ -55,11 +55,11 @@ export class LoginService {
             lolServer: x.lolServer,
             username: x.username,
           };
-        //  this.lolUserDataService.getLolUserData(x.lolUsername, x.lolServer);
-          console.log("Zarejestrowano użytkownika w local storage")
+          //  this.lolUserDataService.getLolUserData(x.lolUsername, x.lolServer);
+          console.log('Zarejestrowano użytkownika w local storage');
           localStorage.setItem('user', JSON.stringify(user));
         });
-        console.log("zalogowano pomyślnie")
+      console.log('zalogowano pomyślnie');
       return true;
     }
     const dialogRef = this.dialog.open(DialogComponent);
@@ -76,6 +76,6 @@ export class LoginService {
 
   public logOut() {
     sessionStorage.removeItem('username');
-    console.log("wylogowano użytkownika")
+    console.log('wylogowano użytkownika');
   }
 }
