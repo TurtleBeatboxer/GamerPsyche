@@ -1,7 +1,9 @@
 # GamerPsyche																				Zmiany i więcej zmian		              																Więc zacznijmy od podstaw.    																			
 Klucz API w 2 miejscach: https://prnt.sc/rpHzFedSH04t							
 
-Używanie R4J jest skomplikowane, bo posiada wiele api a nie jeden odnoścnik pod spodem wrzucam java doc i przykłady użyca:                               http://stelar7.no/l4j8/        	
+Używanie R4J jest skomplikowane, bo posiada wiele api a nie jeden odnoścnik pod spodem wrzucam java doc i przykłady użyca:                               
+
+http://stelar7.no/l4j8/        	
 
 https://github.com/stelar7/R4J/tree/master/src/test/java/no/stelar7/api/r4j/tests/lol			
 
