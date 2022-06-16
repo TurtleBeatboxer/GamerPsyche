@@ -2,15 +2,12 @@ package com.todoback.todobackend.controller;
 
 import com.todoback.todobackend.domain.*;
 import com.todoback.todobackend.repository.UserRepository;
+import com.todoback.todobackend.service.LOL.R4JFetch;
 import com.todoback.todobackend.service.TestScrap;
-import com.todoback.todobackend.service.impl.TestScrapImpl;
 import com.todoback.todobackend.service.UserService;
 import com.todoback.todobackend.service.MailService;
-import com.todoback.todobackend.service.orianna.OriannaFetch;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import com.todoback.todobackend.service.LOL.OriannaFetch;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -19,6 +16,8 @@ import java.util.Optional;
 @RestController
 public class TaskController {
 
+    @Autowired
+    R4JFetch r4jFetch;
     @Autowired
     UserService userService;
     @Autowired
