@@ -3,7 +3,7 @@ package com.todoback.todobackend.service;
 import com.merakianalytics.orianna.Orianna;
 import com.todoback.todobackend.domain.*;
 import com.todoback.todobackend.repository.UserRepository;
-import com.todoback.todobackend.service.orianna.OriannaUsagePreparationService;
+import com.todoback.todobackend.service.LOL.OriannaUsagePreparationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,6 +32,7 @@ public class UserService {
             user.setLolUsername(registerDTO.getLolData().getLolUsername());
             user.setLolRegion(oriannaUsagePreparationService.translateEnumServerToRiotRegion(registerDTO.getLolData().getLolServer()));
             user.setRiotUserPuuId(oriannaUsagePreparationService.getRiotUserPuuId(user));
+            user.setLeagueShard(oriannaUsagePreparationService.translateEnumToLeagueShard(registerDTO.getLolData().getLolServer()));
             System.out.println(Orianna.summonerWithPuuid(user.getRiotUserPuuId()).withRegion(user.getLolRegion()).get().getLevel());
             PasswordEncoder encoder = new BCryptPasswordEncoder();
             user.setPassword(encoder.encode(registerDTO.getPassword()));

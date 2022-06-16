@@ -1,19 +1,23 @@
-package com.todoback.todobackend.service.orianna.impl;
+package com.todoback.todobackend.service.LOL.impl;
 
 import com.merakianalytics.orianna.Orianna;
-import com.merakianalytics.orianna.datapipeline.common.HTTPClient;
-import com.merakianalytics.orianna.types.common.Queue;
-import com.merakianalytics.orianna.types.core.championmastery.ChampionMasteries;
 import com.merakianalytics.orianna.types.core.match.MatchHistory;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
+import com.todoback.todobackend.configuration.APICredential;
 import com.todoback.todobackend.domain.User;
-import com.todoback.todobackend.service.orianna.OriannaFetch;
+import com.todoback.todobackend.service.LOL.OriannaFetch;
+import no.stelar7.api.r4j.basic.constants.api.regions.LeagueShard;
+import no.stelar7.api.r4j.impl.R4J;
+import no.stelar7.api.r4j.impl.lol.raw.SummonerAPI;
 import org.springframework.stereotype.Service;
 
-import java.net.http.HttpClient;
+import javax.annotation.PostConstruct;
+import java.util.List;
 
 @Service
 public class OriannaFetchImpl implements OriannaFetch {
+    final R4J r4J = new R4J(APICredential.CRED);
+
     @Override
     public String fetchBasicInfo(User user) {
         //System.out.println(Orianna.summonerNamed(user.getLOLUsername()).withRegion(user.getLolRegion()).get().getAccountId());
@@ -33,7 +37,5 @@ public class OriannaFetchImpl implements OriannaFetch {
 
         return "test";
     }
-
-
 
  }

@@ -1,6 +1,7 @@
 package com.todoback.todobackend.domain;
 
 import com.merakianalytics.orianna.types.common.Region;
+import no.stelar7.api.r4j.basic.constants.api.regions.LeagueShard;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,7 +26,16 @@ public class User {
     private String passwordChangeId;
     private String riotUserPuuId;
     private Region lolRegion;
+    private LeagueShard leagueShard;
     private boolean activated;
+
+    public LeagueShard getLeagueShard() {
+        return leagueShard;
+    }
+
+    public void setLeagueShard(LeagueShard leagueShard) {
+        this.leagueShard = leagueShard;
+    }
 
     public Region getLolRegion() {
         return lolRegion;
