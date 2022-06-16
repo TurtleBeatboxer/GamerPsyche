@@ -14,3 +14,5 @@ Do uzytkownika dodałem LeagueShard, to jest enum którego używa R4J do transla
 Dodałem już do użytkownika kurwa LeagueShard, więc jak zakładasz konto to powinno być to enum dodatkowo, ale nie usunąłem regionu.	
 
 To by było na tyle i życze powodzenia.
+
+Od Tej pory wyznajemy zasade, że jeżeli kod ma powyżej 10 linijek to tworzymy oddzielną metodę (Książka Mistrz czystego kodu)
