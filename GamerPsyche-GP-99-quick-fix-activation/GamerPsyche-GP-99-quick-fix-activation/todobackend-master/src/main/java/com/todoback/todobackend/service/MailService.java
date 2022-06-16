@@ -27,8 +27,8 @@ public class MailService {
 
         assignValuesToUser(user, uuidString);
 
-        String userName = "origami.projects.mail@gmail.com";
-        String password = "DupaDupa123Pizda";
+        String userName = "origami-no-reply@outlook.com";
+        String password = "KurwaPizda123Dupa123";
         String alertEmail = userName;
 
         // NADAWCA
@@ -36,10 +36,11 @@ public class MailService {
 
         // z dokumentacji GMAIL
         Properties properties = new Properties();
-        properties.put("mail.smtp.starttls.enable", "true");
         properties.put("mail.smtp.auth", "true");
-        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.starttls.enable", "true");
+        properties.put("mail.smtp.host", "outlook.office365.com");
         properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.ssl.trust", "outlook.office365.com");
 
         // z dokumentacji JAVAX MAIL
         Session session = Session.getInstance(properties,
