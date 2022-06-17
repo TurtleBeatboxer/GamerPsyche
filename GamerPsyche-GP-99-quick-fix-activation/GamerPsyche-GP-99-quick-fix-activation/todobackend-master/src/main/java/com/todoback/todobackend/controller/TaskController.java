@@ -1,5 +1,6 @@
 package com.todoback.todobackend.controller;
 
+import com.merakianalytics.orianna.types.common.Queue;
 import com.todoback.todobackend.domain.*;
 import com.todoback.todobackend.repository.UserRepository;
 import com.todoback.todobackend.service.LOL.R4JFetch;
@@ -99,16 +100,30 @@ public class TaskController {
           return  testScrap.getLOLUserDATA(lolServer, lolUsername);
      }
 
-     @GetMapping("user/getOrianna/{username}")
-    public String sendOrianna(@PathVariable String username)
+     @GetMapping("user/getOrianna/{username}/{queue}")
+    public void sendOrianna(@PathVariable String username, @PathVariable int queue)
      {
          Optional<User> userOptional = userRepository.findByUsername(username);
          if(userOptional.isPresent()){
              User user = userOptional.get();
-             return oriannaFetch.fetchBasicInfo(user);
+             System.out.println(Queue.withId(queue));
+             Queue queue1 = Queue.withId(420);
+             oriannaFetch.getWinRateByQueue(queue1,user);
          }
-         return "chuj";
+
      }
+    @GetMapping("user/r4/{username}")
+    public String testR4(@PathVariable String username)
+    {
+
+            Optional<User> userOptional = userRepository.findByUsername(username);
+            if(userOptional.isPresent()){
+                User user = userOptional.get();
+                System.out.println("poszlo");
+                r4jFetch.R4JFetchBasicInfo(user);
+            }
+        return "chuj";
+    }
 
 
 }
