@@ -1,3 +1,4 @@
+/*
 package com.todoback.todobackend.service;
 
 import com.todoback.todobackend.domain.LOLUserDATA;
@@ -11,3 +12,4 @@ public interface TestScrap {
 
     LOLUserDATA getLOLUserDATA(String lolServer, String lolUsername);
 }
+*/

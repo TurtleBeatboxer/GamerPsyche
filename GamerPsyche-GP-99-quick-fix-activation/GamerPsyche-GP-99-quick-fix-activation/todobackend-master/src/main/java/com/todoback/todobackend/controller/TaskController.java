@@ -1,13 +1,15 @@
 package com.todoback.todobackend.controller;
 
 import com.merakianalytics.orianna.types.common.Queue;
+import com.merakianalytics.orianna.types.core.league.LeagueEntry;
 import com.todoback.todobackend.domain.*;
 import com.todoback.todobackend.repository.UserRepository;
 import com.todoback.todobackend.service.LOL.R4JFetch;
-import com.todoback.todobackend.service.TestScrap;
+//import com.todoback.todobackend.service.TestScrap;
 import com.todoback.todobackend.service.UserService;
 import com.todoback.todobackend.service.MailService;
 import com.todoback.todobackend.service.LOL.OriannaFetch;
+import no.stelar7.api.r4j.basic.constants.types.lol.GameQueueType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
@@ -23,8 +25,8 @@ public class TaskController {
     UserService userService;
     @Autowired
     MailService mailService;
-    @Autowired
-    TestScrap testScrap;
+    // @Autowired
+    // TestScrap testScrap;
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -48,7 +50,6 @@ public class TaskController {
         return redirectView;
     }
 
-
     @GetMapping("user/changePassword/{changeId}")
     public RedirectView changePass(@PathVariable String changeId) {
         RedirectView redirectView = new RedirectView();
@@ -67,7 +68,7 @@ public class TaskController {
         return userService.getUserDataByUsername(username);
     }
 
-    //template url
+    // template url
     @PostMapping("/user/change-password")
     public MessageDTO changePassword(@RequestBody ChangePasswordDTO changePasswordDTO) {
         return userService.validateChangePasswordDTO(changePasswordDTO);
@@ -88,42 +89,50 @@ public class TaskController {
         }
     }
 
-
-
     @GetMapping("user/getMainData/{username}")
     public MainUserDTO sendMainData(@PathVariable String username) {
         return userService.sendMainData(username);
     }
 
-     @GetMapping("user/LOLUserDATA/{lolServer}/{lolUsername}")
-     public LOLUserDATA getLOLUserDATA(@PathVariable String lolServer, @PathVariable String lolUsername){
-          return  testScrap.getLOLUserDATA(lolServer, lolUsername);
-     }
-
-     @GetMapping("user/getOrianna/{username}/{queue}")
-    public void sendOrianna(@PathVariable String username, @PathVariable int queue)
-     {
-         Optional<User> userOptional = userRepository.findByUsername(username);
-         if(userOptional.isPresent()){
-             User user = userOptional.get();
-             System.out.println(Queue.withId(queue));
-             Queue queue1 = Queue.withId(420);
-             oriannaFetch.getWinRateByQueue(queue1,user);
-         }
-
-     }
-    @GetMapping("user/r4/{username}")
-    public String testR4(@PathVariable String username)
-    {
-
-            Optional<User> userOptional = userRepository.findByUsername(username);
-            if(userOptional.isPresent()){
-                User user = userOptional.get();
-                System.out.println("poszlo");
-                r4jFetch.R4JFetchBasicInfo(user);
-            }
-        return "chuj";
+    @GetMapping("user/LOLUserDATA/{lolServer}/{lolUsername}")
+    public void getLOLUserDATA(@PathVariable String lolServer, @PathVariable String lolUsername) {
+        // return testScrap.getLOLUserDATA(lolServer, lolUsername);
     }
 
+    @GetMapping("user/getOrianna/{username}/{queue}")
+    public float sendOrianna(@PathVariable String username, @PathVariable int queue) {
 
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            Queue queueOrianna = Queue.withId(queue);
+            try {
+                float data = oriannaFetch.getWinRateByQueue(queueOrianna, user);
+                return data;
+            } catch (Exception e) {
+                if (e.getMessage() == "data null") {
+                    Optional<GameQueueType> queueOptional = GameQueueType.getFromId(queue);
+                    if (queueOptional.isPresent()) {
+                        GameQueueType queueR4J= queueOptional.get();
+                        float data = r4jFetch.R4JFetchWinRateByQueue(user, queueR4J);
+                        System.out.println("r4j");
+                        return data;
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+
+    @GetMapping("test")
+    public void test(){
+        Optional<User> userOptional = userRepository.findByUsername("A");
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            //oriannaFetch.test(user);
+             r4jFetch.test(user);
+        }
+
+
+    }
 }

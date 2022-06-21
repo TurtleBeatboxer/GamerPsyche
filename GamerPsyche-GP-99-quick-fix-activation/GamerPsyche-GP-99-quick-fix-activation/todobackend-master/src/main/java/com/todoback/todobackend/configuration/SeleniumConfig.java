@@ -1,3 +1,4 @@
+/*
 package com.todoback.todobackend.configuration;
 
 import org.openqa.selenium.WebDriver;
@@ -39,3 +40,4 @@ public class SeleniumConfig {
         return new ChromeDriver(chromeOptions);
     }
 }
+*/

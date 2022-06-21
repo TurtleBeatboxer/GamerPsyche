@@ -1,5 +1,13 @@
 <div class="content">
-  <button (click)="onClick()">Test orianna (nie działa)</button>
+  <button (click)="normal()">normal</button>
+  <button (click)="flex()">flex</button>
+  <button (click)="solo()">solo</button>
+
+  <div *ngIf="normalWinRate != null">{{normalWinRate}} - normal</div>
+  <div *ngIf="flexWinRate != null">{{flexWinRate}} - flex</div>
+  <div *ngIf="soloWinRate != null">{{soloWinRate}} - solo</div>
+
+  <button (click)="test()">test</button>
 
   <button mat-icon-button [matMenuTriggerFor]="menu" class="aButton">
     <mat-icon class="aIcon">account_circle</mat-icon>

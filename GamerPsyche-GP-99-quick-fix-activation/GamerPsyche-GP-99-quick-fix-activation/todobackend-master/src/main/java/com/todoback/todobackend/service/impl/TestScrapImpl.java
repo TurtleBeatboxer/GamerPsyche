@@ -1,3 +1,4 @@
+/*
 package com.todoback.todobackend.service.impl;
 
 import com.todoback.todobackend.domain.LOLUserDATA;
@@ -151,3 +152,4 @@ public class TestScrapImpl implements TestScrap {
 
     }
 }
+*/

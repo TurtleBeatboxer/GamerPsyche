@@ -12,58 +12,122 @@ import no.stelar7.api.r4j.impl.lol.builders.matchv5.match.MatchBuilder;
 import no.stelar7.api.r4j.impl.lol.builders.matchv5.match.MatchListBuilder;
 import no.stelar7.api.r4j.impl.lol.raw.SummonerAPI;
 import no.stelar7.api.r4j.pojo.lol.match.v5.LOLMatch;
+import no.stelar7.api.r4j.pojo.lol.match.v5.MatchParticipant;
 import no.stelar7.api.r4j.pojo.lol.match.v5.MatchTeam;
 import no.stelar7.api.r4j.pojo.lol.summoner.Summoner;
 import no.stelar7.api.r4j.pojo.val.matchlist.MatchList;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 @Service
 public class R4JFetchImpl implements R4JFetch {
     final R4J r4J = new R4J(APICredential.CRED);
 
-    @Override
-    public void R4JFetchBasicInfo(User user){
-        /*System.out.println(user.getLeagueShard());
-        System.out.println(user.getLOLUsername());*/
-       /* List<String> matchHistory = SummonerAPI.getInstance().getSummonerByName(user.getLeagueShard(),user.getLOLUsername()).getLeagueGames().get();*/
-        Summoner summoner = SummonerAPI.getInstance().getSummonerByName(user.getLeagueShard(), "TurtleBB");
+    public void test(User user){
+        Summoner summoner = SummonerAPI.getInstance().getSummonerByName(user.getLeagueShard(), user.getLOLUsername());
         MatchListBuilder builder = new MatchListBuilder();
         builder = builder.withPuuid(summoner.getPUUID()).withPlatform(summoner.getPlatform());
-      /*  List<String> string1 = builder.withQueue(GameQueueTyp).withCount(10).get();
-        List<String> string2 = builder.withQueue(GameQueueType.RANKED_FLEX_SR).withCount(10).get();
-        List<String> string3 = builder.withQueue(GameQueueType.TEAM_BUILDER_RANKED_SOLO).withCount(10).get();
-        List<String> string4 = builder.withQueue(GameQueueType.TEAM_BUILDER_DRAFT_RANKED_5X5).withCount(10).get();
-        List<String> string5 = builder.withQueue(GameQueueType.TEAM_BUILDER_DRAFT_RANKED_5X5).withCount(10).get();
-        List<String> string6 = builder.withQueue(GameQueueType.TEAM_BUILDER_DRAFT_RANKED_5X5).withCount(10).get();*/
+        List<String> matchHistory = builder.withCount(21).get();
+        System.out.println(matchHistory);
+        MatchBuilder matchBuilder = new MatchBuilder(summoner.getPlatform());
+        List<String> champions = new ArrayList<>();
+
+
+
+        for(String m: matchHistory){
+            LOLMatch match = matchBuilder.withId(m).getMatch();
+            System.out.println(match.getGameMode());
+            List<MatchParticipant> matchParticipants = match.getParticipants();
+            for (int j = 0; j < match.getParticipants().size(); j++) {
+                String Puuid = matchParticipants.get(j).getPuuid();
+                if (Puuid.equals(summoner.getPUUID())) {
+                    System.out.println(matchParticipants.get(j).getChampionName());
+
+                        champions.add(matchParticipants.get(j).getChampionName());
+
+
+                }
+            }
+        }
+
+        List<String> championsV2 = new ArrayList<>(champions);
+        Set<String> set = new HashSet<>(championsV2);
+        championsV2.clear();
+        championsV2.addAll(set);
+        System.out.println(championsV2);
+        System.out.println(champions);
+        int count = 0;
+        Map<String, Object> champs = new HashMap<>();
+        for(String c: championsV2){
+            count++;
+            champs.put(c, Collections.frequency(champions, c));
+            System.out.println(Collections.frequency(champions, c));
+        }
+
+        System.out.println(count);
+        System.out.println(champs.get("Aphelios"));
+       // int count = Collections.frequency(champions, "Aphelios");
+       // System.out.println(count);
+    }
+
+    @Override
+    public void R4JFetchBasicInfo(User user) {
+
+        Summoner summoner = SummonerAPI.getInstance().getSummonerByName(user.getLeagueShard(), user.getLOLUsername());
+        MatchListBuilder builder = new MatchListBuilder();
+        builder = builder.withPuuid(summoner.getPUUID()).withPlatform(summoner.getPlatform());
+
+
         MatchBuilder matchBuilder = new MatchBuilder(summoner.getPlatform());
         List<String> solo = builder.withQueue(GameQueueType.TEAM_BUILDER_RANKED_SOLO).withCount(100).get();
-       // for(int i = 0; i < solo.size(); i++){
-            LOLMatch match = matchBuilder.withId(solo.get(0)).getMatch();
-            List<MatchTeam> teams = match.getTeams();
-            System.out.println(teams.get(0).didWin());
+
+        LOLMatch match = matchBuilder.withId(solo.get(0)).getMatch();
+        List<MatchTeam> teams = match.getTeams();
+        System.out.println(teams.get(0).didWin());
         System.out.println(teams.get(1).didWin());
-            System.out.println(match.getParticipants());
-      //  }
+        System.out.println(match.getParticipants());
 
-        /*System.out.println(builder.withQueue(GameQueueType.RANKED_FLEX_SR).get().size());
-        System.out.println(builder.withQueue(GameQueueType.TEAM_BUILDER_DRAFT_UNRANKED_5X5).get().size());
-        System.out.println(summoner.getPUUID());*/
+    }
 
-
-      /*  for(int i = 0; i < 20; i++){
-            System.out.println(matchHistory.get(0));
-            String str = matchHistory.get(0);
-            MatchBuilder match = new MatchBuilder(user.getLeagueShard(), str);
-            LOLMatch ma = match.getMatch();
-            System.out.println(ma);
+    public float R4JFetchWinRateByQueue(User user, GameQueueType queueType) {
+        Summoner summoner = SummonerAPI.getInstance().getSummonerByName(user.getLeagueShard(), user.getLOLUsername());
+        MatchListBuilder builder = new MatchListBuilder();
+        builder = builder.withPuuid(summoner.getPUUID()).withPlatform(summoner.getPlatform());
+        MatchBuilder matchBuilder = new MatchBuilder(summoner.getPlatform());
+        List<String> solo = builder.withQueue(queueType).withCount(100).get();
+        float wins = 0;
+        float loses = 0;
 
 
+        for (String s : solo) {
+            LOLMatch match = matchBuilder.withId(s).getMatch();
+            if (match.getGameStartTimestamp() > 1641513601000L) {
+
+
+                System.out.println(match.getGameEndAsDate());
+                List<MatchParticipant> matchParticipants = match.getParticipants();
+                for (int j = 0; j < match.getParticipants().size(); j++) {
+                    String Puuid = matchParticipants.get(j).getPuuid();
+                    if (Puuid.equals(summoner.getPUUID())) {
+                        if (matchParticipants.get(j).didWin()) {
+                            System.out.println("win");
+                            wins++;
+                        } else {
+                            System.out.println("lose");
+                            loses++;
+                        }
+                        break;
+                    }
+                }
+            }
         }
-        System.out.println(matchHistory.size());
-        System.out.println("test");*/
+        return calculateWinRate(wins, loses);
+    }
+
+    public float calculateWinRate(float wins, float loses) {
+        float allGames = wins + loses;
+        return wins / allGames;
     }
 }
