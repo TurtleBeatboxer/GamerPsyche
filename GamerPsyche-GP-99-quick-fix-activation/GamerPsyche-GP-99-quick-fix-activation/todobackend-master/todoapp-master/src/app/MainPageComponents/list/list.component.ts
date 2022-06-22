@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from 'src/app/service/login.service';
-
+import {MatchHistoryDTO } from '../../service/matchHistoryDTO.model'
 import { WinRateDTO } from '../../service/winRateDTO.model';
 import { MainUserDTO } from '../../service/mainUserDTO.model';
 @Component({
@@ -15,7 +15,8 @@ export class ListComponent implements OnInit {
   public flexWinRate: string;
   public soloWinRate: string;
   public normalWinRate: string;
-
+  public matchHistory: MatchHistoryDTO[] = []
+  public  mostPlayedChampions: {name: string , value : number}[] = []
   constructor(private http: HttpClient, public loginService: LoginService) {}
 
   ngOnInit(): void {
@@ -69,7 +70,28 @@ export class ListComponent implements OnInit {
       .subscribe((x) => {console.log(x)
       this.soloWinRate = x});
   }
-  test(){
-    this.http.get("http://localhost:8080/test").subscribe(x=>console.log(x))
+  mostPlayedChampion(){
+    this.http.get(`http://localhost:8080/user/${sessionStorage.getItem('username')}/getMostPlayedChampions`).subscribe((x)=>{
+      console.log(x)
+      let array = [];
+    for(const key in x){
+
+      array.push({name: key, value: x[key]})
+    }
+    this.mostPlayedChampions = array;
+
+//       x.forEach((m) => {
+//         for(const key in m){
+//           this.mostPlayedChampions.push({name: key, value: m[key]})
+//         }
+//       })
+// console.log(this.mostPlayedChampions)
+    })
+  }
+
+  getMatchHistory(){
+    this.http.get<MatchHistoryDTO[]>(`http://localhost:8080/user/${sessionStorage.getItem('username')}/getMatchHistory`).subscribe((x)=> {console.log(x)
+    this.matchHistory = x
+  })
   }
 }

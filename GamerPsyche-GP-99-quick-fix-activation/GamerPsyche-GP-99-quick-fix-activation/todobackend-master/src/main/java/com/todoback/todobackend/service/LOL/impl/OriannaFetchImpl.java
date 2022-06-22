@@ -58,17 +58,16 @@ public class OriannaFetchImpl implements OriannaFetch {
     }
 
     public float getWinRateByQueue(Queue queue, User user) throws Exception {
-        Summoner summoner = Orianna.summonerNamed("koczokok").withRegion(user.getLolRegion()).get();
-        LeagueEntry entry = summoner.getLeaguePosition(Queue.withId(420));
+        Summoner summoner = Orianna.summonerNamed(user.getLOLUsername()).withRegion(user.getLolRegion()).get();
+        LeagueEntry entry = summoner.getLeaguePosition(queue);
 
-
-        if (entry == null) {
-            throw new Exception("data null");
-        }
+       if (entry == null) {
+           throw new Exception("data null");
+       }
 
         float winRate = calculateWinRate(entry.getWins(), entry.getLosses());
 
-        return winRate;
+            return Math.round(winRate * 100);
     }
 
     public float calculateWinRate(float wins, float loses) {

@@ -1,11 +1,9 @@
 package com.todoback.todobackend.service.LOL.impl;
 
-import com.merakianalytics.orianna.types.core.match.Match;
-import com.merakianalytics.orianna.types.core.match.MatchHistory;
 import com.todoback.todobackend.configuration.APICredential;
 import com.todoback.todobackend.domain.User;
+import com.todoback.todobackend.domain.MatchHistoryDTO;
 import com.todoback.todobackend.service.LOL.R4JFetch;
-import no.stelar7.api.r4j.basic.constants.api.regions.LeagueShard;
 import no.stelar7.api.r4j.basic.constants.types.lol.GameQueueType;
 import no.stelar7.api.r4j.impl.R4J;
 import no.stelar7.api.r4j.impl.lol.builders.matchv5.match.MatchBuilder;
@@ -15,17 +13,56 @@ import no.stelar7.api.r4j.pojo.lol.match.v5.LOLMatch;
 import no.stelar7.api.r4j.pojo.lol.match.v5.MatchParticipant;
 import no.stelar7.api.r4j.pojo.lol.match.v5.MatchTeam;
 import no.stelar7.api.r4j.pojo.lol.summoner.Summoner;
-import no.stelar7.api.r4j.pojo.val.matchlist.MatchList;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class R4JFetchImpl implements R4JFetch {
     final R4J r4J = new R4J(APICredential.CRED);
 
-    public void test(User user){
+    public List<MatchHistoryDTO> getMatchHistory(User user){
+        Summoner summoner = SummonerAPI.getInstance().getSummonerByName(user.getLeagueShard(), user.getLOLUsername());
+        MatchListBuilder builder = new MatchListBuilder();
+        builder = builder.withPuuid(summoner.getPUUID()).withPlatform(summoner.getPlatform());
+        List<String> matchHistory = builder.withCount(21).get();
+        System.out.println(matchHistory);
+        MatchBuilder matchBuilder = new MatchBuilder(summoner.getPlatform());
+        List<MatchHistoryDTO> data = new ArrayList<>();
+        for (String s : matchHistory) {
+            LOLMatch match = matchBuilder.withId(s).getMatch();
+            MatchHistoryDTO matchHistoryDTO = new MatchHistoryDTO();
+
+
+                System.out.println(match.getGameEndAsDate());
+                List<MatchParticipant> matchParticipants = match.getParticipants();
+                for (int j = 0; j < match.getParticipants().size(); j++) {
+                    String Puuid = matchParticipants.get(j).getPuuid();
+                    if (Puuid.equals(summoner.getPUUID())) {
+                        MatchParticipant matchParticipant = matchParticipants.get(j);
+                        matchHistoryDTO.setChampionName(matchParticipant.getChampionName());
+                        System.out.println(matchParticipant.getKills());
+                        matchHistoryDTO.setKills(matchParticipant.getKills());
+                        matchHistoryDTO.setAssists(matchParticipant.getAssists());
+                        matchHistoryDTO.setDeaths(matchParticipant.getDeaths());
+                        matchHistoryDTO.setDidWin(matchParticipant.didWin());
+                        matchHistoryDTO.setSummonerName(matchParticipant.getSummonerName());
+                        data.add(matchHistoryDTO);
+
+
+                        break;
+
+                    }
+                }
+
+        }
+
+      return data;
+
+    }
+
+    public  Map<String, Integer>  getMostPlayedChampions(User user){
         Summoner summoner = SummonerAPI.getInstance().getSummonerByName(user.getLeagueShard(), user.getLOLUsername());
         MatchListBuilder builder = new MatchListBuilder();
         builder = builder.withPuuid(summoner.getPUUID()).withPlatform(summoner.getPlatform());
@@ -33,8 +70,6 @@ public class R4JFetchImpl implements R4JFetch {
         System.out.println(matchHistory);
         MatchBuilder matchBuilder = new MatchBuilder(summoner.getPlatform());
         List<String> champions = new ArrayList<>();
-
-
 
         for(String m: matchHistory){
             LOLMatch match = matchBuilder.withId(m).getMatch();
@@ -44,32 +79,29 @@ public class R4JFetchImpl implements R4JFetch {
                 String Puuid = matchParticipants.get(j).getPuuid();
                 if (Puuid.equals(summoner.getPUUID())) {
                     System.out.println(matchParticipants.get(j).getChampionName());
-
-                        champions.add(matchParticipants.get(j).getChampionName());
-
-
+                    champions.add(matchParticipants.get(j).getChampionName());
                 }
             }
         }
 
-        List<String> championsV2 = new ArrayList<>(champions);
-        Set<String> set = new HashSet<>(championsV2);
-        championsV2.clear();
-        championsV2.addAll(set);
-        System.out.println(championsV2);
-        System.out.println(champions);
-        int count = 0;
-        Map<String, Object> champs = new HashMap<>();
-        for(String c: championsV2){
-            count++;
-            champs.put(c, Collections.frequency(champions, c));
-            System.out.println(Collections.frequency(champions, c));
+        Map<String, Long> map = champions.stream()
+                .collect(Collectors.groupingBy(w -> w, Collectors.counting()));
+        List<Map.Entry<String, Long>> mostPlayed = map.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .limit(3)
+                .collect(Collectors.toList());
+        System.out.println(mostPlayed);
+        Map<String, Integer> data = new HashMap<>();
+        for (Map.Entry<String, Long> stringLongEntry : mostPlayed) {
+            float wins = stringLongEntry.getValue();
+            float games = 21;
+
+
+            data.put(stringLongEntry.getKey(), Math.round((wins / games) * 100));
+            System.out.println(stringLongEntry.getValue());
         }
 
-        System.out.println(count);
-        System.out.println(champs.get("Aphelios"));
-       // int count = Collections.frequency(champions, "Aphelios");
-       // System.out.println(count);
+        return data;
     }
 
     @Override
@@ -123,7 +155,7 @@ public class R4JFetchImpl implements R4JFetch {
                 }
             }
         }
-        return calculateWinRate(wins, loses);
+        return Math.round(calculateWinRate(wins, loses)*100);
     }
 
     public float calculateWinRate(float wins, float loses) {
