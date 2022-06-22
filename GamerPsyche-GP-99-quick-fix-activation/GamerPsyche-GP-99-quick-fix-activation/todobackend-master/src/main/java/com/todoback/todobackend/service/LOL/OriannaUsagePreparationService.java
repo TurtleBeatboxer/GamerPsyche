@@ -16,57 +16,60 @@ public class OriannaUsagePreparationService {
 
 
     public Region translateEnumServerToRiotRegion(LOLServer enumServerIndex) {
-        if (enumServerIndex == LOLServer.BR) {
-            return Region.BRAZIL;
-        } else if (enumServerIndex == LOLServer.EUNE) {
-            return Region.EUROPE_NORTH_EAST;
-        } else if (enumServerIndex == LOLServer.EUW) {
-            return Region.EUROPE_WEST;
-        } else if (enumServerIndex == LOLServer.LAN) {
-            return Region.LATIN_AMERICA_NORTH;
-        } else if (enumServerIndex == LOLServer.LAS) {
-            return Region.LATIN_AMERICA_SOUTH;
-        } else if (enumServerIndex == LOLServer.NA) {
-            return Region.NORTH_AMERICA;
-        } else if (enumServerIndex == LOLServer.OCE) {
-            return Region.OCEANIA;
-        } else if (enumServerIndex == LOLServer.RU) {
-            return Region.RUSSIA;
-        } else if (enumServerIndex == LOLServer.TR) {
-            return Region.TURKEY;
-        } else if (enumServerIndex == LOLServer.JP) {
-            return Region.JAPAN;
-        } else if (enumServerIndex == LOLServer.KR) {
-            return Region.KOREA;
-        } else {
-            return null;
+        switch (enumServerIndex) {
+            case BR:
+                return Region.BRAZIL;
+            case EUNE:
+                return Region.EUROPE_NORTH_EAST;
+            case EUW:
+                return Region.EUROPE_WEST;
+            case LAN:
+                return Region.LATIN_AMERICA_NORTH;
+            case LAS:
+                return Region.LATIN_AMERICA_SOUTH;
+            case NA:
+                return Region.NORTH_AMERICA;
+            case OCE:
+                return Region.OCEANIA;
+            case RU:
+                return Region.RUSSIA;
+            case TR:
+                return Region.TURKEY;
+            case JP:
+                return Region.JAPAN;
+            case KR:
+                return Region.KOREA;
+            default:
+                return null;
         }
     }
     public LeagueShard translateEnumToLeagueShard(LOLServer enumServerIndex) {
-        if (enumServerIndex == LOLServer.BR) {
-            return LeagueShard.BR1;
-        } else if (enumServerIndex == LOLServer.EUNE) {
-            return LeagueShard.EUN1;
-        } else if (enumServerIndex == LOLServer.EUW) {
-            return LeagueShard.EUW1;
-        } else if (enumServerIndex == LOLServer.LAN) {
-            return LeagueShard.LA1;
-        } else if (enumServerIndex == LOLServer.LAS) {
-            return LeagueShard.LA2;
-        } else if (enumServerIndex == LOLServer.NA) {
-            return LeagueShard.NA1;
-        } else if (enumServerIndex == LOLServer.OCE) {
-            return LeagueShard.OC1;
-        } else if (enumServerIndex == LOLServer.RU) {
-            return LeagueShard.RU;
-        } else if (enumServerIndex == LOLServer.TR) {
-            return LeagueShard.TR1;
-        } else if (enumServerIndex == LOLServer.JP) {
-            return LeagueShard.JP1;
-        } else if (enumServerIndex == LOLServer.KR) {
-            return LeagueShard.KR;
-        } else {
-            return LeagueShard.PBE1;
+        switch (enumServerIndex) {
+            case BR:
+                return LeagueShard.BR1;
+            case EUNE:
+                return LeagueShard.EUN1;
+            case EUW:
+                return LeagueShard.EUW1;
+            case LAN:
+                return LeagueShard.LA1;
+            case LAS:
+                return LeagueShard.LA2;
+            case NA:
+                return LeagueShard.NA1;
+            case OCE:
+                return LeagueShard.OC1;
+            case RU:
+                return LeagueShard.RU;
+            case TR:
+                return LeagueShard.TR1;
+            case JP:
+                return LeagueShard.JP1;
+            case KR:
+                return LeagueShard.KR;
+            default:
+                return LeagueShard.PBE1;
         }
+
     }
 }
