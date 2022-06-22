@@ -1,5 +1,20 @@
 <div class="content">
-  <button (click)="onClick()">Test orianna (nie działa)</button>
+  <button (click)="normal()">normal</button>
+  <button (click)="flex()">flex</button>
+  <button (click)="solo()">solo</button>
+  <button (click)="mostPlayedChampion()">mostPlayedChampion</button>
+  <button (click)="getMatchHistory()">MatchHistory</button>
+  <div *ngIf="normalWinRate != null">{{normalWinRate + "%"}} - normal</div>
+  <div *ngIf="flexWinRate != null">{{flexWinRate + "%"}} - flex</div>
+  <div *ngIf="soloWinRate != null">{{soloWinRate + "%"}} - solo</div>
+  <div *ngIf="mostPlayedChampions.length != 0 ">
+    <div *ngFor="let champ of mostPlayedChampions">{{champ.name + " " + champ.value + "%"}}</div>
+  </div>
+
+<div *ngIf="matchHistory.length != 0">
+  <div *ngFor="let match of matchHistory">{{"summoner name "+ match.summonerName + " Champion name " + match.championName + " K/D/A " + match.kills + "/" + match.deaths + "/" + match.assists}}
+  </div>
+</div>
 
   <button mat-icon-button [matMenuTriggerFor]="menu" class="aButton">
     <mat-icon class="aIcon">account_circle</mat-icon>

@@ -48,9 +48,6 @@ public class User {
 
 
 
-    public String getLolUsername() {
-        return lolUsername;
-    }
 
     public String getRiotUserPuuId() {
         return riotUserPuuId;
