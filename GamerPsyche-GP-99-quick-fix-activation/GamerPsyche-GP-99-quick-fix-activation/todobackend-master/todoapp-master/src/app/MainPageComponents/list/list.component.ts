@@ -80,6 +80,7 @@ export class ListComponent implements OnInit {
     }
     this.mostPlayedChampions = array;
 
+
 //       x.forEach((m) => {
 //         for(const key in m){
 //           this.mostPlayedChampions.push({name: key, value: m[key]})

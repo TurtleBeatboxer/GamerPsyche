@@ -27,7 +27,6 @@ public class OriannaFetchImpl implements OriannaFetch {
     }
 
     public String fetchBasicInfo(User user) {
-        // System.out.println(Orianna.summonerNamed(user.getLOLUsername()).withRegion(user.getLolRegion()).get().getAccountId());
         Summoner summoner = Orianna.summonerNamed(user.getLOLUsername()).withRegion(user.getLolRegion()).get();
         System.out.println(summoner);
         League leauge = summoner.getLeague(Queue.RANKED_FLEX);
@@ -38,22 +37,6 @@ public class OriannaFetchImpl implements OriannaFetch {
         float winrate = wins / games;
         System.out.println(winrate);
         System.out.println(entry.getWins());
-        // System.out.println(leauge);
-        // System.out.println(leauge.get(0));
-
-        // ChampionMasteries masteries = summoner.getChampionMasteries();
-        // System.out.println(summoner.getCoreData());
-        // System.out.println(summoner.getLevel());
-        // MatchHistory history = summoner.matchHistory().get();
-        // System.out.println(summoner.isInGame());
-        // System.out.println(history);
-
-        // System.out.println(masteries);
-        // System.out.println(matchHistory);
-        // String lol =
-        // Orianna.summonerNamed(user.getLOLUsername()).withRegion(user.getLolRegion()).get().getAccountId();
-        // System.out.println(lol);
-
         return "test";
     }
 

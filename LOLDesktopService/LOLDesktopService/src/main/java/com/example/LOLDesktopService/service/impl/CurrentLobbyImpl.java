@@ -19,12 +19,10 @@ public class CurrentLobbyImpl implements CurrentLobby {
             @Override
             public void onClientConnected() {
                 try {
-                    //Check if user is logged in
                     if (!api.isAuthorized()) {
                         System.out.println("Not logged in!");
                         return;
                     }
-                    //Get current summoner
                     LolSummonerSummoner summoner = api.executeGet("/lol-summoner/v1/current-summoner", LolSummonerSummoner.class).getResponseObject();
                     System.out.println(summoner.displayName);
                     api.stop();
@@ -32,10 +30,8 @@ public class CurrentLobbyImpl implements CurrentLobby {
                     e.printStackTrace();
                 }
             }
-
             @Override
             public void onClientDisconnected() {
-
             }
         });
     }
