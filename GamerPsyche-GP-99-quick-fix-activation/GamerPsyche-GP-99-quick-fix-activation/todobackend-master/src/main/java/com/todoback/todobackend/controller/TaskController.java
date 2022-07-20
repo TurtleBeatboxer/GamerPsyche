@@ -3,6 +3,7 @@ package com.todoback.todobackend.controller;
 import com.merakianalytics.orianna.types.common.Queue;
 import com.todoback.todobackend.domain.*;
 import com.todoback.todobackend.repository.UserRepository;
+import com.todoback.todobackend.service.LOL.CurrentLobby;
 import com.todoback.todobackend.service.LOL.R4JFetch;
 //import com.todoback.todobackend.service.TestScrap;
 import com.todoback.todobackend.service.UserService;
@@ -15,11 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 
 @RestController
 public class TaskController {
 
+    @Autowired
+    CurrentLobby currentLobby;
     @Autowired
     R4JFetch r4jFetch;
     @Autowired
@@ -32,6 +36,7 @@ public class TaskController {
     UserRepository userRepository;
     @Autowired
     OriannaFetch oriannaFetch;
+
 
     @PostMapping("/user/authenticate")
     public AuthenticationDTO authenticateUser(@RequestBody User user) {
@@ -157,6 +162,11 @@ public class TaskController {
 
         }
         return data;
+    }
+
+    @PostConstruct
+    public void testCurrentLobby(){
+        currentLobby.findSummonersInLobby();
     }
 
 }
