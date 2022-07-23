@@ -24,6 +24,7 @@ public class R4JFetchImpl implements R4JFetch {
 
     public List<MatchHistoryDTO> getMatchHistory(User user){
         Summoner summoner = SummonerAPI.getInstance().getSummonerByName(user.getLeagueShard(), user.getLOLUsername());
+        System.out.println(summoner.getSummonerId());
         MatchListBuilder builder = new MatchListBuilder();
         builder = builder.withPuuid(summoner.getPUUID()).withPlatform(summoner.getPlatform());
         List<String> matchHistory = builder.withCount(21).get();

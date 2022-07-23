@@ -1,14 +1,19 @@
 package com.todoback.todobackend.controller;
 
+import com.google.gson.Gson;
 import com.merakianalytics.orianna.types.common.Queue;
 import com.todoback.todobackend.domain.*;
+import com.todoback.todobackend.domain.Action;
 import com.todoback.todobackend.repository.UserRepository;
 import com.todoback.todobackend.service.LOL.R4JFetch;
 //import com.todoback.todobackend.service.TestScrap;
 import com.todoback.todobackend.service.UserService;
 import com.todoback.todobackend.service.MailService;
 import com.todoback.todobackend.service.LOL.OriannaFetch;
+import no.stelar7.api.r4j.basic.constants.api.regions.LeagueShard;
 import no.stelar7.api.r4j.basic.constants.types.lol.GameQueueType;
+import no.stelar7.api.r4j.impl.lol.raw.SummonerAPI;
+import no.stelar7.api.r4j.pojo.lol.summoner.Summoner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
@@ -18,7 +23,7 @@ import java.util.*;
 
 @RestController
 public class TaskController {
-
+    final Gson gson = new Gson();
     @Autowired
     R4JFetch r4jFetch;
     @Autowired
@@ -29,6 +34,7 @@ public class TaskController {
     UserRepository userRepository;
     @Autowired
     OriannaFetch oriannaFetch;
+
 
 
     @PostMapping("/user/authenticate")
@@ -155,5 +161,19 @@ public class TaskController {
 
         }
         return data;
+    }
+
+    @PostConstruct()
+    public void test(){
+        Summoner summoner = SummonerAPI.getInstance().getSummonerByName(LeagueShard.EUN1, "koczokok");
+        System.out.println(summoner.getSummonerId());
+    }
+
+    @PostMapping("app")
+    public void testing(@RequestBody String body){
+        System.out.println("Test works!");
+        Action object = gson.fromJson(body, Action.class);
+        System.out.println(object);
+        System.out.println(body);
     }
 }

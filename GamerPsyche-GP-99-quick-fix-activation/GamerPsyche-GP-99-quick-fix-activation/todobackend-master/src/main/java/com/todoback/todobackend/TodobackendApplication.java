@@ -25,7 +25,7 @@ public class TodobackendApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TodobackendApplication.class, args);
 		//Wstaw Klucz
-		Orianna.setRiotAPIKey("RGAPI-5c00e557-e93d-4213-af23-6396f57e573e");
+		Orianna.setRiotAPIKey("RGAPI-cc1fef97-d737-4e19-b59c-61a3ffee9347");
 	}
 
 }

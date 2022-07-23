@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
 
 @RestController
 public class TaskController {
@@ -12,7 +13,7 @@ public class TaskController {
     CurrentLobby currentLobby;
 
     @PostConstruct
-    public void testCurrentLobby(){
+    public void find() throws IOException {
         currentLobby.findSummonersInLobby();
     }
 }
