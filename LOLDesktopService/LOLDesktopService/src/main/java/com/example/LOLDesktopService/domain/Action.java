@@ -9,6 +9,8 @@ public class Action {
     private boolean isInProgress;
     private int pickTurn;
     private String type;
+    private String SummonerName;
+    private String position;
 
     public String getSummonerName() {
         return SummonerName;
@@ -18,7 +20,7 @@ public class Action {
         SummonerName = summonerName;
     }
 
-    private String SummonerName;
+
 
     public String getPosition() {
         return position;
@@ -29,7 +31,7 @@ public class Action {
     }
 
 
-    private String position;
+
 
     public int getActorCellId() {
         return actorCellId;

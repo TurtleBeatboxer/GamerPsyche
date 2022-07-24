@@ -4,6 +4,7 @@ import com.todoback.todobackend.configuration.APICredential;
 import com.todoback.todobackend.domain.User;
 import com.todoback.todobackend.domain.MatchHistoryDTO;
 import com.todoback.todobackend.service.LOL.R4JFetch;
+import no.stelar7.api.r4j.basic.constants.api.regions.LeagueShard;
 import no.stelar7.api.r4j.basic.constants.types.lol.GameQueueType;
 import no.stelar7.api.r4j.impl.R4J;
 import no.stelar7.api.r4j.impl.lol.builders.matchv5.match.MatchBuilder;
@@ -163,4 +164,48 @@ public class R4JFetchImpl implements R4JFetch {
         float allGames = wins + loses;
         return wins / allGames;
     }
+
+    public void getData(){
+        System.out.println("start");
+        Summoner summoner = SummonerAPI.getInstance().getSummonerByName(LeagueShard.EUN1, "koczokok");
+        MatchListBuilder builder = new MatchListBuilder();
+        builder = builder.withPuuid(summoner.getPUUID()).withPlatform(summoner.getPlatform());
+        MatchBuilder matchBuilder = new MatchBuilder(summoner.getPlatform());
+
+        Optional<GameQueueType> type =GameQueueType.getFromId(400);
+        if(type.isPresent()) {
+            System.out.println(type.get() );
+            List<String> solo = builder.withQueue(type.get()).withCount(100).get();
+            System.out.println(solo.size());
+
+
+            for (String s : solo) {
+                LOLMatch match = matchBuilder.withId(s).getMatch();
+                if (match.getGameStartTimestamp() > 1641513601000L) {
+
+
+                    System.out.println(match.getGameEndAsDate());
+                    List<MatchParticipant> matchParticipants = match.getParticipants();
+                    for (int j = 0; j < match.getParticipants().size(); j++) {
+                        String Puuid = matchParticipants.get(j).getPuuid();
+                        if (Puuid.equals(summoner.getPUUID())) {
+                            if (matchParticipants.get(j).getChampionId() == 523) {
+
+                                System.out.println(matchParticipants.get(j).getAssists());
+                                System.out.println(matchParticipants.get(j).getChampionName());
+                                System.out.println(matchParticipants.get(j).getKills());
+                                System.out.println(matchParticipants.get(j).getDeaths());
+                                System.out.println(matchParticipants.get(j).getChampionLevel());
+
+
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
 }

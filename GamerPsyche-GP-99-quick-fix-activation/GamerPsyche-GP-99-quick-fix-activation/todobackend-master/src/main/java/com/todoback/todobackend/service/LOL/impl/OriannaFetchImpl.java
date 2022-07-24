@@ -2,21 +2,16 @@ package com.todoback.todobackend.service.LOL.impl;
 
 import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.Queue;
+import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.league.League;
 import com.merakianalytics.orianna.types.core.league.LeagueEntry;
-import com.merakianalytics.orianna.types.core.league.LeaguePositions;
-import com.merakianalytics.orianna.types.core.match.MatchHistory;
+import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 import com.todoback.todobackend.configuration.APICredential;
 import com.todoback.todobackend.domain.User;
 import com.todoback.todobackend.service.LOL.OriannaFetch;
-import no.stelar7.api.r4j.basic.constants.api.regions.LeagueShard;
 import no.stelar7.api.r4j.impl.R4J;
-import no.stelar7.api.r4j.impl.lol.raw.SummonerAPI;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
-import java.util.List;
 
 @Service
 public class OriannaFetchImpl implements OriannaFetch {
@@ -56,6 +51,21 @@ public class OriannaFetchImpl implements OriannaFetch {
     public float calculateWinRate(float wins, float loses) {
         float allGames = wins + loses;
         return wins / allGames;
+    }
+
+      public String championName(int id){
+        System.out.println(id);
+        if(id > 0){
+            System.out.println("in if");
+            Champion champion = Orianna.championWithId(id).withRegion(Region.EUROPE_NORTH_EAST).get();
+            return champion.getName();
+        }
+       return "id equals 0";
+    }
+
+    public String getStatsFromChamp(String champ){
+
+        return "champ";
     }
 
 }

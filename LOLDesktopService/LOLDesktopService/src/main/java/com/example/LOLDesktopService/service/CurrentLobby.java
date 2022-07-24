@@ -5,5 +5,4 @@ import java.io.IOException;
 
 public interface CurrentLobby {
     void findSummonersInLobby() throws IOException;
-    //void insta();
 }

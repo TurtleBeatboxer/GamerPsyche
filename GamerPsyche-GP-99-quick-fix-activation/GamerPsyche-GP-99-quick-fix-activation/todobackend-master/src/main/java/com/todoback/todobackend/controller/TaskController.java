@@ -175,5 +175,16 @@ public class TaskController {
         Action object = gson.fromJson(body, Action.class);
         System.out.println(object);
         System.out.println(body);
+        String champion = oriannaFetch.championName(object.getChampionId());
+        if(object.getChampionId() > 0){
+            r4jFetch.getData();
+        }
+
+
+    }
+    @PostConstruct()
+    public void testa(){
+        System.out.println("hello");
+        r4jFetch.getData();
     }
 }
