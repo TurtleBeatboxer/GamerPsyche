@@ -165,13 +165,11 @@ public class TaskController {
 
     @PostMapping("/get/data/champion-select/by/action")
     public void getMatchDataByChampion(@RequestBody String body){
-        System.out.println("Test works!");
         Action object = gson.fromJson(body, Action.class);
         System.out.println(object);
         System.out.println(body);
-        String champion = oriannaFetch.championName(object.getChampionId());
         if(object.getChampionId() > 0){
-            r4jFetch.getDataFromUserMatch();
+            r4jFetch.getDataFromUserMatch(object.getChampionId());
         }
 
 
@@ -179,6 +177,6 @@ public class TaskController {
     @PostConstruct()
     public void test(){
         System.out.println("hello");
-        r4jFetch.getDataFromUserMatch();
+        r4jFetch.getDataFromUserMatch(523);
     }
 }

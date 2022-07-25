@@ -63,9 +63,5 @@ public class OriannaFetchImpl implements OriannaFetch {
        return "id equals 0";
     }
 
-    public String getStatsFromChamp(String champ){
-
-        return "champ";
-    }
 
 }

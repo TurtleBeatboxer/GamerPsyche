@@ -166,7 +166,7 @@ public class R4JFetchImpl implements R4JFetch {
         return wins / allGames;
     }
 
-    public void getDataFromUserMatch(){
+    public void getDataFromUserMatch(int championId){
         System.out.println("start");
         Summoner summoner = SummonerAPI.getInstance().getSummonerByName(LeagueShard.EUN1, "koczokok");
         MatchListBuilder builder = new MatchListBuilder();
@@ -176,7 +176,7 @@ public class R4JFetchImpl implements R4JFetch {
         Optional<GameQueueType> type =GameQueueType.getFromId(400);
         if(type.isPresent()) {
             System.out.println(type.get() );
-            List<String> solo = builder.withQueue(type.get()).withCount(100).get();
+            List<String> solo = builder.withQueue(GameQueueType.ARAM).withCount(100).get();
             System.out.println(solo.size());
 
 
@@ -193,10 +193,9 @@ public class R4JFetchImpl implements R4JFetch {
                         MatchParticipant matchParticipant = matchParticipants.get(j);
                         String Puuid = matchParticipants.get(j).getPuuid();
                         if (Puuid.equals(summoner.getPUUID())) {
-                            if (matchParticipants.get(j).getChampionId() == 523) {
+                            if (matchParticipants.get(j).getChampionId() == championId) {
                                 System.out.println(match.getGameMode());
                                 System.out.println(match.getGameStartTimestamp());
-
                                 System.out.println(matchParticipant.getTotalMinionsKilled() + " total");
                                 System.out.println(matchParticipant.getNeutralMinionsKilled() + " neutral");
                                 System.out.println(matchParticipants.get(j).getAssists());
@@ -204,7 +203,8 @@ public class R4JFetchImpl implements R4JFetch {
                                 System.out.println(matchParticipants.get(j).getKills());
                                 System.out.println(matchParticipants.get(j).getDeaths());
                                 System.out.println(matchParticipants.get(j).getChampionLevel());
-
+                                System.out.println(matchParticipant.getTimeCCingOthers() + "ccin");
+                                System.out.println(matchParticipant.getTotalTimeCCDealt() + "total");
 
                             }
                             break;

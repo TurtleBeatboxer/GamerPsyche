@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface R4JFetch {
-    void getDataFromUserMatch();
+    void getDataFromUserMatch(int championId);
     void R4JFetchBasicInfo(User user);
     float R4JFetchWinRateByQueue(User user, GameQueueType queueType);
     Map<String, Integer> getMostPlayedChampions(User user);
