@@ -163,28 +163,22 @@ public class TaskController {
         return data;
     }
 
-    @PostConstruct()
-    public void test(){
-        Summoner summoner = SummonerAPI.getInstance().getSummonerByName(LeagueShard.EUN1, "koczokok");
-        System.out.println(summoner.getSummonerId());
-    }
-
-    @PostMapping("app")
-    public void testing(@RequestBody String body){
+    @PostMapping("/get/data/champion-select/by/action")
+    public void getMatchDataByChampion(@RequestBody String body){
         System.out.println("Test works!");
         Action object = gson.fromJson(body, Action.class);
         System.out.println(object);
         System.out.println(body);
         String champion = oriannaFetch.championName(object.getChampionId());
         if(object.getChampionId() > 0){
-            r4jFetch.getData();
+            r4jFetch.getDataFromUserMatch();
         }
 
 
     }
     @PostConstruct()
-    public void testa(){
+    public void test(){
         System.out.println("hello");
-        r4jFetch.getData();
+        r4jFetch.getDataFromUserMatch();
     }
 }

@@ -126,7 +126,7 @@ public class CurrentLobbyImpl implements CurrentLobby {
             System.out.println("Sending");
             String reqData = gson.toJson(data);
             HttpRequest req = HttpRequest.newBuilder()
-                    .uri(new URI("http://localhost:8080/app")).header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(reqData)).build();
+                    .uri(new URI("http://localhost:8080/get/data/champion-select/by/action")).header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(reqData)).build();
            HttpResponse<String> response = HttpClient.newBuilder().build().send(req, HttpResponse.BodyHandlers.ofString());
            System.out.println(response);
     }

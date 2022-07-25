@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 public class R4JFetchImpl implements R4JFetch {
     final R4J r4J = new R4J(APICredential.CRED);
 
+
     public List<MatchHistoryDTO> getMatchHistory(User user){
         Summoner summoner = SummonerAPI.getInstance().getSummonerByName(user.getLeagueShard(), user.getLOLUsername());
         System.out.println(summoner.getSummonerId());
@@ -165,7 +166,7 @@ public class R4JFetchImpl implements R4JFetch {
         return wins / allGames;
     }
 
-    public void getData(){
+    public void getDataFromUserMatch(){
         System.out.println("start");
         Summoner summoner = SummonerAPI.getInstance().getSummonerByName(LeagueShard.EUN1, "koczokok");
         MatchListBuilder builder = new MatchListBuilder();
@@ -181,16 +182,23 @@ public class R4JFetchImpl implements R4JFetch {
 
             for (String s : solo) {
                 LOLMatch match = matchBuilder.withId(s).getMatch();
+
                 if (match.getGameStartTimestamp() > 1641513601000L) {
 
 
                     System.out.println(match.getGameEndAsDate());
                     List<MatchParticipant> matchParticipants = match.getParticipants();
                     for (int j = 0; j < match.getParticipants().size(); j++) {
+
+                        MatchParticipant matchParticipant = matchParticipants.get(j);
                         String Puuid = matchParticipants.get(j).getPuuid();
                         if (Puuid.equals(summoner.getPUUID())) {
                             if (matchParticipants.get(j).getChampionId() == 523) {
+                                System.out.println(match.getGameMode());
+                                System.out.println(match.getGameStartTimestamp());
 
+                                System.out.println(matchParticipant.getTotalMinionsKilled() + " total");
+                                System.out.println(matchParticipant.getNeutralMinionsKilled() + " neutral");
                                 System.out.println(matchParticipants.get(j).getAssists());
                                 System.out.println(matchParticipants.get(j).getChampionName());
                                 System.out.println(matchParticipants.get(j).getKills());
