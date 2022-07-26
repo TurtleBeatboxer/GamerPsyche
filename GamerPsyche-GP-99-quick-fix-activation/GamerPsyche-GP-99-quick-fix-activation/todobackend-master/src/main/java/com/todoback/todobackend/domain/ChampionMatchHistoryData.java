@@ -1,76 +1,87 @@
 package com.todoback.todobackend.domain;
 
 public class ChampionMatchHistoryData {
-    private int crowdControlScore;
-    private int creepScorePM;
-    private int visionScorePM;
-    private int damagePM;
-    private int selfMitigatedPM;
-    private int KDA;
-    private int KP;
-    private int objectivesTaken;
+    private double crowdControlScore;
+    private double creepScorePM;
+    private double visionScorePM;
+    private double damagePM;
+    private double selfMitigatedPM;
+    private double KDA;
+    private double KP;
+    private ObjectiveMatchHistoryData objectivesTaken;
 
-    public int getCrowdControlScore() {
+    public void setChampionMatchHistoryData(double crowdControlScore, double creepScorePM, double visionScorePM, double damagePM, double selfMitigatedPM, double KDA, double KP, ObjectiveMatchHistoryData objectivesTaken){
+        this.creepScorePM = creepScorePM;
+        this.crowdControlScore = crowdControlScore;
+        this.visionScorePM = visionScorePM;
+        this.damagePM = damagePM;
+        this.selfMitigatedPM = selfMitigatedPM;
+        this.KDA = KDA;
+        this.KP = KP;
+        this.objectivesTaken = objectivesTaken;
+    }
+
+    public double getCrowdControlScore() {
         return crowdControlScore;
     }
 
-    public void setCrowdControlScore(int crowdControlScore) {
+    public void setCrowdControlScore(double crowdControlScore) {
         this.crowdControlScore = crowdControlScore;
     }
 
-    public int getCreepScorePM() {
+    public double getCreepScorePM() {
         return creepScorePM;
     }
 
-    public void setCreepScorePM(int creepScorePM) {
+    public void setCreepScorePM(double creepScorePM) {
         this.creepScorePM = creepScorePM;
     }
 
-    public int getVisionScorePM() {
+    public double getVisionScorePM() {
         return visionScorePM;
     }
 
-    public void setVisionScorePM(int visionScorePM) {
+    public void setVisionScorePM(double visionScorePM) {
         this.visionScorePM = visionScorePM;
     }
 
-    public int getDamagePM() {
+    public double getDamagePM() {
         return damagePM;
     }
 
-    public void setDamagePM(int damagePM) {
+    public void setDamagePM(double damagePM) {
         this.damagePM = damagePM;
     }
 
-    public int getSelfMitigatedPM() {
+    public double getSelfMitigatedPM() {
         return selfMitigatedPM;
     }
 
-    public void setSelfMitigatedPM(int selfMitigatedPM) {
+    public void setSelfMitigatedPM(double selfMitigatedPM) {
         this.selfMitigatedPM = selfMitigatedPM;
     }
 
-    public int getKDA() {
+    public double getKDA() {
         return KDA;
     }
 
-    public void setKDA(int KDA) {
+    public void setKDA(double KDA) {
         this.KDA = KDA;
     }
 
-    public int getKP() {
+    public double getKP() {
         return KP;
     }
 
-    public void setKP(int KP) {
+    public void setKP(double KP) {
         this.KP = KP;
     }
 
-    public int getObjectivesTaken() {
+    public ObjectiveMatchHistoryData getObjectivesTaken() {
         return objectivesTaken;
     }
 
-    public void setObjectivesTaken(int objectivesTaken) {
+    public void setObjectivesTaken(ObjectiveMatchHistoryData objectivesTaken) {
         this.objectivesTaken = objectivesTaken;
     }
 

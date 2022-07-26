@@ -166,17 +166,28 @@ public class TaskController {
     @PostMapping("/get/data/champion-select/by/action")
     public void getMatchDataByChampion(@RequestBody String body){
         Action object = gson.fromJson(body, Action.class);
-        System.out.println(object);
-        System.out.println(body);
-        if(object.getChampionId() > 0){
-            r4jFetch.getDataFromUserMatch(object.getChampionId());
+        Optional<User> userOptional = userRepository.findByLolUsername("koczokok");
+        if(userOptional.isPresent()){
+            User user = userOptional.get();
+            if(object.getChampionId() > 0){
+                r4jFetch.getDataFromUserMatch(object.getChampionId(), object.getSummonerName(), LeagueShard.EUN1);
+            }
         }
 
 
+
+
     }
-    @PostConstruct()
+
     public void test(){
-        System.out.println("hello");
-        r4jFetch.getDataFromUserMatch(523);
+        Optional<User> userOptional = userRepository.findByLolUsername("koczokok");
+        if(userOptional.isPresent()){
+            User user = userOptional.get();
+            System.out.println(user.getLeagueShard());
+            System.out.println(user.getEmail());
+            r4jFetch.getDataFromUserMatch(523, "koczokok", user.getLeagueShard());
+        }
+
+
     }
 }

@@ -1,11 +1,15 @@
 package com.todoback.todobackend.service.LOL.impl;
 
 import com.todoback.todobackend.configuration.APICredential;
+import com.todoback.todobackend.domain.ChampionMatchHistoryData;
+import com.todoback.todobackend.domain.ObjectiveMatchHistoryData;
 import com.todoback.todobackend.domain.User;
 import com.todoback.todobackend.domain.MatchHistoryDTO;
+import com.todoback.todobackend.repository.UserRepository;
 import com.todoback.todobackend.service.LOL.R4JFetch;
 import no.stelar7.api.r4j.basic.constants.api.regions.LeagueShard;
 import no.stelar7.api.r4j.basic.constants.types.lol.GameQueueType;
+import no.stelar7.api.r4j.basic.constants.types.lol.TeamType;
 import no.stelar7.api.r4j.impl.R4J;
 import no.stelar7.api.r4j.impl.lol.builders.matchv5.match.MatchBuilder;
 import no.stelar7.api.r4j.impl.lol.builders.matchv5.match.MatchListBuilder;
@@ -13,14 +17,20 @@ import no.stelar7.api.r4j.impl.lol.raw.SummonerAPI;
 import no.stelar7.api.r4j.pojo.lol.match.v5.LOLMatch;
 import no.stelar7.api.r4j.pojo.lol.match.v5.MatchParticipant;
 import no.stelar7.api.r4j.pojo.lol.match.v5.MatchTeam;
+import no.stelar7.api.r4j.pojo.lol.match.v5.ObjectiveStats;
 import no.stelar7.api.r4j.pojo.lol.summoner.Summoner;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class R4JFetchImpl implements R4JFetch {
+    @Autowired
+    UserRepository userRepository;
+
     final R4J r4J = new R4J(APICredential.CRED);
 
 
@@ -166,53 +176,97 @@ public class R4JFetchImpl implements R4JFetch {
         return wins / allGames;
     }
 
-    public void getDataFromUserMatch(int championId){
-        System.out.println("start");
-        Summoner summoner = SummonerAPI.getInstance().getSummonerByName(LeagueShard.EUN1, "koczokok");
-        MatchListBuilder builder = new MatchListBuilder();
-        builder = builder.withPuuid(summoner.getPUUID()).withPlatform(summoner.getPlatform());
-        MatchBuilder matchBuilder = new MatchBuilder(summoner.getPlatform());
-
-        Optional<GameQueueType> type =GameQueueType.getFromId(400);
-        if(type.isPresent()) {
-            System.out.println(type.get() );
-            List<String> solo = builder.withQueue(GameQueueType.ARAM).withCount(100).get();
-            System.out.println(solo.size());
+    public List<ChampionMatchHistoryData> getDataFromUserMatch(int championId, String summonerName, LeagueShard server) {
 
 
-            for (String s : solo) {
-                LOLMatch match = matchBuilder.withId(s).getMatch();
+            List<ChampionMatchHistoryData> championMatchHistoryData = new ArrayList<>();
+            System.out.println("start");
+            Summoner summoner = SummonerAPI.getInstance().getSummonerByName(server, summonerName);
+            MatchListBuilder builder = new MatchListBuilder();
+            builder = builder.withPuuid(summoner.getPUUID()).withPlatform(summoner.getPlatform());
+            MatchBuilder matchBuilder = new MatchBuilder(summoner.getPlatform());
+            ArrayList<Integer> queues = queueIds();
 
-                if (match.getGameStartTimestamp() > 1641513601000L) {
+            for (int i = 0; i < 3; i++) {
+                Optional<GameQueueType> gameQueueType = GameQueueType.getFromId(queues.get(i));
+                if (gameQueueType.isPresent()) {
 
-
-                    System.out.println(match.getGameEndAsDate());
-                    List<MatchParticipant> matchParticipants = match.getParticipants();
-                    for (int j = 0; j < match.getParticipants().size(); j++) {
-
-                        MatchParticipant matchParticipant = matchParticipants.get(j);
-                        String Puuid = matchParticipants.get(j).getPuuid();
-                        if (Puuid.equals(summoner.getPUUID())) {
-                            if (matchParticipants.get(j).getChampionId() == championId) {
-                                System.out.println(match.getGameMode());
-                                System.out.println(match.getGameStartTimestamp());
-                                System.out.println(matchParticipant.getTotalMinionsKilled() + " total");
-                                System.out.println(matchParticipant.getNeutralMinionsKilled() + " neutral");
-                                System.out.println(matchParticipants.get(j).getAssists());
-                                System.out.println(matchParticipants.get(j).getChampionName());
-                                System.out.println(matchParticipants.get(j).getKills());
-                                System.out.println(matchParticipants.get(j).getDeaths());
-                                System.out.println(matchParticipants.get(j).getChampionLevel());
-                                System.out.println(matchParticipant.getTimeCCingOthers() + "ccin");
-                                System.out.println(matchParticipant.getTotalTimeCCDealt() + "total");
-
+                    List<String> solo = builder.withQueue(gameQueueType.get()).withCount(100).get();
+                    System.out.println(gameQueueType.get());
+                    for (String s : solo) {
+                        LOLMatch match = matchBuilder.withId(s).getMatch();
+                        if (match.getGameStartTimestamp() > 1641513601000L) {
+                            List<MatchParticipant> matchParticipants = match.getParticipants();
+                            for (int j = 0; j < match.getParticipants().size(); j++) {
+                                String PUUID = matchParticipants.get(j).getPuuid();
+                                if (PUUID.equals(summoner.getPUUID())) {
+                                    MatchParticipant matchParticipant = matchParticipants.get(j);
+                                    MatchTeam matchTeam;
+                                    double gameTime = calculateGameTime(match.getGameDuration());
+                                    if (match.getTeams().get(0).getTeamId() == matchParticipant.getTeam()) {
+                                        matchTeam = match.getTeams().get(0);
+                                    } else {
+                                        matchTeam = match.getTeams().get(1);
+                                    }
+                                    if (matchParticipants.get(j).getChampionId() == championId) {
+                                        ChampionMatchHistoryData data = new ChampionMatchHistoryData();
+                                        data.setCreepScorePM(calculateScorePM(matchParticipant.getTotalMinionsKilled(), gameTime));
+                                        data.setCrowdControlScore(calculateScorePM(matchParticipant.getTimeCCingOthers(), gameTime));
+                                        data.setVisionScorePM(calculateScorePM(matchParticipant.getVisionScore(), gameTime));
+                                        data.setDamagePM(calculateScorePM(matchParticipant.getTotalDamageDealtToChampions(), gameTime));
+                                        data.setSelfMitigatedPM(calculateScorePM(matchParticipant.getDamageSelfMitigated(), gameTime));
+                                        data.setKDA(calculateKDA(matchParticipant.getKills(), matchParticipant.getDeaths(), matchParticipant.getAssists()));
+                                        data.setKP(calculateKP(matchParticipant.getKills(), matchParticipant.getAssists(), matchTeam));
+                                        data.setObjectivesTaken(getObjectives(matchTeam));
+                                        System.out.println(data.toString());
+                                        championMatchHistoryData.add(data);
+                                    }
+                                    break;
+                                }
                             }
-                            break;
+
                         }
                     }
                 }
             }
-        }
+            return championMatchHistoryData;
+    }
+
+
+
+    public double calculateGameTime(double gameTimeInSeconds){
+        return (Math.round((gameTimeInSeconds / 60) * 100.0) / 100.0);
+    }
+
+    public double calculateScorePM(int Score, double gameTime){
+        return (Math.round((Score / gameTime) * 10.0) / 10.0);
+
+    }
+
+    public ArrayList<Integer> queueIds(){
+        ArrayList<Integer> queues = new ArrayList<>();
+        queues.add(400);
+        queues.add(420);
+        queues.add(440);
+        return queues;
+    }
+
+    public double calculateKDA(double kills, double deaths, double assists){
+        return (Math.round(((kills + assists) / deaths) * 10.00) / 10.00);
+    }
+
+    public double calculateKP(double kills, double assists, MatchTeam matchTeam){
+        return (Math.round(((kills + assists) / matchTeam.getObjectives().get("champion").getKills()) * 100.0 )/ 100.0);
+    }
+
+    private ObjectiveMatchHistoryData getObjectives(MatchTeam matchTeam){
+        Map<String, ObjectiveStats> stats = matchTeam.getObjectives();
+        ObjectiveMatchHistoryData data = new ObjectiveMatchHistoryData();
+        data.setDragonKills(stats.get("dragon").getKills());
+        data.setDragonKills(stats.get("inhibitor").getKills());
+        data.setDragonKills(stats.get("tower").getKills());
+        data.setDragonKills(stats.get("riftHerald").getKills());
+       return data;
     }
 
 

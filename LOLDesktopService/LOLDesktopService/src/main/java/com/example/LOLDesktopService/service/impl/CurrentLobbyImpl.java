@@ -47,6 +47,7 @@ public class CurrentLobbyImpl implements CurrentLobby {
                                     int myCellID = -1;
                                     LolChampSelectChampSelectSession session =
                                             (LolChampSelectChampSelectSession) event.getData();
+
                                     for (LolChampSelectChampSelectPlayerSelection player :  session.myTeam) {
                                         myCellID = Math.toIntExact(player.cellId);
                                     }
@@ -56,6 +57,7 @@ public class CurrentLobbyImpl implements CurrentLobby {
 
                                             for (LolChampSelectChampSelectPlayerSelection player :  session.myTeam) {
                                                 if (Math.toIntExact(player.cellId) == getInt(a.get("actorCellId").toString())) {
+
                                                     System.out.println("Send action");
                                                     try {
                                                         LolChampSelectChampSelectTimer timer = api.executeGet("/lol-champ-select/v1/session/timer", LolChampSelectChampSelectTimer.class).getResponseObject();
