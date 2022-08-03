@@ -38,7 +38,6 @@ public class CurrentLobbyImpl implements CurrentLobby {
                         }
                         LolSummonerSummoner summoner = api.executeGet("/lol-summoner/v1/current-summoner", LolSummonerSummoner.class).getResponseObject();
                         System.out.println("Connected to summoner with name " + summoner.displayName);
-
                         socket = api.openWebSocket();
                         socket.setSocketListener(new ClientWebSocket.SocketListener() {
                             @Override
@@ -54,26 +53,30 @@ public class CurrentLobbyImpl implements CurrentLobby {
                                     for (Object actions : session.actions) {
                                         for (Object action : ((List) actions)) {
                                             Map<String, Object> a = (Map<String, Object>) action;
-
-                                            for (LolChampSelectChampSelectPlayerSelection player :  session.myTeam) {
-                                                if (Math.toIntExact(player.cellId) == getInt(a.get("actorCellId").toString())) {
-
-                                                    System.out.println("Send action");
-                                                    try {
-                                                        LolChampSelectChampSelectTimer timer = api.executeGet("/lol-champ-select/v1/session/timer", LolChampSelectChampSelectTimer.class).getResponseObject();
-                                                        System.out.println(timer.phase);
-                                                        if (timer.phase.equalsIgnoreCase("GAME_STARTING")) {
+                                            if(a.get("type").toString().equalsIgnoreCase("ban")){
+                                                break;
+                                            }
+                                            System.out.println(a);
+                                            if(a.get("type").toString().equalsIgnoreCase("pick")) {
+                                                for (LolChampSelectChampSelectPlayerSelection player : session.myTeam) {
+                                                    if (Math.toIntExact(player.cellId) == getInt(a.get("actorCellId").toString())) {
+                                                        System.out.println("Send action");
+                                                        try {
+                                                            LolChampSelectChampSelectTimer timer = api.executeGet("/lol-champ-select/v1/session/timer", LolChampSelectChampSelectTimer.class).getResponseObject();
+                                                            System.out.println(timer.phase);
+                                                            if (timer.phase.equalsIgnoreCase("GAME_STARTING")) {
                                                             socket.close();
                                                             api.stop();
                                                             System.out.println("Game is starting stopping api");
-                                                            return;
+                                                                return;
+                                                            }
+                                                            String summonerName = api.executeGet("/lol-summoner/v1/summoners/" + player.summonerId, LolSummonerSummoner.class).getResponseObject().displayName;
+                                                            Action data = setActionClass(getInt(a.get("actorCellId").toString()), getInt(a.get("championId").toString()), Boolean.parseBoolean(a.get("completed").toString()), getInt(a.get("id").toString()), Boolean.parseBoolean(a.get("isAllyAction").toString()), Boolean.parseBoolean(a.get("isInProgress").toString()), getInt(a.get("pickTurn").toString()), a.get("type").toString(), summonerName, player.assignedPosition);
+                                                            System.out.println(data);
+                                                            sendHTTPReq(data);
+                                                        } catch (IOException | URISyntaxException | InterruptedException e) {
+                                                            e.printStackTrace();
                                                         }
-                                                        String summonerName = api.executeGet("/lol-summoner/v1/summoners/" + player.summonerId, LolSummonerSummoner.class).getResponseObject().displayName;
-                                                        Action data = setActionClass(getInt(a.get("actorCellId").toString()), getInt(a.get("championId").toString()), Boolean.parseBoolean(a.get("completed").toString()), getInt(a.get("id").toString()), Boolean.parseBoolean(a.get("isAllyAction").toString()), Boolean.parseBoolean(a.get("isInProgress").toString()), getInt(a.get("pickTurn").toString()), a.get("type").toString(), summonerName, player.assignedPosition);
-                                                        System.out.println(data);
-                                                        sendHTTPReq(data);
-                                                    } catch (IOException | URISyntaxException | InterruptedException e) {
-                                                        e.printStackTrace();
                                                     }
                                                 }
                                             }

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface R4JFetch {
+    void test();
     List<ChampionMatchHistoryData> getDataFromUserMatch(int championId, String summonerName, LeagueShard server);
     void R4JFetchBasicInfo(User user);
     float R4JFetchWinRateByQueue(User user, GameQueueType queueType);

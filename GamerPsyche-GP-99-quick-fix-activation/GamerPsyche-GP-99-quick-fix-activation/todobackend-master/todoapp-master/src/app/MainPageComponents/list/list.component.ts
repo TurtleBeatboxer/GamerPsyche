@@ -1,9 +1,8 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from 'src/app/service/login.service';
-import {MatchHistoryDTO } from '../../service/matchHistoryDTO.model'
-import { WinRateDTO } from '../../service/winRateDTO.model';
-import { MainUserDTO } from '../../service/mainUserDTO.model';
+import { MatchHistoryDTO } from '../../service/matchHistoryDTO.model';
+
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
@@ -15,21 +14,11 @@ export class ListComponent implements OnInit {
   public flexWinRate: string;
   public soloWinRate: string;
   public normalWinRate: string;
-  public matchHistory: MatchHistoryDTO[] = []
-  public  mostPlayedChampions: {name: string , value : number}[] = []
+  public matchHistory: MatchHistoryDTO[] = [];
+  public mostPlayedChampions: { name: string; value: number }[] = [];
   constructor(private http: HttpClient, public loginService: LoginService) {}
 
-  ngOnInit(): void {
-    // if (this.loginService.userData === undefined) {
-    //   const username = sessionStorage.getItem('username');
-    //   this.http
-    //     .get<UserDATA>(`http://localhost:8080/user/${username}`)
-    //     .subscribe((x) => {this.loginService.userData = x
-    //     console.log(this.loginService.userData)
-    //     });
-    // }
-    //this.http.get<WinRateDTO>("http://localhost:8080/user/getWinrate").subscribe(x=> console.log(x))
-  }
+  ngOnInit(): void {}
 
   loginData() {
     console.log(this.loginService.userData);
@@ -42,8 +31,10 @@ export class ListComponent implements OnInit {
           'username'
         )}/400`
       )
-      .subscribe((x) => {console.log(x)
-      this.normalWinRate = x});
+      .subscribe((x) => {
+        console.log(x);
+        this.normalWinRate = x;
+      });
   }
 
   flex() {
@@ -55,8 +46,7 @@ export class ListComponent implements OnInit {
       )
       .subscribe((x) => {
         console.log(x);
-        this.flexWinRate = x
-
+        this.flexWinRate = x;
       });
   }
 
@@ -67,32 +57,38 @@ export class ListComponent implements OnInit {
           'username'
         )}/420`
       )
-      .subscribe((x) => {console.log(x)
-      this.soloWinRate = x});
+      .subscribe((x) => {
+        console.log(x);
+        this.soloWinRate = x;
+      });
   }
-  mostPlayedChampion(){
-    this.http.get(`http://localhost:8080/user/${sessionStorage.getItem('username')}/getMostPlayedChampions`).subscribe((x)=>{
-      console.log(x)
-      let array = [];
-    for(const key in x){
-
-      array.push({name: key, value: x[key]})
-    }
-    this.mostPlayedChampions = array;
-
-
-//       x.forEach((m) => {
-//         for(const key in m){
-//           this.mostPlayedChampions.push({name: key, value: m[key]})
-//         }
-//       })
-// console.log(this.mostPlayedChampions)
-    })
+  mostPlayedChampion() {
+    this.http
+      .get(
+        `http://localhost:8080/user/${sessionStorage.getItem(
+          'username'
+        )}/getMostPlayedChampions`
+      )
+      .subscribe((x) => {
+        console.log(x);
+        let array = [];
+        for (const key in x) {
+          array.push({ name: key, value: x[key] });
+        }
+        this.mostPlayedChampions = array;
+      });
   }
 
-  getMatchHistory(){
-    this.http.get<MatchHistoryDTO[]>(`http://localhost:8080/user/${sessionStorage.getItem('username')}/getMatchHistory`).subscribe((x)=> {console.log(x)
-    this.matchHistory = x
-  })
+  getMatchHistory() {
+    this.http
+      .get<MatchHistoryDTO[]>(
+        `http://localhost:8080/user/${sessionStorage.getItem(
+          'username'
+        )}/getMatchHistory`
+      )
+      .subscribe((x) => {
+        console.log(x);
+        this.matchHistory = x;
+      });
   }
 }

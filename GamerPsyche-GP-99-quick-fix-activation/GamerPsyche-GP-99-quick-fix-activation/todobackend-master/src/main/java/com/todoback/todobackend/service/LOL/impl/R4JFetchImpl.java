@@ -13,11 +13,18 @@ import no.stelar7.api.r4j.basic.constants.types.lol.TeamType;
 import no.stelar7.api.r4j.impl.R4J;
 import no.stelar7.api.r4j.impl.lol.builders.matchv5.match.MatchBuilder;
 import no.stelar7.api.r4j.impl.lol.builders.matchv5.match.MatchListBuilder;
+import no.stelar7.api.r4j.impl.lol.lcu.LCUApi;
+import no.stelar7.api.r4j.impl.lol.liveclient.LiveClientDataAPI;
+import no.stelar7.api.r4j.impl.lol.raw.SpectatorAPI;
 import no.stelar7.api.r4j.impl.lol.raw.SummonerAPI;
+import no.stelar7.api.r4j.pojo.lol.liveclient.ActiveGameData;
+import no.stelar7.api.r4j.pojo.lol.liveclient.events.GameEvent;
 import no.stelar7.api.r4j.pojo.lol.match.v5.LOLMatch;
 import no.stelar7.api.r4j.pojo.lol.match.v5.MatchParticipant;
 import no.stelar7.api.r4j.pojo.lol.match.v5.MatchTeam;
 import no.stelar7.api.r4j.pojo.lol.match.v5.ObjectiveStats;
+import no.stelar7.api.r4j.pojo.lol.spectator.SpectatorGameInfo;
+import no.stelar7.api.r4j.pojo.lol.spectator.SpectatorParticipant;
 import no.stelar7.api.r4j.pojo.lol.summoner.Summoner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,10 +35,17 @@ import java.util.stream.Collectors;
 
 @Service
 public class R4JFetchImpl implements R4JFetch {
-    @Autowired
-    UserRepository userRepository;
 
     final R4J r4J = new R4J(APICredential.CRED);
+
+    public void test(){
+        ActiveGameData gameData = LiveClientDataAPI.getGameData();
+
+        List<GameEvent> events = gameData.getEvents();
+        for(GameEvent ev : events){
+            ev.getEventName();
+        }
+    }
 
 
     public List<MatchHistoryDTO> getMatchHistory(User user){
@@ -177,10 +191,7 @@ public class R4JFetchImpl implements R4JFetch {
     }
 
     public List<ChampionMatchHistoryData> getDataFromUserMatch(int championId, String summonerName, LeagueShard server) {
-
-
             List<ChampionMatchHistoryData> championMatchHistoryData = new ArrayList<>();
-            System.out.println("start");
             Summoner summoner = SummonerAPI.getInstance().getSummonerByName(server, summonerName);
             MatchListBuilder builder = new MatchListBuilder();
             builder = builder.withPuuid(summoner.getPUUID()).withPlatform(summoner.getPlatform());
@@ -190,7 +201,6 @@ public class R4JFetchImpl implements R4JFetch {
             for (int i = 0; i < 3; i++) {
                 Optional<GameQueueType> gameQueueType = GameQueueType.getFromId(queues.get(i));
                 if (gameQueueType.isPresent()) {
-
                     List<String> solo = builder.withQueue(gameQueueType.get()).withCount(100).get();
                     System.out.println(gameQueueType.get());
                     for (String s : solo) {
@@ -210,14 +220,7 @@ public class R4JFetchImpl implements R4JFetch {
                                     }
                                     if (matchParticipants.get(j).getChampionId() == championId) {
                                         ChampionMatchHistoryData data = new ChampionMatchHistoryData();
-                                        data.setCreepScorePM(calculateScorePM(matchParticipant.getTotalMinionsKilled(), gameTime));
-                                        data.setCrowdControlScore(calculateScorePM(matchParticipant.getTimeCCingOthers(), gameTime));
-                                        data.setVisionScorePM(calculateScorePM(matchParticipant.getVisionScore(), gameTime));
-                                        data.setDamagePM(calculateScorePM(matchParticipant.getTotalDamageDealtToChampions(), gameTime));
-                                        data.setSelfMitigatedPM(calculateScorePM(matchParticipant.getDamageSelfMitigated(), gameTime));
-                                        data.setKDA(calculateKDA(matchParticipant.getKills(), matchParticipant.getDeaths(), matchParticipant.getAssists()));
-                                        data.setKP(calculateKP(matchParticipant.getKills(), matchParticipant.getAssists(), matchTeam));
-                                        data.setObjectivesTaken(getObjectives(matchTeam));
+                                        setData(matchParticipant, matchTeam, gameTime, data);
                                         System.out.println(data.toString());
                                         championMatchHistoryData.add(data);
                                     }
@@ -232,6 +235,17 @@ public class R4JFetchImpl implements R4JFetch {
             return championMatchHistoryData;
     }
 
+
+    private void setData(MatchParticipant matchParticipant, MatchTeam matchTeam, double gameTime, ChampionMatchHistoryData data) {
+        data.setCreepScorePM(calculateScorePM(matchParticipant.getTotalMinionsKilled(), gameTime));
+        data.setCrowdControlScore(calculateScorePM(matchParticipant.getTimeCCingOthers(), gameTime));
+        data.setVisionScorePM(calculateScorePM(matchParticipant.getVisionScore(), gameTime));
+        data.setDamagePM(calculateScorePM(matchParticipant.getTotalDamageDealtToChampions(), gameTime));
+        data.setSelfMitigatedPM(calculateScorePM(matchParticipant.getDamageSelfMitigated(), gameTime));
+        data.setKDA(calculateKDA(matchParticipant.getKills(), matchParticipant.getDeaths(), matchParticipant.getAssists()));
+        data.setKP(calculateKP(matchParticipant.getKills(), matchParticipant.getAssists(), matchTeam));
+        data.setObjectivesTaken(getObjectives(matchTeam));
+    }
 
 
     public double calculateGameTime(double gameTimeInSeconds){

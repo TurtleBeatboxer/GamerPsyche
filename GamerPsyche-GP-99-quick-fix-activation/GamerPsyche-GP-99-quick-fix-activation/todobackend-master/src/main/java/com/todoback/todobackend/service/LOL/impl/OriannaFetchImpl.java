@@ -5,6 +5,7 @@ import com.merakianalytics.orianna.types.common.Queue;
 import com.merakianalytics.orianna.types.common.Region;
 import com.merakianalytics.orianna.types.core.league.League;
 import com.merakianalytics.orianna.types.core.league.LeagueEntry;
+import com.merakianalytics.orianna.types.core.spectator.CurrentMatch;
 import com.merakianalytics.orianna.types.core.staticdata.Champion;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 import com.todoback.todobackend.configuration.APICredential;
@@ -17,8 +18,11 @@ import org.springframework.stereotype.Service;
 public class OriannaFetchImpl implements OriannaFetch {
     final R4J r4J = new R4J(APICredential.CRED);
 
-    public void test(User user){
-        Summoner summoner = Orianna.summonerNamed(user.getLOLUsername()).withRegion(user.getLolRegion()).get();
+    public void test(){
+        Summoner summoner = Orianna.summonerNamed("koczokok").withRegion(Region.EUROPE_NORTH_EAST).get();
+        System.out.println(summoner.isInGame());
+        CurrentMatch match = Orianna.currentMatchForSummoner(summoner).get();
+        System.out.println(match);
     }
 
     public String fetchBasicInfo(User user) {
