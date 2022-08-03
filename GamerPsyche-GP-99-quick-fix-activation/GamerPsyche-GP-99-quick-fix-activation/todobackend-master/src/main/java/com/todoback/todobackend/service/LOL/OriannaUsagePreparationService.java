@@ -2,7 +2,6 @@ package com.todoback.todobackend.service.LOL;
 
 import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.Region;
-import com.merakianalytics.orianna.types.core.league.League;
 import com.todoback.todobackend.domain.LOLServer;
 import com.todoback.todobackend.domain.User;
 import no.stelar7.api.r4j.basic.constants.api.regions.LeagueShard;

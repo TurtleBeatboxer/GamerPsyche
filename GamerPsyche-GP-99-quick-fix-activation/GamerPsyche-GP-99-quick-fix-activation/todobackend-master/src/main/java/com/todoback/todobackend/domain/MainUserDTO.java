@@ -1,5 +1,5 @@
 package com.todoback.todobackend.domain;
-
+import com.todoback.todobackend.domain.LOLServer;
 public class MainUserDTO {
 
     private String lolUsername;

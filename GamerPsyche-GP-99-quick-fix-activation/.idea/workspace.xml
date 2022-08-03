@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="49720015-a8eb-4ed2-b5b6-b3d454039dc8" name="Default Changelist" comment="" />
+    <list default="true" id="49720015-a8eb-4ed2-b5b6-b3d454039dc8" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../LOLDesktopService/LOLDesktopService/src/main/java/com/example/LOLDesktopService/domain/Action.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GamerPsyche-GP-99-quick-fix-activation/todobackend-master/src/main/java/com/todoback/todobackend/TodobackendApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/GamerPsyche-GP-99-quick-fix-activation/todobackend-master/src/main/java/com/todoback/todobackend/TodobackendApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GamerPsyche-GP-99-quick-fix-activation/todobackend-master/src/main/java/com/todoback/todobackend/configuration/APICredential.java" beforeDir="false" afterPath="$PROJECT_DIR$/GamerPsyche-GP-99-quick-fix-activation/todobackend-master/src/main/java/com/todoback/todobackend/configuration/APICredential.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GamerPsyche-GP-99-quick-fix-activation/todobackend-master/src/main/java/com/todoback/todobackend/controller/TaskController.java" beforeDir="false" afterPath="$PROJECT_DIR$/GamerPsyche-GP-99-quick-fix-activation/todobackend-master/src/main/java/com/todoback/todobackend/controller/TaskController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GamerPsyche-GP-99-quick-fix-activation/todobackend-master/src/main/java/com/todoback/todobackend/service/LOL/impl/R4JFetchImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/GamerPsyche-GP-99-quick-fix-activation/todobackend-master/src/main/java/com/todoback/todobackend/service/LOL/impl/R4JFetchImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LOLDesktopService/LOLDesktopService/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../LOLDesktopService/LOLDesktopService/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LOLDesktopService/LOLDesktopService/src/main/java/com/example/LOLDesktopService/service/impl/CurrentLobbyImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../LOLDesktopService/LOLDesktopService/src/main/java/com/example/LOLDesktopService/service/impl/CurrentLobbyImpl.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -44,5 +52,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>
