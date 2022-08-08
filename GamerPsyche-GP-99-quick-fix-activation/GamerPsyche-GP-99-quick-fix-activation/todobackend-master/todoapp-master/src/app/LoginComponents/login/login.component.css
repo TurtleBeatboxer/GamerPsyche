@@ -1,4 +1,4 @@
-*/ */ .example-radio-button {
+ /* .example-radio-button {
   margin-left: 7px;
 }
 
@@ -54,4 +54,57 @@ a:hover {
 a:active {
   box-shadow: none;
   top: 5px;
+}  */
+
+
+.body-style {
+  width: 100vw;
+  height: 100vh;
+  background-color: #f4d1ff;
+}
+
+
+h1, p {
+  margin:  0 auto;
+  text-align: center;
+
+}
+
+
+mat-card{
+  width: 50vw;
+  height: 70%;
+  max-width: 500px;
+	min-width: 300px;
+  margin: -2% auto 0 auto;
+
+}
+
+.title {
+  margin-top: 20px;
+  margin-bottom: -20px;
+}
+
+
+.changeForm {
+  margin: 10% auto 0 auto;
+ height: 55%;
+ min-height: 600px;
+}
+
+.example-container {
+  width: 100%;
+
+
+}
+
+.help {
+  width: 80%;
+  margin: 0 10%;
+}
+
+.change {
+  width: 80%;
+  margin: 0 10%;
+  height:   40px;
 }

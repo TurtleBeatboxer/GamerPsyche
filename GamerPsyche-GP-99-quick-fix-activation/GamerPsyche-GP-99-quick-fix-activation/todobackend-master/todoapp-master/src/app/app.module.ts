@@ -35,7 +35,7 @@ import { EmailChangePasswordComponent } from './LoginComponents/email-change-pas
 import { ListComponent } from './MainPageComponents/list/list.component';
 import { ProfileInfoComponent } from './MainPageComponents/profile/profile-tab/profile-info/profile-info.component';
 import { GravyTrainComponent } from './UtilityComponents/gravy-train/gravy-train.component';
-
+import {MatToolbarModule} from '@angular/material/toolbar';
 @NgModule({
   declarations: [
     AppComponent,
@@ -56,6 +56,7 @@ import { GravyTrainComponent } from './UtilityComponents/gravy-train/gravy-train
   ],
   imports: [
     BrowserModule,
+    MatToolbarModule,
     FormsModule,
     HttpClientModule,
     AppRoutingModule,

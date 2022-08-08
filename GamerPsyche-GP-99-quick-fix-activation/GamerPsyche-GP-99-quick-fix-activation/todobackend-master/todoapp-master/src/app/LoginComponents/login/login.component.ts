@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -6,10 +6,12 @@ import { DialogComponent } from '../../UtilityComponents/dialog/dialog.component
 import { LoginService } from '../../service/login.service';
 import { UtilityService } from '../../service/utility.service';
 import { HttpClient } from '@angular/common/http';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
+
 })
 export class LoginComponent implements OnInit {
   public username = '';
