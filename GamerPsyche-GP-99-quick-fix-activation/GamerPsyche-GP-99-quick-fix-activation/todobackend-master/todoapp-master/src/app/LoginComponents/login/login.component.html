@@ -1,4 +1,4 @@
-<div class="changeForm">
+<!-- <div class="changeForm">
 
   <h1>Zaloguj się</h1>
   <form [formGroup]="loginForm" (ngSubmit)="checkLogin()">
@@ -27,4 +27,42 @@
   </form>
   <p><a class='underlineHover' routerLink="/register"> Zarejestruj się</a></p>
   <p><a class="underlineHover" routerLink="/forgotpassword"> Zapomniałeś hasła</a></p>
+</div> -->
+<div class="body-style">
+<p>
+  <mat-toolbar>
+    <span>Origami Projects</span>
+  </mat-toolbar>
+</p>
+<div class="changeForm">
+  <mat-card>
+  <form [formGroup]="loginForm" (ngSubmit)="checkLogin()">
+    <h1 class="title">Zaloguj się</h1>
+    <mat-grid-list cols="1" rowHeight="300px">
+
+      <mat-grid-tile>
+        <div class="example-container">
+
+          <mat-form-field appearance="fill" class="help">
+            <mat-label>Nazwa użytkownika</mat-label>
+            <input matInput type="text" autocomplete="off" formControlName="username">
+
+          </mat-form-field>
+          <br>
+          <mat-form-field appearance="fill" class="help">
+            <mat-label>Hasło</mat-label>
+            <input matInput type="password" formControlName="password">
+
+          </mat-form-field>
+
+        <button mat-raised-button color="primary" class="change" type="submit">Zaloguj się!</button>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+  </form>
+  <p><a class='underlineHover' routerLink="/register"> Zarejestruj się</a></p>
+  <p><a class="underlineHover" routerLink="/forgotpassword"> Zapomniałeś hasła</a></p>
+  </mat-card>
+</div>
 </div>
