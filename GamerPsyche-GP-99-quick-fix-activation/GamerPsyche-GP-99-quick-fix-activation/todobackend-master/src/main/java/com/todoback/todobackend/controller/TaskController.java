@@ -15,6 +15,7 @@ import no.stelar7.api.r4j.basic.constants.types.lol.GameQueueType;
 import no.stelar7.api.r4j.impl.lol.raw.SummonerAPI;
 import no.stelar7.api.r4j.pojo.lol.summoner.Summoner;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -25,15 +26,15 @@ import java.util.*;
 public class TaskController {
     final Gson gson = new Gson();
     @Autowired
-    R4JFetch r4jFetch;
+    private R4JFetch r4jFetch;
     @Autowired
-    UserService userService;
+    private UserService userService;
     @Autowired
-    MailService mailService;
+    private MailService mailService;
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
     @Autowired
-    OriannaFetch oriannaFetch;
+    private OriannaFetch oriannaFetch;
 
 
 
@@ -145,9 +146,9 @@ public class TaskController {
         Optional<User> userOptional = userRepository.findByUsername(username);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-             return r4jFetch.getMostPlayedChampions(user);
+            return r4jFetch.getMostPlayedChampions(user);
         }
-      return data;
+        return data;
 
     }
 
@@ -164,7 +165,7 @@ public class TaskController {
     }
 
     @PostMapping("/get/data/champion-select/by/action")
-    public void getMatchDataByChampion(@RequestBody String body){
+    public void getMatchDataByChampion(@RequestBody String body) throws Exception {
         Action object = gson.fromJson(body, Action.class);
         Optional<User> userOptional = userRepository.findByLolUsername(object.getSummonerName());
         if(userOptional.isPresent()){
@@ -176,6 +177,6 @@ public class TaskController {
     }
     //@PostConstruct()
     public void test(){
-       r4jFetch.test();
+        r4jFetch.test();
     }
 }

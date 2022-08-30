@@ -6,6 +6,7 @@ import com.todoback.todobackend.domain.ObjectiveMatchHistoryData;
 import com.todoback.todobackend.domain.User;
 import com.todoback.todobackend.domain.MatchHistoryDTO;
 import com.todoback.todobackend.repository.UserRepository;
+import com.todoback.todobackend.service.LOL.JsonConverter;
 import com.todoback.todobackend.service.LOL.R4JFetch;
 import no.stelar7.api.r4j.basic.constants.api.regions.LeagueShard;
 import no.stelar7.api.r4j.basic.constants.types.lol.GameQueueType;
@@ -36,8 +37,10 @@ import java.util.stream.Collectors;
 @Service
 public class R4JFetchImpl implements R4JFetch {
 
-    final R4J r4J = new R4J(APICredential.CRED);
+    @Autowired
+    JsonConverter jsonConverter;
 
+    final R4J r4J = new R4J(APICredential.CRED);
     public void test(){
         ActiveGameData gameData = LiveClientDataAPI.getGameData();
 
@@ -127,7 +130,6 @@ public class R4JFetchImpl implements R4JFetch {
             data.put(stringLongEntry.getKey(), Math.round((wins / games) * 100));
             System.out.println(stringLongEntry.getValue());
         }
-
         return data;
     }
 
@@ -190,7 +192,7 @@ public class R4JFetchImpl implements R4JFetch {
         return wins / allGames;
     }
 
-    public List<ChampionMatchHistoryData> getDataFromUserMatch(int championId, String summonerName, LeagueShard server) {
+    public List<ChampionMatchHistoryData> getDataFromUserMatch(int championId, String summonerName, LeagueShard server) throws Exception {
             List<ChampionMatchHistoryData> championMatchHistoryData = new ArrayList<>();
             Summoner summoner = SummonerAPI.getInstance().getSummonerByName(server, summonerName);
             MatchListBuilder builder = new MatchListBuilder();
@@ -232,6 +234,7 @@ public class R4JFetchImpl implements R4JFetch {
                     }
                 }
             }
+            jsonConverter.convertChampionMatchHistoryDataToJSON(championMatchHistoryData);
             return championMatchHistoryData;
     }
 
