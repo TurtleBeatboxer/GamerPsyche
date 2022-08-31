@@ -107,7 +107,6 @@ public class TaskController {
 
     @GetMapping("user/getOrianna/{username}/{queue}")
     public float fetchWinRateByQueue(@PathVariable String username, @PathVariable int queue) {
-
         Optional<User> userOptional = userRepository.findByUsername(username);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
