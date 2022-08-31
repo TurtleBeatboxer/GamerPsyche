@@ -21,7 +21,7 @@ public class JsonConverterImpl implements JsonConverter {
 
     public void convertChampionMatchHistoryDataToJSON(List<ChampionMatchHistoryData> championMatchHistoryData) throws Exception {
                 Gson gson = new Gson();
-                try (FileWriter writer = new FileWriter(jsonFilePath + SEPARATOR + "MatchHistoryData")) {
+                try (FileWriter writer = new FileWriter(jsonFilePath + SEPARATOR + "MatchHistoryData.json")) {
                     gson.toJson(championMatchHistoryData, writer);
                 } catch (Exception e){
                     System.out.println("Chuj zjebało się");
