@@ -12,8 +12,8 @@ import java.util.Map;
 public interface R4JFetch {
     void test();
     List<ChampionMatchHistoryData> getDataFromUserMatch(int championId, String summonerName, LeagueShard server) throws Exception;
-    void R4JFetchBasicInfo(User user);
+    Map<String, Integer>getMostPlayedChampions(String username);
     float R4JFetchWinRateByQueue(User user, GameQueueType queueType);
-    Map<String, Integer> getMostPlayedChampions(User user);
+    Map<String, Integer> fetchMostPlayedChampions(User user);
     List<MatchHistoryDTO> getMatchHistory(User user);
 }

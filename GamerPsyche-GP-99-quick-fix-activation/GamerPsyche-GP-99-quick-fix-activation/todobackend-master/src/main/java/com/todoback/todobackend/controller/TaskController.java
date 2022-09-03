@@ -5,6 +5,7 @@ import com.merakianalytics.orianna.types.common.Queue;
 import com.todoback.todobackend.domain.*;
 import com.todoback.todobackend.domain.Action;
 import com.todoback.todobackend.repository.UserRepository;
+import com.todoback.todobackend.service.LOL.HelperService;
 import com.todoback.todobackend.service.LOL.R4JFetch;
 //import com.todoback.todobackend.service.TestScrap;
 import com.todoback.todobackend.service.UserService;
@@ -35,6 +36,8 @@ public class TaskController {
     private UserRepository userRepository;
     @Autowired
     private OriannaFetch oriannaFetch;
+    @Autowired
+    private HelperService HelperService;
 
 
 
@@ -100,54 +103,21 @@ public class TaskController {
         return userService.sendMainData(username);
     }
 
-    @GetMapping("user/LOLUserDATA/{lolServer}/{lolUsername}")
-    public void getLOLUserDATA(@PathVariable String lolServer, @PathVariable String lolUsername) {
-        // return testScrap.getLOLUserDATA(lolServer, lolUsername);
-    }
-
     @GetMapping("user/getOrianna/{username}/{queue}")
     public float fetchWinRateByQueue(@PathVariable String username, @PathVariable int queue) {
-        Optional<User> userOptional = userRepository.findByUsername(username);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            Queue queueOrianna = Queue.withId(queue);
-            if(queue == 400){
-                Optional<GameQueueType> queueOptional = GameQueueType.getFromId(queue);
-                if (queueOptional.isPresent()) {
-                    GameQueueType queueR4J= queueOptional.get();
-                    float data = r4jFetch.R4JFetchWinRateByQueue(user, queueR4J);
-                    System.out.println("r4j");
-                    return data;
-                }
-            }
-            System.out.println("Ranked");
-            try {
-                float data = oriannaFetch.getWinRateByQueue(queueOrianna, user);
-                return data;
-            } catch (Exception e) {
-                if (e.getMessage() == "data null") {
-                    Optional<GameQueueType> queueOptional = GameQueueType.getFromId(queue);
-                    if (queueOptional.isPresent()) {
-                        GameQueueType queueR4J= queueOptional.get();
-                        float data = r4jFetch.R4JFetchWinRateByQueue(user, queueR4J);
-                        System.out.println("r4j");
-                        return data;
-                    }
-                }
-            }
-        }
-        return -1;
+            return HelperService.fetchWinRateByQueue(username, queue);
     }
 
     @GetMapping("user/{username}/getMostPlayedChampions")
     public  Map<String, Integer> getMostPlayedChampions(@PathVariable String username){
-        Map<String, Integer> data = new HashMap<>();
-        Optional<User> userOptional = userRepository.findByUsername(username);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            return r4jFetch.getMostPlayedChampions(user);
-        }
-        return data;
+//        Map<String, Integer> data = new HashMap<>();
+//        Optional<User> userOptional = userRepository.findByUsername(username);
+//        if (userOptional.isPresent()) {
+//            User user = userOptional.get();
+//            return r4jFetch.fetchMostPlayedChampions(user);
+//        }
+//        return data;
+        return r4jFetch.getMostPlayedChampions(username);
 
     }
 

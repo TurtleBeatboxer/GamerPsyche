@@ -33,13 +33,14 @@ import org.springframework.stereotype.Service;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
-
+import com.todoback.todobackend.repository.UserRepository;
 @Service
 public class R4JFetchImpl implements R4JFetch {
 
     @Autowired
     JsonConverter jsonConverter;
-
+    @Autowired
+    private UserRepository userRepository;
     final R4J r4J = new R4J(APICredential.CRED);
     public void test(){
         ActiveGameData gameData = LiveClientDataAPI.getGameData();
@@ -92,7 +93,7 @@ public class R4JFetchImpl implements R4JFetch {
 
     }
 
-    public  Map<String, Integer>  getMostPlayedChampions(User user){
+    public  Map<String, Integer>  fetchMostPlayedChampions(User user){
         Summoner summoner = SummonerAPI.getInstance().getSummonerByName(user.getLeagueShard(), user.getLOLUsername());
         MatchListBuilder builder = new MatchListBuilder();
         builder = builder.withPuuid(summoner.getPUUID()).withPlatform(summoner.getPlatform());
@@ -133,24 +134,6 @@ public class R4JFetchImpl implements R4JFetch {
         return data;
     }
 
-    @Override
-    public void R4JFetchBasicInfo(User user) {
-
-        Summoner summoner = SummonerAPI.getInstance().getSummonerByName(user.getLeagueShard(), user.getLOLUsername());
-        MatchListBuilder builder = new MatchListBuilder();
-        builder = builder.withPuuid(summoner.getPUUID()).withPlatform(summoner.getPlatform());
-
-
-        MatchBuilder matchBuilder = new MatchBuilder(summoner.getPlatform());
-        List<String> solo = builder.withQueue(GameQueueType.TEAM_BUILDER_RANKED_SOLO).withCount(100).get();
-
-        LOLMatch match = matchBuilder.withId(solo.get(0)).getMatch();
-        List<MatchTeam> teams = match.getTeams();
-        System.out.println(teams.get(0).didWin());
-        System.out.println(teams.get(1).didWin());
-        System.out.println(match.getParticipants());
-
-    }
 
     public float R4JFetchWinRateByQueue(User user, GameQueueType queueType) {
         Summoner summoner = SummonerAPI.getInstance().getSummonerByName(user.getLeagueShard(), user.getLOLUsername());
@@ -287,4 +270,13 @@ public class R4JFetchImpl implements R4JFetch {
     }
 
 
+    public Map<String, Integer>getMostPlayedChampions(String username){
+        Map<String, Integer> data = new HashMap<>();
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            return fetchMostPlayedChampions(user);
+        }
+        return data;
+    }
 }
