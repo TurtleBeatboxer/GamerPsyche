@@ -1,10 +1,8 @@
 package com.todoback.todobackend.service.LOL.impl;
 
+import com.google.gson.Gson;
 import com.todoback.todobackend.configuration.APICredential;
-import com.todoback.todobackend.domain.ChampionMatchHistoryData;
-import com.todoback.todobackend.domain.ObjectiveMatchHistoryData;
-import com.todoback.todobackend.domain.User;
-import com.todoback.todobackend.domain.MatchHistoryDTO;
+import com.todoback.todobackend.domain.*;
 import com.todoback.todobackend.repository.UserRepository;
 import com.todoback.todobackend.service.LOL.JsonConverter;
 import com.todoback.todobackend.service.LOL.R4JFetch;
@@ -33,13 +31,15 @@ import org.springframework.stereotype.Service;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
-
+import com.todoback.todobackend.repository.UserRepository;
 @Service
 public class R4JFetchImpl implements R4JFetch {
+    final Gson gson = new Gson();
 
     @Autowired
     JsonConverter jsonConverter;
-
+    @Autowired
+    private UserRepository userRepository;
     final R4J r4J = new R4J(APICredential.CRED);
     public void test(){
         ActiveGameData gameData = LiveClientDataAPI.getGameData();
@@ -50,8 +50,19 @@ public class R4JFetchImpl implements R4JFetch {
         }
     }
 
+    public List<MatchHistoryDTO> getMatchHistory(String username){
+        List<MatchHistoryDTO> data = new ArrayList<>();
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            return fetchMatchHistory(user);
 
-    public List<MatchHistoryDTO> getMatchHistory(User user){
+        }
+        return data;
+    }
+
+
+    public List<MatchHistoryDTO> fetchMatchHistory(User user){
         Summoner summoner = SummonerAPI.getInstance().getSummonerByName(user.getLeagueShard(), user.getLOLUsername());
         System.out.println(summoner.getSummonerId());
         MatchListBuilder builder = new MatchListBuilder();
@@ -92,7 +103,7 @@ public class R4JFetchImpl implements R4JFetch {
 
     }
 
-    public  Map<String, Integer>  getMostPlayedChampions(User user){
+    public  Map<String, Integer>  fetchMostPlayedChampions(User user){
         Summoner summoner = SummonerAPI.getInstance().getSummonerByName(user.getLeagueShard(), user.getLOLUsername());
         MatchListBuilder builder = new MatchListBuilder();
         builder = builder.withPuuid(summoner.getPUUID()).withPlatform(summoner.getPlatform());
@@ -133,24 +144,6 @@ public class R4JFetchImpl implements R4JFetch {
         return data;
     }
 
-    @Override
-    public void R4JFetchBasicInfo(User user) {
-
-        Summoner summoner = SummonerAPI.getInstance().getSummonerByName(user.getLeagueShard(), user.getLOLUsername());
-        MatchListBuilder builder = new MatchListBuilder();
-        builder = builder.withPuuid(summoner.getPUUID()).withPlatform(summoner.getPlatform());
-
-
-        MatchBuilder matchBuilder = new MatchBuilder(summoner.getPlatform());
-        List<String> solo = builder.withQueue(GameQueueType.TEAM_BUILDER_RANKED_SOLO).withCount(100).get();
-
-        LOLMatch match = matchBuilder.withId(solo.get(0)).getMatch();
-        List<MatchTeam> teams = match.getTeams();
-        System.out.println(teams.get(0).didWin());
-        System.out.println(teams.get(1).didWin());
-        System.out.println(match.getParticipants());
-
-    }
 
     public float R4JFetchWinRateByQueue(User user, GameQueueType queueType) {
         Summoner summoner = SummonerAPI.getInstance().getSummonerByName(user.getLeagueShard(), user.getLOLUsername());
@@ -192,7 +185,19 @@ public class R4JFetchImpl implements R4JFetch {
         return wins / allGames;
     }
 
-    public List<ChampionMatchHistoryData> getDataFromUserMatch(int championId, String summonerName, LeagueShard server) throws Exception {
+    public List<ChampionMatchHistoryData> getDataFromUserMatch(String body) throws Exception {
+        Action object = gson.fromJson(body, Action.class);
+        Optional<User> userOptional = userRepository.findByLolUsername(object.getSummonerName());
+        if(userOptional.isPresent()){
+            User user = userOptional.get();
+            if(object.getChampionId() > 0){
+                return fetchDataFromUserMatch(object.getChampionId(), object.getSummonerName(), user.getLeagueShard());
+            }
+        }
+        return null;
+    }
+
+    public List<ChampionMatchHistoryData> fetchDataFromUserMatch(int championId, String summonerName, LeagueShard server) throws Exception {
             List<ChampionMatchHistoryData> championMatchHistoryData = new ArrayList<>();
             Summoner summoner = SummonerAPI.getInstance().getSummonerByName(server, summonerName);
             MatchListBuilder builder = new MatchListBuilder();
@@ -287,4 +292,13 @@ public class R4JFetchImpl implements R4JFetch {
     }
 
 
+    public Map<String, Integer>getMostPlayedChampions(String username){
+        Map<String, Integer> data = new HashMap<>();
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            return fetchMostPlayedChampions(user);
+        }
+        return data;
+    }
 }

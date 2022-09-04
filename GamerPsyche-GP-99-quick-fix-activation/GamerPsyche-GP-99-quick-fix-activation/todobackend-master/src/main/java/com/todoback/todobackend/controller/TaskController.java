@@ -1,25 +1,19 @@
 package com.todoback.todobackend.controller;
 
 import com.google.gson.Gson;
-import com.merakianalytics.orianna.types.common.Queue;
 import com.todoback.todobackend.domain.*;
 import com.todoback.todobackend.domain.Action;
 import com.todoback.todobackend.repository.UserRepository;
+import com.todoback.todobackend.service.LOL.HelperService;
 import com.todoback.todobackend.service.LOL.R4JFetch;
 //import com.todoback.todobackend.service.TestScrap;
 import com.todoback.todobackend.service.UserService;
 import com.todoback.todobackend.service.MailService;
 import com.todoback.todobackend.service.LOL.OriannaFetch;
-import no.stelar7.api.r4j.basic.constants.api.regions.LeagueShard;
-import no.stelar7.api.r4j.basic.constants.types.lol.GameQueueType;
-import no.stelar7.api.r4j.impl.lol.raw.SummonerAPI;
-import no.stelar7.api.r4j.pojo.lol.summoner.Summoner;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
 
 @RestController
@@ -35,6 +29,8 @@ public class TaskController {
     private UserRepository userRepository;
     @Autowired
     private OriannaFetch oriannaFetch;
+    @Autowired
+    private HelperService HelperService;
 
 
 
@@ -100,82 +96,25 @@ public class TaskController {
         return userService.sendMainData(username);
     }
 
-    @GetMapping("user/LOLUserDATA/{lolServer}/{lolUsername}")
-    public void getLOLUserDATA(@PathVariable String lolServer, @PathVariable String lolUsername) {
-        // return testScrap.getLOLUserDATA(lolServer, lolUsername);
-    }
-
     @GetMapping("user/getOrianna/{username}/{queue}")
     public float fetchWinRateByQueue(@PathVariable String username, @PathVariable int queue) {
-        Optional<User> userOptional = userRepository.findByUsername(username);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            Queue queueOrianna = Queue.withId(queue);
-            if(queue == 400){
-                Optional<GameQueueType> queueOptional = GameQueueType.getFromId(queue);
-                if (queueOptional.isPresent()) {
-                    GameQueueType queueR4J= queueOptional.get();
-                    float data = r4jFetch.R4JFetchWinRateByQueue(user, queueR4J);
-                    System.out.println("r4j");
-                    return data;
-                }
-            }
-            System.out.println("Ranked");
-            try {
-                float data = oriannaFetch.getWinRateByQueue(queueOrianna, user);
-                return data;
-            } catch (Exception e) {
-                if (e.getMessage() == "data null") {
-                    Optional<GameQueueType> queueOptional = GameQueueType.getFromId(queue);
-                    if (queueOptional.isPresent()) {
-                        GameQueueType queueR4J= queueOptional.get();
-                        float data = r4jFetch.R4JFetchWinRateByQueue(user, queueR4J);
-                        System.out.println("r4j");
-                        return data;
-                    }
-                }
-            }
-        }
-        return -1;
+            return HelperService.fetchWinRateByQueue(username, queue);
     }
 
     @GetMapping("user/{username}/getMostPlayedChampions")
     public  Map<String, Integer> getMostPlayedChampions(@PathVariable String username){
-        Map<String, Integer> data = new HashMap<>();
-        Optional<User> userOptional = userRepository.findByUsername(username);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            return r4jFetch.getMostPlayedChampions(user);
-        }
-        return data;
+        return r4jFetch.getMostPlayedChampions(username);
 
     }
 
     @GetMapping("user/{username}/getMatchHistory")
     public List<MatchHistoryDTO> getMatchHistory(@PathVariable String username){
-        List<MatchHistoryDTO> data = new ArrayList<>();
-        Optional<User> userOptional = userRepository.findByUsername(username);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            return r4jFetch.getMatchHistory(user);
-
-        }
-        return data;
+       return r4jFetch.getMatchHistory(username);
     }
 
     @PostMapping("/get/data/champion-select/by/action")
     public void getMatchDataByChampion(@RequestBody String body) throws Exception {
-        Action object = gson.fromJson(body, Action.class);
-        Optional<User> userOptional = userRepository.findByLolUsername(object.getSummonerName());
-        if(userOptional.isPresent()){
-            User user = userOptional.get();
-            if(object.getChampionId() > 0){
-                r4jFetch.getDataFromUserMatch(object.getChampionId(), object.getSummonerName(), user.getLeagueShard());
-            }
-        }
+         r4jFetch.getDataFromUserMatch(body);
     }
-    //@PostConstruct()
-    public void test(){
-        r4jFetch.test();
-    }
+
 }
