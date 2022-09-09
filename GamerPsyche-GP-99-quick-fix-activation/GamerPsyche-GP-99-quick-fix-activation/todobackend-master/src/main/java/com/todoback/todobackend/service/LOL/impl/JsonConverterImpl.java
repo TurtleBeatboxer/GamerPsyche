@@ -23,6 +23,7 @@ public class JsonConverterImpl implements JsonConverter {
                 Gson gson = new Gson();
                 try (FileWriter writer = new FileWriter(jsonFilePath + SEPARATOR + "MatchHistoryData.json")) {
                     gson.toJson(championMatchHistoryData, writer);
+                    System.out.println("JSON converted");
                 } catch (Exception e){
                     System.out.println("Chuj zjebało się");
                 }

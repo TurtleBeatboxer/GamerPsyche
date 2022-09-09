@@ -215,9 +215,7 @@ public class R4JFetchImpl implements R4JFetch {
 
     private GameQueueType gameQueueTypePresent(int i, ArrayList<Integer> queues){
         Optional<GameQueueType> gameQueueType = GameQueueType.getFromId(queues.get(i));
-        if (gameQueueType.isPresent()){
-            return gameQueueType.get();
-        }
+        return gameQueueType.orElse(null);
     }
 
 
