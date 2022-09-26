@@ -13,7 +13,6 @@ public class OriannaUsagePreparationService {
         return RiotUserPuuId;
     }
 
-
     public Region translateEnumServerToRiotRegion(LOLServer enumServerIndex) {
         switch (enumServerIndex) {
             case BR:
@@ -38,6 +37,35 @@ public class OriannaUsagePreparationService {
                 return Region.JAPAN;
             case KR:
                 return Region.KOREA;
+            default:
+                return null;
+        }
+    }
+
+    public LeagueShard translateEnumServerToRiotRegionR4J(LOLServer enumServerIndex) {
+        switch (enumServerIndex) {
+            case BR:
+                return LeagueShard.BR1;
+            case EUNE:
+                return LeagueShard.EUN1;
+            case EUW:
+                return LeagueShard.EUW1;
+            case LAN:
+                return LeagueShard.LA1;
+            case LAS:
+                return LeagueShard.LA2;
+            case NA:
+                return LeagueShard.NA1;
+            case OCE:
+                return LeagueShard.OC1;
+            case RU:
+                return LeagueShard.RU;
+            case TR:
+                return LeagueShard.TR1;
+            case JP:
+                return LeagueShard.JP1;
+            case KR:
+                return LeagueShard.KR;
             default:
                 return null;
         }

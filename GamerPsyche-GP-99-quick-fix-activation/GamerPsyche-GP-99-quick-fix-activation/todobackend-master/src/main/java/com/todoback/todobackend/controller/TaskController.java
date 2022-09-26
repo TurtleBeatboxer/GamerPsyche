@@ -111,9 +111,10 @@ public class TaskController {
     }
 
     @GetMapping("AI/{username}/{championId}")
-    public void getAIData(@PathVariable String username, @PathVariable int championId){
+    public void getAIData(@PathVariable String username, @PathVariable int championId) throws Exception {
         System.out.println("Controller");
-        aiDataService.userSearch(username, championId);
+        aiDataService.userSearchBrute(username, championId);
+       // aiDataService.userSearch(username, championId);
     }
 
 
