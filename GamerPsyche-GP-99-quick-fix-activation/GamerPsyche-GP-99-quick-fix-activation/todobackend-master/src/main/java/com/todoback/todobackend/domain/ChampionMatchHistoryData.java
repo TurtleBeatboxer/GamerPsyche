@@ -1,6 +1,12 @@
 package com.todoback.todobackend.domain;
 
 public class ChampionMatchHistoryData {
+
+
+    private String username;
+    private boolean searchedUser;
+    private String champion;
+    private boolean didWon;
     private double crowdControlScore;
     private double creepScorePM;
     private double visionScorePM;
@@ -10,7 +16,11 @@ public class ChampionMatchHistoryData {
     private double KP;
     private ObjectiveMatchHistoryData objectivesTaken;
 
-    public void setChampionMatchHistoryData(double crowdControlScore, double creepScorePM, double visionScorePM, double damagePM, double selfMitigatedPM, double KDA, double KP, ObjectiveMatchHistoryData objectivesTaken){
+    public void setChampionMatchHistoryData(String champion, boolean didWon, boolean searchedUser, String username, double crowdControlScore, double creepScorePM, double visionScorePM, double damagePM, double selfMitigatedPM, double KDA, double KP, ObjectiveMatchHistoryData objectivesTaken){
+        this.didWon = didWon;
+        this.champion = champion;
+        this.searchedUser = searchedUser;
+        this.username = username;
         this.creepScorePM = creepScorePM;
         this.crowdControlScore = crowdControlScore;
         this.visionScorePM = visionScorePM;
@@ -19,6 +29,38 @@ public class ChampionMatchHistoryData {
         this.KDA = KDA;
         this.KP = KP;
         this.objectivesTaken = objectivesTaken;
+    }
+
+    public String getChampion() {
+        return champion;
+    }
+
+    public void setChampion(String champion) {
+        this.champion = champion;
+    }
+
+    public boolean isSearchedUser() {
+        return searchedUser;
+    }
+
+    public void setSearchedUser(boolean searchedUser) {
+        this.searchedUser = searchedUser;
+    }
+
+    public boolean isDidWon() {
+        return didWon;
+    }
+
+    public void setDidWon(boolean didWon) {
+        this.didWon = didWon;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public double getCrowdControlScore() {

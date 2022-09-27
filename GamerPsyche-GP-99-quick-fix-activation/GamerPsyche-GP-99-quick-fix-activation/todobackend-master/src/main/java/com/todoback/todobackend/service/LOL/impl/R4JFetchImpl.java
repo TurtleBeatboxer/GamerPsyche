@@ -185,7 +185,7 @@ public class R4JFetchImpl implements R4JFetch {
                         }
                     }
             }
-            jsonConverter.convertChampionMatchHistoryDataToJSON(championMatchHistoryData);
+            //jsonConverter.convertChampionMatchHistoryDataToJSON(championMatchHistoryData);
             return championMatchHistoryData;
     }
 
@@ -198,7 +198,7 @@ public class R4JFetchImpl implements R4JFetch {
                 MatchTeam matchTeam = helperService.getUserTeam(match, matchParticipant);
                 if (match.getParticipants().get(j).getChampionId() == championId) {
                     ChampionMatchHistoryData data = new ChampionMatchHistoryData();
-                    helperService.setData(matchParticipant, matchTeam, gameTime, data);
+                    helperService.setData(matchParticipant, matchTeam, gameTime, data, true);
                     championMatchHistoryData.add(data);
                 }
                 break;

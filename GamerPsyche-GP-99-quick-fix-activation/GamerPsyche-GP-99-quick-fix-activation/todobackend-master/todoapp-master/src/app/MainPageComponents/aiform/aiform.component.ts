@@ -19,7 +19,7 @@ export class AIFormComponent implements OnInit {
   }
 
   getData(){
-    this.http.get(`http://localhost:8080/AI/${this.dataForm.value.username}/${this.dataForm.value.championId}`).subscribe((x)=>{
+    this.http.post<{username: string, championId: number}>(`http://localhost:8080/AI/data`, {username: this.dataForm.value.username, championId: this.dataForm.value.championId}).subscribe((x)=>{
       console.log(x)
     })
   }

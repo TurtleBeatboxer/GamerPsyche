@@ -13,6 +13,6 @@ public interface HelperService {
     ArrayList<Integer> queueIds();
     GameQueueType gameQueueTypePresent(int i, ArrayList<Integer> queues);
     double calculateGameTime(double gameTimeInSeconds);
-    void setData(MatchParticipant matchParticipant, MatchTeam matchTeam, double gameTime, ChampionMatchHistoryData data);
+    void setData(MatchParticipant matchParticipant, MatchTeam matchTeam, double gameTime, ChampionMatchHistoryData data, boolean searchedUser);
     MatchTeam getUserTeam(LOLMatch match, MatchParticipant matchParticipant);
 }

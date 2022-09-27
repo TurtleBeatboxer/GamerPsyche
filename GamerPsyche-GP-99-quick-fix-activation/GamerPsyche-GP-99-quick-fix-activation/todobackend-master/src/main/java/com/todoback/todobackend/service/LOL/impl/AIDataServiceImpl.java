@@ -58,25 +58,20 @@ public class AIDataServiceImpl implements AIDataService {
                 System.out.println(summoner.get().getPlatform());
                 return summoner.get();
             }
-            /*try {
-                return SummonerAPI.getInstance().getSummonerByName(oriannaUsagePreparationService.translateEnumServerToRiotRegionR4J(lolServer), lolUsername);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }*/
         }
         return null;
     }
 
 
 
-    public List<ChampionMatchHistoryData> checkSearchType(Summoner summ, int championId) throws Exception {
-        List<ChampionMatchHistoryData> championMatchHistoryData = new ArrayList<>();
+    public List<List<ChampionMatchHistoryData>> checkSearchType(Summoner summ, int championId) throws Exception {
+        List<List<ChampionMatchHistoryData>> championMatchHistoryData = new ArrayList<>();
         Summoner summoner = SummonerAPI.getInstance().getSummonerByName(summ.getPlatform(), summ.getName());
         MatchListBuilder builder = new MatchListBuilder().withPuuid(summoner.getPUUID()).withPlatform(summoner.getPlatform());
         MatchBuilder matchBuilder = new MatchBuilder(summoner.getPlatform());
         ArrayList<Integer> queues = helperService.queueIds();
         for (int i = 0; i < 3; i++) {
-            List<String> solo = builder.withQueue(helperService.gameQueueTypePresent(i, queues)).withCount(25).get();
+            List<String> solo = builder.withQueue(helperService.gameQueueTypePresent(i, queues)).withCount(30).get();
             for (String s : solo) {
                 LOLMatch match = matchBuilder.withId(s).getMatch();
                 if (match.getGameStartTimestamp() > 1641513601000L) {
@@ -94,37 +89,54 @@ public class AIDataServiceImpl implements AIDataService {
         jsonConverter.convertChampionMatchHistoryDataToJSON(championMatchHistoryData);
         return championMatchHistoryData;
     }
-    public void findMatchHistory(List<ChampionMatchHistoryData> championMatchHistoryData, Summoner summoner, LOLMatch match) {
-
+    public void findMatchHistory(List<List<ChampionMatchHistoryData>> championMatchHistoryData, Summoner summoner, LOLMatch match) {
+        List<ChampionMatchHistoryData> matchData = new ArrayList<>();
         for (int j = 0; j < match.getParticipants().size(); j++) {
             String PUUID = match.getParticipants().get(j).getPuuid();
+            MatchParticipant matchParticipant = match.getParticipants().get(j);
+            double gameTime = helperService.calculateGameTime(match.getGameDuration());
+            MatchTeam matchTeam = helperService.getUserTeam(match, matchParticipant);
+            ChampionMatchHistoryData data = new ChampionMatchHistoryData();
             if (PUUID.equals(summoner.getPUUID())) {
-                MatchParticipant matchParticipant = match.getParticipants().get(j);
-                double gameTime = helperService.calculateGameTime(match.getGameDuration());
-                MatchTeam matchTeam = helperService.getUserTeam(match, matchParticipant);
-                    ChampionMatchHistoryData data = new ChampionMatchHistoryData();
-                    helperService.setData(matchParticipant, matchTeam, gameTime, data);
-                    championMatchHistoryData.add(data);
-                break;
+
+                    helperService.setData(matchParticipant, matchTeam, gameTime, data, true);
+                    matchData.add(data);
+                    continue;
             }
+            helperService.setData(matchParticipant, matchTeam, gameTime, data, false);
+            matchData.add(data);
         }
+        championMatchHistoryData.add(matchData);
     }
 
-    private void findMatchHistoryByChampion(int championId, List<ChampionMatchHistoryData> championMatchHistoryData, Summoner summoner, LOLMatch match){
+    private void findMatchHistoryByChampion(int championId, List<List<ChampionMatchHistoryData>> championMatchHistoryData, Summoner summoner, LOLMatch match){
+        List<ChampionMatchHistoryData> matchData = new ArrayList<>();
         for (int j = 0; j < match.getParticipants().size(); j++) {
             String PUUID = match.getParticipants().get(j).getPuuid();
+            MatchParticipant matchParticipant = match.getParticipants().get(j);
+            double gameTime = helperService.calculateGameTime(match.getGameDuration());
+            MatchTeam matchTeam = helperService.getUserTeam(match, matchParticipant);
             if (PUUID.equals(summoner.getPUUID())) {
-                MatchParticipant matchParticipant = match.getParticipants().get(j);
-                double gameTime = helperService.calculateGameTime(match.getGameDuration());
-                MatchTeam matchTeam = helperService.getUserTeam(match, matchParticipant);
-                if (match.getParticipants().get(j).getChampionId() == championId) {
-                    ChampionMatchHistoryData data = new ChampionMatchHistoryData();
-                    helperService.setData(matchParticipant, matchTeam, gameTime, data);
-                    championMatchHistoryData.add(data);
+                if (match.getParticipants().get(j).getChampionId() != championId) {
+
+                    return;
                 }
-                break;
+
+                    ChampionMatchHistoryData data = new ChampionMatchHistoryData();
+                    helperService.setData(matchParticipant, matchTeam, gameTime, data, true);
+                    matchData.add(data);
+                    continue;
+
             }
+            ChampionMatchHistoryData data = new ChampionMatchHistoryData();
+            helperService.setData(matchParticipant, matchTeam, gameTime, data, false);
+            matchData.add(data);
+
         }
+
+            championMatchHistoryData.add(matchData);
+
+
     }
 
 

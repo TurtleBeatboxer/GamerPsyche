@@ -110,10 +110,10 @@ public class TaskController {
 
     }
 
-    @GetMapping("AI/{username}/{championId}")
-    public void getAIData(@PathVariable String username, @PathVariable int championId) throws Exception {
+    @PostMapping("AI")
+    public void getAIData(@RequestBody AIReqBody body) throws Exception {
         System.out.println("Controller");
-        aiDataService.userSearchBrute(username, championId);
+        aiDataService.userSearchBrute(body.getUsername(), body.getChampionId());
        // aiDataService.userSearch(username, championId);
     }
 

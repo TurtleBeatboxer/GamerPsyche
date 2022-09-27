@@ -19,7 +19,7 @@ public class JsonConverterImpl implements JsonConverter {
     @Value("${jsongenerator.file.path}")
     private String jsonFilePath;
 
-    public void convertChampionMatchHistoryDataToJSON(List<ChampionMatchHistoryData> championMatchHistoryData) throws Exception {
+    public void convertChampionMatchHistoryDataToJSON(List<List<ChampionMatchHistoryData>> championMatchHistoryData) throws Exception {
                 Gson gson = new Gson();
                 try (FileWriter writer = new FileWriter(jsonFilePath + SEPARATOR + "MatchHistoryData.json")) {
                     gson.toJson(championMatchHistoryData, writer);

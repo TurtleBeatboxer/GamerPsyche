@@ -79,7 +79,11 @@ public class HelperServiceImpl implements HelperService {
         return (Math.round((gameTimeInSeconds / 60) * 100.0) / 100.0);
     }
 
-    public void setData(MatchParticipant matchParticipant, MatchTeam matchTeam, double gameTime, ChampionMatchHistoryData data) {
+    public void setData(MatchParticipant matchParticipant, MatchTeam matchTeam, double gameTime, ChampionMatchHistoryData data, boolean searchedUser) {
+        data.setUsername(matchParticipant.getSummonerName());
+        data.setDidWon(matchParticipant.didWin());
+        data.setSearchedUser(searchedUser);
+        data.setChampion(matchParticipant.getChampionName());
         data.setCreepScorePM(calculateScorePM(matchParticipant.getTotalMinionsKilled(), gameTime));
         data.setCrowdControlScore(calculateScorePM(matchParticipant.getTimeCCingOthers(), gameTime));
         data.setVisionScorePM(calculateScorePM(matchParticipant.getVisionScore(), gameTime));
