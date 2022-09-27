@@ -4,7 +4,7 @@ import no.stelar7.api.r4j.basic.APICredentials;
 
 public class APICredential
 {
-    public static final String LEAGUE_KEY = "RGAPI-92e248a2-29a2-4227-8c3c-3ed4cc89fc69";
+    public static final String LEAGUE_KEY = "RGAPI-9071d1ee-bc86-4983-bfe9-e139b28ffc35";
 
     public static final APICredentials CRED = new APICredentials(LEAGUE_KEY);
 }

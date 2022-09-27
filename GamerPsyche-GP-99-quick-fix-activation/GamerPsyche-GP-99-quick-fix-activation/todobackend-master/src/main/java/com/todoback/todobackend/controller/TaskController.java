@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.todoback.todobackend.domain.*;
 import com.todoback.todobackend.domain.Action;
 import com.todoback.todobackend.repository.UserRepository;
+import com.todoback.todobackend.service.LOL.AIDataService;
 import com.todoback.todobackend.service.LOL.HelperService;
 import com.todoback.todobackend.service.LOL.R4JFetch;
 //import com.todoback.todobackend.service.TestScrap;
@@ -31,6 +32,8 @@ public class TaskController {
     private OriannaFetch oriannaFetch;
     @Autowired
     private HelperService HelperService;
+    @Autowired
+    private AIDataService aiDataService;
 
 
 
@@ -106,6 +109,14 @@ public class TaskController {
         return r4jFetch.getMostPlayedChampions(username);
 
     }
+
+    @PostMapping("AI")
+    public void getAIData(@RequestBody AIReqBody body) throws Exception {
+        System.out.println("Controller");
+        aiDataService.userSearchBrute(body.getUsername(), body.getChampionId());
+       // aiDataService.userSearch(username, championId);
+    }
+
 
     @GetMapping("user/{username}/getMatchHistory")
     public List<MatchHistoryDTO> getMatchHistory(@PathVariable String username){

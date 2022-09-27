@@ -11,6 +11,7 @@ import { ActivatedComponent } from './RegisterComponents/activated/activated.com
 import { ProfileComponent } from './MainPageComponents/profile/profile.component';
 import { ForgotPasswordComponent } from './LoginComponents/forgot-password/forgot-password.component';
 import { EmailChangePasswordComponent } from './LoginComponents/email-change-password/email-change-password.component';
+import { AIFormComponent } from './MainPageComponents/aiform/aiform.component';
 
 const routes: Routes = [
   { path: 'main', component: ListComponent, canActivate: [AuthGuardService] },
@@ -23,6 +24,7 @@ const routes: Routes = [
     component: LogoutComponent,
     canActivate: [AuthGuardService],
   },
+  {path: 'admin/AI/data', component: AIFormComponent},
   { path: 'register', component: RegisterComponent },
   { path: 'forgotpassword', component: ForgotPasswordComponent },
   { path: `changePassword/:id`, component: EmailChangePasswordComponent },

@@ -6,5 +6,5 @@ import java.io.IOException;
 import java.util.List;
 
 public interface JsonConverter {
-    void convertChampionMatchHistoryDataToJSON(List<ChampionMatchHistoryData> championMatchHistoryData) throws Exception;
+    void convertChampionMatchHistoryDataToJSON(List<List<ChampionMatchHistoryData>> championMatchHistoryData) throws Exception;
 }

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.todoback.todobackend.configuration.APICredential;
 import com.todoback.todobackend.domain.*;
 import com.todoback.todobackend.repository.UserRepository;
+import com.todoback.todobackend.service.LOL.HelperService;
 import com.todoback.todobackend.service.LOL.JsonConverter;
 import com.todoback.todobackend.service.LOL.R4JFetch;
 import no.stelar7.api.r4j.basic.constants.api.regions.LeagueShard;
@@ -29,6 +30,8 @@ public class R4JFetchImpl implements R4JFetch {
 
     @Autowired
     JsonConverter jsonConverter;
+    @Autowired
+    private HelperService helperService;
     @Autowired
     private UserRepository userRepository;
     final R4J r4J = new R4J(APICredential.CRED);
@@ -172,9 +175,9 @@ public class R4JFetchImpl implements R4JFetch {
             Summoner summoner = SummonerAPI.getInstance().getSummonerByName(server, summonerName);
             MatchListBuilder builder = new MatchListBuilder().withPuuid(summoner.getPUUID()).withPlatform(summoner.getPlatform());
             MatchBuilder matchBuilder = new MatchBuilder(summoner.getPlatform());
-            ArrayList<Integer> queues = queueIds();
+            ArrayList<Integer> queues = helperService.queueIds();
             for (int i = 0; i < 3; i++) {
-                    List<String> solo = builder.withQueue(gameQueueTypePresent(i, queues)).withCount(100).get();
+                    List<String> solo = builder.withQueue(helperService.gameQueueTypePresent(i, queues)).withCount(100).get();
                     for (String s : solo) {
                         LOLMatch match = matchBuilder.withId(s).getMatch();
                         if (match.getGameStartTimestamp() > 1641513601000L) {
@@ -182,7 +185,7 @@ public class R4JFetchImpl implements R4JFetch {
                         }
                     }
             }
-            jsonConverter.convertChampionMatchHistoryDataToJSON(championMatchHistoryData);
+            //jsonConverter.convertChampionMatchHistoryDataToJSON(championMatchHistoryData);
             return championMatchHistoryData;
     }
 
@@ -191,11 +194,11 @@ public class R4JFetchImpl implements R4JFetch {
             String PUUID = match.getParticipants().get(j).getPuuid();
             if (PUUID.equals(summoner.getPUUID())) {
                 MatchParticipant matchParticipant = match.getParticipants().get(j);
-                double gameTime = calculateGameTime(match.getGameDuration());
-                MatchTeam matchTeam = getUserTeam(match, matchParticipant);
+                double gameTime = helperService.calculateGameTime(match.getGameDuration());
+                MatchTeam matchTeam = helperService.getUserTeam(match, matchParticipant);
                 if (match.getParticipants().get(j).getChampionId() == championId) {
                     ChampionMatchHistoryData data = new ChampionMatchHistoryData();
-                    setData(matchParticipant, matchTeam, gameTime, data);
+                    helperService.setData(matchParticipant, matchTeam, gameTime, data, true);
                     championMatchHistoryData.add(data);
                 }
                 break;
@@ -203,68 +206,13 @@ public class R4JFetchImpl implements R4JFetch {
         }
     }
 
-    private MatchTeam getUserTeam(LOLMatch match, MatchParticipant matchParticipant) {
-        MatchTeam matchTeam;
-        if (match.getTeams().get(0).getTeamId() == matchParticipant.getTeam()) {
-            matchTeam = match.getTeams().get(0);
-        } else {
-            matchTeam = match.getTeams().get(1);
-        }
-        return matchTeam;
-    }
-
-    private GameQueueType gameQueueTypePresent(int i, ArrayList<Integer> queues){
-        Optional<GameQueueType> gameQueueType = GameQueueType.getFromId(queues.get(i));
-        return gameQueueType.orElse(null);
-    }
 
 
-    private void setData(MatchParticipant matchParticipant, MatchTeam matchTeam, double gameTime, ChampionMatchHistoryData data) {
-        data.setCreepScorePM(calculateScorePM(matchParticipant.getTotalMinionsKilled(), gameTime));
-        data.setCrowdControlScore(calculateScorePM(matchParticipant.getTimeCCingOthers(), gameTime));
-        data.setVisionScorePM(calculateScorePM(matchParticipant.getVisionScore(), gameTime));
-        data.setDamagePM(calculateScorePM(matchParticipant.getTotalDamageDealtToChampions(), gameTime));
-        data.setSelfMitigatedPM(calculateScorePM(matchParticipant.getDamageSelfMitigated(), gameTime));
-        data.setKDA(calculateKDA(matchParticipant.getKills(), matchParticipant.getDeaths(), matchParticipant.getAssists()));
-        data.setKP(calculateKP(matchParticipant.getKills(), matchParticipant.getAssists(), matchTeam));
-        data.setObjectivesTaken(getObjectives(matchTeam));
-    }
 
 
-    public double calculateGameTime(double gameTimeInSeconds){
-        return (Math.round((gameTimeInSeconds / 60) * 100.0) / 100.0);
-    }
 
-    public double calculateScorePM(int Score, double gameTime){
-        return (Math.round((Score / gameTime) * 10.0) / 10.0);
 
-    }
 
-    public ArrayList<Integer> queueIds(){
-        ArrayList<Integer> queues = new ArrayList<>();
-        queues.add(400);
-        queues.add(420);
-        queues.add(440);
-        return queues;
-    }
-
-    public double calculateKDA(double kills, double deaths, double assists){
-        return (Math.round(((kills + assists) / deaths) * 10.00) / 10.00);
-    }
-
-    public double calculateKP(double kills, double assists, MatchTeam matchTeam){
-        return (Math.round(((kills + assists) / matchTeam.getObjectives().get("champion").getKills()) * 100.0 )/ 100.0);
-    }
-
-    private ObjectiveMatchHistoryData getObjectives(MatchTeam matchTeam){
-        Map<String, ObjectiveStats> stats = matchTeam.getObjectives();
-        ObjectiveMatchHistoryData data = new ObjectiveMatchHistoryData();
-        data.setDragonKills(stats.get("dragon").getKills());
-        data.setDragonKills(stats.get("inhibitor").getKills());
-        data.setDragonKills(stats.get("tower").getKills());
-        data.setDragonKills(stats.get("riftHerald").getKills());
-       return data;
-    }
 
 
     public Map<String, Integer>getMostPlayedChampions(String username){
@@ -276,4 +224,8 @@ public class R4JFetchImpl implements R4JFetch {
         }
         return data;
     }
+
+
+
+
 }
