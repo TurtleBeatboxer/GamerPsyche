@@ -1,6 +1,7 @@
 package com.todoback.todobackend.controller;
 
 import com.google.gson.Gson;
+import com.merakianalytics.datapipelines.sources.Get;
 import com.todoback.todobackend.domain.*;
 import com.todoback.todobackend.domain.Action;
 import com.todoback.todobackend.repository.UserRepository;
@@ -11,6 +12,7 @@ import com.todoback.todobackend.service.LOL.R4JFetch;
 import com.todoback.todobackend.service.UserService;
 import com.todoback.todobackend.service.MailService;
 import com.todoback.todobackend.service.LOL.OriannaFetch;
+import no.stelar7.api.r4j.basic.constants.api.regions.LeagueShard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
@@ -35,8 +37,10 @@ public class TaskController {
     @Autowired
     private AIDataService aiDataService;
 
-
-
+    @GetMapping("/AI/data/winRate/byChampion")
+    public void test(){
+        aiDataService.getWinRateByRole("koczokok", LeagueShard.EUN1);
+    }
     @PostMapping("/user/authenticate")
     public AuthenticationDTO authenticateUser(@RequestBody User user) {
         return userService.authenticateUser(user);

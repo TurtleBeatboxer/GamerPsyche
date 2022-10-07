@@ -24,4 +24,9 @@ export class AIFormComponent implements OnInit {
     })
   }
 
+  test(){
+    this.http.get("http://localhost:8080/AI/data/winRate/byChampion").subscribe((x)=>{
+      console.log(x)
+    })
+  }
 }

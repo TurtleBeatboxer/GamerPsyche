@@ -177,9 +177,9 @@ public class R4JFetchImpl implements R4JFetch {
             Summoner summoner = SummonerAPI.getInstance().getSummonerByName(server, summonerName);
             MatchListBuilder builder = new MatchListBuilder().withPuuid(summoner.getPUUID()).withPlatform(summoner.getPlatform());
             MatchBuilder matchBuilder = new MatchBuilder(summoner.getPlatform());
-            ArrayList<Integer> queues = helperService.queueIds();
+            ArrayList<Integer> queues = helperService.queueIds(true, true, true);
             for (int i = 0; i < 3; i++) {
-                    List<String> solo = builder.withQueue(helperService.gameQueueTypePresent(i, queues)).withCount(100).get();
+                    List<String> solo = builder.withQueue(helperService.gameQueueTypePresent(queues.get(i))).withCount(100).get();
                     for (String s : solo) {
                         LOLMatch match = matchBuilder.withId(s).getMatch();
                         if (match.getGameStartTimestamp() > 1641513601000L) {

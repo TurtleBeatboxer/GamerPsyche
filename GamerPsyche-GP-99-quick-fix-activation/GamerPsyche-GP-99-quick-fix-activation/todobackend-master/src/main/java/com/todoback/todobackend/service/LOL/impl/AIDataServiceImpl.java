@@ -2,10 +2,11 @@ package com.todoback.todobackend.service.LOL.impl;
 
 import com.todoback.todobackend.domain.ChampionMatchHistoryData;
 import com.todoback.todobackend.domain.LOLServer;
-import com.todoback.todobackend.domain.User;
 import com.todoback.todobackend.service.LOL.*;
 import com.todoback.todobackend.repository.UserRepository;
 import no.stelar7.api.r4j.basic.constants.api.regions.LeagueShard;
+import no.stelar7.api.r4j.basic.constants.types.lol.GameQueueType;
+import no.stelar7.api.r4j.basic.constants.types.lol.LaneType;
 import no.stelar7.api.r4j.impl.lol.builders.matchv5.match.MatchBuilder;
 import no.stelar7.api.r4j.impl.lol.builders.matchv5.match.MatchListBuilder;
 import no.stelar7.api.r4j.impl.lol.raw.SummonerAPI;
@@ -69,9 +70,9 @@ public class AIDataServiceImpl implements AIDataService {
         Summoner summoner = SummonerAPI.getInstance().getSummonerByName(summ.getPlatform(), summ.getName());
         MatchListBuilder builder = new MatchListBuilder().withPuuid(summoner.getPUUID()).withPlatform(summoner.getPlatform());
         MatchBuilder matchBuilder = new MatchBuilder(summoner.getPlatform());
-        ArrayList<Integer> queues = helperService.queueIds();
+        ArrayList<Integer> queues = helperService.queueIds(true, true, true);
         for (int i = 0; i < 3; i++) {
-            List<String> solo = builder.withQueue(helperService.gameQueueTypePresent(i, queues)).withCount(30).get();
+            List<String> solo = builder.withQueue(helperService.gameQueueTypePresent(queues.get(i))).withCount(30).get();
             for (String s : solo) {
                 LOLMatch match = matchBuilder.withId(s).getMatch();
                 if (match.getGameStartTimestamp() > 1641513601000L) {
@@ -139,10 +140,121 @@ public class AIDataServiceImpl implements AIDataService {
 
     }
 
+    public void getWinRateBy(String summonerName, LeagueShard leagueShard, int championId){
+            Summoner summoner = SummonerAPI.getInstance().getSummonerByName(leagueShard, summonerName);
+            MatchBuilder matchBuilder = new MatchBuilder(summoner.getPlatform());
+
+            System.out.println(getWinRate(summoner, matchBuilder, championId));
+    }
+
+    private int getWinRate(Summoner summoner, MatchBuilder matchBuilder,  int championId) {
+        ArrayList<Integer> queues = helperService.queueIds(false, true, true);
+        float wins = 0;
+        float loses = 0;
+        int win= 0;
+        int los = 0;
+        for (Integer queue : queues) {
+            List<String> matchList = new MatchListBuilder().withPuuid(summoner.getPUUID()).withPlatform(summoner.getPlatform()).withQueue(helperService.gameQueueTypePresent(queue)).withCount(100).get();
+            System.out.println(helperService.gameQueueTypePresent(queue));
+            System.out.println(matchList.size());
+            for (String  m: matchList) {
+                LOLMatch match = matchBuilder.withId(m).getMatch();
+                if (match.getGameStartTimestamp() > 1641513601000L) {
+                    List<MatchParticipant> matchParticipants = match.getParticipants();
+                    for (int j = 0; j < match.getParticipants().size(); j++) {
+                        String Puuid = matchParticipants.get(j).getPuuid();
+                        if (Puuid.equals(summoner.getPUUID())) {
+                            if(championId > 0) {
+                                if (matchParticipants.get(j).getChampionId() == championId) {
+                                    if (matchParticipants.get(j).didWin()) {
+                                        wins++;
+                                    } else {
+                                        loses++;
+                                    }
+                                    if((wins + loses) >= 20){
+                                        return Math.round(calculateWinRate(wins, loses)*100);
+                                    }
+                                    break;
+                                }
+                            }else {
+                                if (matchParticipants.get(j).didWin()) {
+                                    wins++;
+                                } else {
+                                    loses++;
+                                }
+                                break;
+                            }
+                            }
+
+                          //  System.out.println(matchParticipants.get(j).didWin());
+
+
+                        }
+                    }
+                }
+            }
+        return Math.round(calculateWinRate(wins, loses)*100);
+        }
 
 
 
 
+    public float calculateWinRate(float wins, float loses) {
+        float allGames = wins + loses;
+        return wins / allGames;
+    }
 
+    public void getWinRateByRole(String summonerName, LeagueShard leagueShard){
+        Summoner summoner = SummonerAPI.getInstance().getSummonerByName(leagueShard, summonerName);
+        MatchBuilder matchBuilder = new MatchBuilder(summoner.getPlatform());
+
+        System.out.println(getWinRateRole(summoner, matchBuilder));
+    }
+
+    private int getWinRateRole(Summoner summoner, MatchBuilder matchBuilder) {
+        ArrayList<Integer> queues = helperService.queueIds(false, true, false);
+        float wins = 0;
+        float loses = 0;
+
+        for (Integer queue : queues) {
+            List<String> matchList = new MatchListBuilder().withPuuid(summoner.getPUUID()).withPlatform(summoner.getPlatform()).withQueue(helperService.gameQueueTypePresent(queue)).withCount(100).get();
+            System.out.println(helperService.gameQueueTypePresent(queue));
+            System.out.println(matchList.size());
+            for (String  m: matchList) {
+                LOLMatch match = matchBuilder.withId(m).getMatch();
+                if (match.getGameStartTimestamp() > 1641513601000L) {
+                    List<MatchParticipant> matchParticipants = match.getParticipants();
+                    for (int j = 0; j < match.getParticipants().size(); j++) {
+                        String Puuid = matchParticipants.get(j).getPuuid();
+                        if (Puuid.equals(summoner.getPUUID())) {
+                          if(matchParticipants.get(j).getChampionSelectLane() == LaneType.BOT){
+                              if (matchParticipants.get(j).didWin()) {
+                                  System.out.println(wins);
+                                  System.out.println(matchParticipants.get(j).getChampionName());
+                                  wins++;
+                              } else {
+                                  loses++;
+                              }
+                              if((wins + loses) >= 20){
+                                  return Math.round(calculateWinRate(wins, loses)*100);
+                              }
+                              break;
+                          }
+
+
+
+
+                        }
+
+                        //  System.out.println(matchParticipants.get(j).didWin());
+
+
+                    }
+                }
+            }
+        }
+        System.out.println(wins + " " + loses);
+        return Math.round(calculateWinRate(wins, loses)*100);
+    }
 
 }
