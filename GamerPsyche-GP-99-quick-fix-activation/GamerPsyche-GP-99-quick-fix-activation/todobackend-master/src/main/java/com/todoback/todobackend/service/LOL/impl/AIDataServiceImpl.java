@@ -17,6 +17,8 @@ import no.stelar7.api.r4j.pojo.lol.summoner.Summoner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -61,6 +63,22 @@ public class AIDataServiceImpl implements AIDataService {
             }
         }
         return null;
+    }
+
+
+    public void python() throws Exception {
+        ProcessBuilder processBuilder = new ProcessBuilder("python", resolvePythonScriptPath("C:\\Users\\pkury\\Desktop\\python\\main.py"));
+        processBuilder.redirectErrorStream(true);
+
+        Process process = processBuilder.start();
+        List<String> result =  process.getInputStream();
+        System.out.println(result);
+
+    }
+
+    private String resolvePythonScriptPath(String path){
+        File file = new File(path);
+        return file.getAbsolutePath();
     }
 
 
