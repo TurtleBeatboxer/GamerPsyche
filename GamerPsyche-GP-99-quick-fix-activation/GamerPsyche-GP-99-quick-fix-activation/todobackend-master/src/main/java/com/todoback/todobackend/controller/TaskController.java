@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 
 @RestController
@@ -37,10 +38,6 @@ public class TaskController {
     @Autowired
     private AIDataService aiDataService;
 
-    @GetMapping("/AI/data/winRate/byChampion")
-    public void test(){
-        aiDataService.getWinRateByRole("koczokok", LeagueShard.EUN1);
-    }
     @PostMapping("/user/authenticate")
     public AuthenticationDTO authenticateUser(@RequestBody User user) {
         return userService.authenticateUser(user);
@@ -117,7 +114,7 @@ public class TaskController {
     @PostMapping("AI")
     public void getAIData(@RequestBody AIReqBody body) throws Exception {
         System.out.println("Controller");
-        aiDataService.userSearchBrute(body.getUsername(), body.getChampionId());
+       // aiDataService.userSearchBrute(body.getUsername(), body.getChampionId());
        // aiDataService.userSearch(username, championId);
     }
 
@@ -132,4 +129,9 @@ public class TaskController {
          r4jFetch.getDataFromUserMatch(body);
     }
 
+
+    @GetMapping("/AI/data/winRate/byChampion")
+    public void test1() throws Exception {
+        aiDataService.userSearchBrute("koczokok");
+    }
 }
