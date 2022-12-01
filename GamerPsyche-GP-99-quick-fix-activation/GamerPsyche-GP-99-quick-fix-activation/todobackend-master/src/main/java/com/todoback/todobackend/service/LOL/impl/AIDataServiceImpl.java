@@ -36,159 +36,65 @@ public class AIDataServiceImpl implements AIDataService {
     @Autowired
     JsonConverter jsonConverter;
     OriannaUsagePreparationService oriannaUsagePreparationService = new OriannaUsagePreparationService();
-  /*  public void userSearch(String lolUsername, int championId){
-        System.out.println("Service");
-        Optional<User> userOptional = userRepository.findByLolUsername(lolUsername);
-
-        userOptional.ifPresent(user -> {
-            try {
-                System.out.println("Present");
-                checkSearchType(user, championId);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }*/
 
 
-    public void python() throws Exception {
-        ProcessBuilder processBuilder = new ProcessBuilder("python", resolvePythonScriptPath("C:\\Users\\pkury\\Desktop\\python\\main.py"));
-        processBuilder.redirectErrorStream(true);
-
-        Process process = processBuilder.start();
-
-
-
+    public void userSearchBrute(String lolUsername) throws Exception {
+        gatherJSONdata(brutForceShard(lolUsername));
     }
 
-    private String resolvePythonScriptPath(String path){
-        File file = new File(path);
-        return file.getAbsolutePath();
-    }
+    public Summoner brutForceShard(String lolUsername){
+        List<LOLServer> list = Arrays.asList(LOLServer.BR, LOLServer.EUNE, LOLServer.EUW, LOLServer.LAN, LOLServer.LAS, LOLServer.NA, LOLServer.OCE, LOLServer.RU, LOLServer.TR, LOLServer.JP, LOLServer.KR);
+        for (LOLServer lolServer : list) {
+            Optional<Summoner> summoner = Optional.ofNullable(SummonerAPI.getInstance().getSummonerByName(oriannaUsagePreparationService.translateEnumServerToRiotRegionR4J(lolServer), lolUsername));
 
-
-
-    public List<List<ChampionMatchHistoryData>> checkSearchType(Summoner summ, int championId) throws Exception {
-        List<List<ChampionMatchHistoryData>> championMatchHistoryData = new ArrayList<>();
-        Summoner summoner = SummonerAPI.getInstance().getSummonerByName(summ.getPlatform(), summ.getName());
-        MatchListBuilder builder = new MatchListBuilder().withPuuid(summoner.getPUUID()).withPlatform(summoner.getPlatform());
-        MatchBuilder matchBuilder = new MatchBuilder(summoner.getPlatform());
-        ArrayList<Integer> queues = helperService.queueIds(true, false, false);
-        for (int i = 0; i < 3; i++) {
-            List<String> solo = builder.withQueue(helperService.gameQueueTypePresent(queues.get(i))).withCount(10).get();
-            for (String s : solo) {
-
-                LOLMatch match = matchBuilder.withPlatform(RegionShard.EUROPE).withId(s).getMatch();
-                Thread.sleep(100);
-                if (match.getGameStartTimestamp() > 1641513601000L) {
-                    //System.out.println(match + "test");
-                    if(championId < 0){
-                       // findMatchHistory(championMatchHistoryData, summoner, match);
-                    }else {
-                        findMatchHistoryByChampion(championId, championMatchHistoryData, summoner, match);
-                    }
-
-
-                }
+            if(summoner.isPresent()){
+                System.out.println(summoner.get().getPlatform());
+                return summoner.get();
             }
         }
-        jsonConverter.convertChampionMatchHistoryDataToJSON(championMatchHistoryData);
-        return championMatchHistoryData;
-    }
-    public void findMatchHistory(ChampionMatchHistoryData championMatchHistoryData, Summoner summoner, MatchParticipant mp, LOLMatch lolMatch) throws InterruptedException {
-
-
-
-
-                    double gameTime = helperService.calculateGameTime(lolMatch.getGameDuration());
-                    MatchTeam matchTeam = helperService.getUserTeam(lolMatch, mp);
-                    if (mp.getPuuid().equals(summoner.getPUUID())) {
-                        helperService.setData(mp, matchTeam, gameTime, championMatchHistoryData, true);
-                    }
-                    helperService.setData(mp, matchTeam, gameTime, championMatchHistoryData, false);
-
-
+        return null;
     }
 
-    private void findMatchHistoryByChampion(int championId, List<List<ChampionMatchHistoryData>> championMatchHistoryData, Summoner summoner, LOLMatch match){
-        List<ChampionMatchHistoryData> matchData = new ArrayList<>();
-        for (int j = 0; j < match.getParticipants().size(); j++) {
-            String PUUID = match.getParticipants().get(j).getPuuid();
-            MatchParticipant matchParticipant = match.getParticipants().get(j);
-            double gameTime = helperService.calculateGameTime(match.getGameDuration());
-            MatchTeam matchTeam = helperService.getUserTeam(match, matchParticipant);
-            if (PUUID.equals(summoner.getPUUID())) {
-                if (match.getParticipants().get(j).getChampionId() != championId) {
-
-                    return;
-                }
-
-                    ChampionMatchHistoryData data = new ChampionMatchHistoryData();
-                    helperService.setData(matchParticipant, matchTeam, gameTime, data, true);
-                    matchData.add(data);
-                    return;
-
-            }
-            ChampionMatchHistoryData data = new ChampionMatchHistoryData();
-            helperService.setData(matchParticipant, matchTeam, gameTime, data, false);
-            matchData.add(data);
-
-        }
-
-            championMatchHistoryData.add(matchData);
 
 
-    }
-
-    public int getWinRateGeneral(String summonerName, LeagueShard leagueShard, int championId) throws InterruptedException {
-            Summoner summoner = SummonerAPI.getInstance().getSummonerByName(leagueShard, summonerName);
-            return getWinRate(summoner, championId);
-    }
-
-    private int getWinRate(Summoner summoner,   int championId) throws InterruptedException {
+    public void gatherJSONdata(Summoner summoner) throws Exception {
+        List<List<ChampionMatchHistoryData>> data = new ArrayList<>();
         ArrayList<Integer> queues = helperService.queueIds(true, false, false);
-        float wins = 0;
-        float loses = 0;
+        System.out.println(queues);
         for (Integer queue : queues) {
-            List<String> matchList = new MatchListBuilder().withPuuid(summoner.getPUUID()).withPlatform(summoner.getPlatform()).withQueue(helperService.gameQueueTypePresent(queue)).withCount(20).get();
-            for (String  m: matchList) {
+            List<String> matchList = new MatchListBuilder().withPuuid(summoner.getPUUID()).withPlatform(summoner.getPlatform()).withQueue(helperService.gameQueueTypePresent(queue)).withCount(3).get();
+            System.out.println(matchList.size());
+            for (String  m: matchList){
+
                 LOLMatch match = new MatchBuilder().withPlatform(RegionShard.EUROPE).withId(m).getMatch();
-                Thread.sleep(200);
-                if (match.getGameStartTimestamp() > 1641513601000L) {
-                    List<MatchParticipant> matchParticipants = match.getParticipants();
-                    for (int j = 0; j < match.getParticipants().size(); j++) {
-                        String Puuid = matchParticipants.get(j).getPuuid();
-                        if (Puuid.equals(summoner.getPUUID())) {
-
-                                if (matchParticipants.get(j).getChampionId() == championId) {
-                                    if (matchParticipants.get(j).didWin()) {
-                                        wins++;
-                                    } else {
-                                        loses++;
-                                    }
-                                    if((wins + loses) >= 20){
-                                        return Math.round(calculateWinRate(wins, loses)*100);
-                                    }
-                                    break;
-                                }
-                            }
-
-                          //  System.out.println(matchParticipants.get(j).didWin());
+                Thread.sleep(1000);
+                List<ChampionMatchHistoryData> matchData = new ArrayList<>();
 
 
+                TeamType myTeam = null;
+                if (match.getGameStartTimestamp() > 1641513601000L){
+                    for(MatchParticipant mpa : match.getParticipants()){
+                        if(mpa.getPuuid().equals(summoner.getPUUID())){
+
+                            myTeam = mpa.getTeam();
+                        }
+                    }
+                    for(MatchParticipant mp : match.getParticipants()){
+                        if(mp.getTeam() == myTeam) {
+                            ChampionMatchHistoryData championMatchHistoryData = new ChampionMatchHistoryData();
+
+                            championMatchHistoryData.setWinRateOnPlayedRole(getWinRateByRole(mp.getSummonerName(), summoner.getPlatform(), mp.getChampionSelectLane()));
+                            championMatchHistoryData.setWinRateOnPlayedChampion(getWinRateGeneral(mp.getSummonerName(), summoner.getPlatform(), mp.getChampionId()));
+                            findMatchHistory(championMatchHistoryData, summoner, mp, match);
+                            matchData.add(championMatchHistoryData);
+                            System.out.println(championMatchHistoryData.getUsername());
                         }
                     }
                 }
+                data.add(matchData);
             }
-        return Math.round(calculateWinRate(wins, loses)*100);
         }
-
-
-
-
-    public float calculateWinRate(float wins, float loses) {
-        float allGames = wins + loses;
-        return wins / allGames;
+        jsonConverter.convertChampionMatchHistoryDataToJSON(data);
     }
 
     public int getWinRateByRole(String summonerName, LeagueShard leagueShard, LaneType laneType) throws InterruptedException {
@@ -226,7 +132,7 @@ public class AIDataServiceImpl implements AIDataService {
             System.out.println(matchList.size());
             for (String  m: matchList) {
                 LOLMatch match = new MatchBuilder().withPlatform(RegionShard.EUROPE).withId(m).getMatch();
-                Thread.sleep(300);
+                Thread.sleep(350);
                 if(match == null){
                     continue;
                 }
@@ -242,7 +148,7 @@ public class AIDataServiceImpl implements AIDataService {
                                 } else {
                                     loses++;
                                 }
-                                if ((wins + loses) >= 30) {
+                                if ((wins + loses) >= 10) {
                                     return Math.round(calculateWinRate(wins, loses) * 100);
                                 }
                                 break;
@@ -261,69 +167,163 @@ public class AIDataServiceImpl implements AIDataService {
 
 
 
-
-
-
-
-
-
-    public void userSearchBrute(String lolUsername) throws Exception {
-        gatherJSONdata(brutForceShard(lolUsername));
+    public int getWinRateGeneral(String summonerName, LeagueShard leagueShard, int championId) throws InterruptedException {
+        Summoner summoner = SummonerAPI.getInstance().getSummonerByName(leagueShard, summonerName);
+        return getWinRate(summoner, championId);
     }
 
+    private int getWinRate(Summoner summoner,   int championId) throws InterruptedException {
+        ArrayList<Integer> queues = helperService.queueIds(true, false, false);
+        float wins = 0;
+        float loses = 0;
+        for (Integer queue : queues) {
+            List<String> matchList = new MatchListBuilder().withPuuid(summoner.getPUUID()).withPlatform(summoner.getPlatform()).withQueue(helperService.gameQueueTypePresent(queue)).withCount(20).get();
+            for (String  m: matchList) {
+                LOLMatch match = new MatchBuilder().withPlatform(RegionShard.EUROPE).withId(m).getMatch();
+                Thread.sleep(350);
+                if (match.getGameStartTimestamp() > 1641513601000L) {
+                    List<MatchParticipant> matchParticipants = match.getParticipants();
+                    for (int j = 0; j < match.getParticipants().size(); j++) {
+                        String Puuid = matchParticipants.get(j).getPuuid();
+                        if (Puuid.equals(summoner.getPUUID())) {
 
-    public Summoner brutForceShard(String lolUsername){
-        List<LOLServer> list = Arrays.asList(LOLServer.BR, LOLServer.EUNE, LOLServer.EUW, LOLServer.LAN, LOLServer.LAS, LOLServer.NA, LOLServer.OCE, LOLServer.RU, LOLServer.TR, LOLServer.JP, LOLServer.KR);
-        for (LOLServer lolServer : list) {
-            Optional<Summoner> summoner = Optional.ofNullable(SummonerAPI.getInstance().getSummonerByName(oriannaUsagePreparationService.translateEnumServerToRiotRegionR4J(lolServer), lolUsername));
+                            if (matchParticipants.get(j).getChampionId() == championId) {
+                                if (matchParticipants.get(j).didWin()) {
+                                    wins++;
+                                } else {
+                                    loses++;
+                                }
+                                if((wins + loses) >= 10){
+                                    return Math.round(calculateWinRate(wins, loses)*100);
+                                }
+                                break;
+                            }
+                        }
 
-            if(summoner.isPresent()){
-                System.out.println(summoner.get().getPlatform());
-                return summoner.get();
+                        //  System.out.println(matchParticipants.get(j).didWin());
+
+
+                    }
+                }
             }
         }
-        return null;
+        return Math.round(calculateWinRate(wins, loses)*100);
     }
 
-    public void gatherJSONdata(Summoner summoner) throws Exception {
-        List<List<ChampionMatchHistoryData>> data = new ArrayList<>();
+
+    public void findMatchHistory(ChampionMatchHistoryData championMatchHistoryData, Summoner summoner, MatchParticipant mp, LOLMatch lolMatch) throws InterruptedException {
+
+
+
+
+        double gameTime = helperService.calculateGameTime(lolMatch.getGameDuration());
+        MatchTeam matchTeam = helperService.getUserTeam(lolMatch, mp);
+        if (mp.getPuuid().equals(summoner.getPUUID())) {
+            helperService.setData(mp, matchTeam, gameTime, championMatchHistoryData, true);
+        }
+        helperService.setData(mp, matchTeam, gameTime, championMatchHistoryData, false);
+
+
+    }
+
+
+
+    public float calculateWinRate(float wins, float loses) {
+        float allGames = wins + loses;
+        return wins / allGames;
+    }
+
+
+
+
+    public void python() throws Exception {
+        ProcessBuilder processBuilder = new ProcessBuilder("python", resolvePythonScriptPath("C:\\Users\\pkury\\Desktop\\python\\main.py"));
+        processBuilder.redirectErrorStream(true);
+
+        Process process = processBuilder.start();
+
+
+
+    }
+
+    private String resolvePythonScriptPath(String path){
+        File file = new File(path);
+        return file.getAbsolutePath();
+    }
+
+
+/*
+
+    public List<List<ChampionMatchHistoryData>> checkSearchType(Summoner summ, int championId) throws Exception {
+        List<List<ChampionMatchHistoryData>> championMatchHistoryData = new ArrayList<>();
+        Summoner summoner = SummonerAPI.getInstance().getSummonerByName(summ.getPlatform(), summ.getName());
+        MatchListBuilder builder = new MatchListBuilder().withPuuid(summoner.getPUUID()).withPlatform(summoner.getPlatform());
+        MatchBuilder matchBuilder = new MatchBuilder(summoner.getPlatform());
         ArrayList<Integer> queues = helperService.queueIds(true, false, false);
-        System.out.println(queues);
-        for (Integer queue : queues) {
-            List<String> matchList = new MatchListBuilder().withPuuid(summoner.getPUUID()).withPlatform(summoner.getPlatform()).withQueue(helperService.gameQueueTypePresent(queue)).withCount(3).get();
-            System.out.println(matchList.size());
-            for (String  m: matchList){
+        for (int i = 0; i < 3; i++) {
+            List<String> solo = builder.withQueue(helperService.gameQueueTypePresent(queues.get(i))).withCount(10).get();
+            for (String s : solo) {
 
-                LOLMatch match = new MatchBuilder().withPlatform(RegionShard.EUROPE).withId(m).getMatch();
-                Thread.sleep(500);
-                List<ChampionMatchHistoryData> matchData = new ArrayList<>();
-
-
-                TeamType myTeam = null;
-                    if (match.getGameStartTimestamp() > 1641513601000L){
-                        for(MatchParticipant mpa : match.getParticipants()){
-                            if(mpa.getPuuid().equals(summoner.getPUUID())){
-
-                                myTeam = mpa.getTeam();
-                            }
-                        }
-                        for(MatchParticipant mp : match.getParticipants()){
-                            if(mp.getTeam() == myTeam) {
-                                ChampionMatchHistoryData championMatchHistoryData = new ChampionMatchHistoryData();
-
-                                championMatchHistoryData.setWinRateOnPlayedRole(getWinRateByRole(mp.getSummonerName(), summoner.getPlatform(), mp.getChampionSelectLane()));
-                                championMatchHistoryData.setWinRateOnPlayedChampion(getWinRateGeneral(mp.getSummonerName(), summoner.getPlatform(), mp.getChampionId()));
-                                findMatchHistory(championMatchHistoryData, summoner, mp, match);
-                                matchData.add(championMatchHistoryData);
-                                System.out.println(championMatchHistoryData.getUsername());
-                            }
-                        }
+                LOLMatch match = matchBuilder.withPlatform(RegionShard.EUROPE).withId(s).getMatch();
+               Thread.sleep(300);
+                if (match.getGameStartTimestamp() > 1641513601000L) {
+                    //System.out.println(match + "test");
+                    if(championId < 0){
+                       // findMatchHistory(championMatchHistoryData, summoner, match);
+                    }else {
+                        findMatchHistoryByChampion(championId, championMatchHistoryData, summoner, match);
                     }
-                data.add(matchData);
+
+
+                }
             }
-            }
-    jsonConverter.convertChampionMatchHistoryDataToJSON(data);
+        }
+        jsonConverter.convertChampionMatchHistoryDataToJSON(championMatchHistoryData);
+        return championMatchHistoryData;
     }
+
+
+    private void findMatchHistoryByChampion(int championId, List<List<ChampionMatchHistoryData>> championMatchHistoryData, Summoner summoner, LOLMatch match){
+        List<ChampionMatchHistoryData> matchData = new ArrayList<>();
+        for (int j = 0; j < match.getParticipants().size(); j++) {
+            String PUUID = match.getParticipants().get(j).getPuuid();
+            MatchParticipant matchParticipant = match.getParticipants().get(j);
+            double gameTime = helperService.calculateGameTime(match.getGameDuration());
+            MatchTeam matchTeam = helperService.getUserTeam(match, matchParticipant);
+            if (PUUID.equals(summoner.getPUUID())) {
+                if (match.getParticipants().get(j).getChampionId() != championId) {
+
+                    return;
+                }
+
+                    ChampionMatchHistoryData data = new ChampionMatchHistoryData();
+                    helperService.setData(matchParticipant, matchTeam, gameTime, data, true);
+                    matchData.add(data);
+                    return;
+
+            }
+            ChampionMatchHistoryData data = new ChampionMatchHistoryData();
+            helperService.setData(matchParticipant, matchTeam, gameTime, data, false);
+            matchData.add(data);
+
+        }
+
+            championMatchHistoryData.add(matchData);
+
+
+    }
+
+*/
+
+
+
+
+
+
+
+
+
+
 
 
 

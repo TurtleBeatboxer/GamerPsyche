@@ -124,14 +124,9 @@ public class TaskController {
        return r4jFetch.getMatchHistory(username);
     }
 
-    @PostMapping("/get/data/champion-select/by/action")
-    public void getMatchDataByChampion(@RequestBody String body) throws Exception {
-         r4jFetch.getDataFromUserMatch(body);
-    }
 
-
-    @GetMapping("/AI/data/winRate/byChampion")
-    public void test1() throws Exception {
-        aiDataService.userSearchBrute("koczokok");
+    @PostMapping("/AI/data")
+    public void test1(@RequestBody String username) throws Exception {
+        aiDataService.userSearchBrute(username);
     }
 }
