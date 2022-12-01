@@ -14,12 +14,11 @@ export class AIFormComponent implements OnInit {
   ngOnInit(): void {
     this.dataForm = this.fb.group({
       username: ['', Validators.required],
-      championId: [-1, Validators.required]
     })
   }
 
   getData(){
-    this.http.post<{username: string, championId: number}>(`http://localhost:8080/AI/data`, {username: this.dataForm.value.username, championId: this.dataForm.value.championId}).subscribe((x)=>{
+    this.http.post(`http://localhost:8080/AI/data`,  this.dataForm.value.username).subscribe((x)=>{
       console.log(x)
     })
   }

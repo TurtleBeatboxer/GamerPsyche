@@ -1,6 +1,7 @@
 package com.todoback.todobackend.controller;
 
 import com.google.gson.Gson;
+import com.merakianalytics.datapipelines.sources.Get;
 import com.todoback.todobackend.domain.*;
 import com.todoback.todobackend.domain.Action;
 import com.todoback.todobackend.repository.UserRepository;
@@ -11,10 +12,12 @@ import com.todoback.todobackend.service.LOL.R4JFetch;
 import com.todoback.todobackend.service.UserService;
 import com.todoback.todobackend.service.MailService;
 import com.todoback.todobackend.service.LOL.OriannaFetch;
+import no.stelar7.api.r4j.basic.constants.api.regions.LeagueShard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 
 @RestController
@@ -34,8 +37,6 @@ public class TaskController {
     private HelperService HelperService;
     @Autowired
     private AIDataService aiDataService;
-
-
 
     @PostMapping("/user/authenticate")
     public AuthenticationDTO authenticateUser(@RequestBody User user) {
@@ -113,7 +114,7 @@ public class TaskController {
     @PostMapping("AI")
     public void getAIData(@RequestBody AIReqBody body) throws Exception {
         System.out.println("Controller");
-        aiDataService.userSearchBrute(body.getUsername(), body.getChampionId());
+       // aiDataService.userSearchBrute(body.getUsername(), body.getChampionId());
        // aiDataService.userSearch(username, championId);
     }
 
@@ -123,9 +124,9 @@ public class TaskController {
        return r4jFetch.getMatchHistory(username);
     }
 
-    @PostMapping("/get/data/champion-select/by/action")
-    public void getMatchDataByChampion(@RequestBody String body) throws Exception {
-         r4jFetch.getDataFromUserMatch(body);
-    }
 
+    @PostMapping("/AI/data")
+    public void test1(@RequestBody String username) throws Exception {
+        aiDataService.userSearchBrute(username);
+    }
 }

@@ -14,9 +14,29 @@ public class ChampionMatchHistoryData {
     private double selfMitigatedPM;
     private double KDA;
     private double KP;
+    private int winRateOnPlayedRole;
+    private int winRateOnPlayedChampion;
     private ObjectiveMatchHistoryData objectivesTaken;
 
-    public void setChampionMatchHistoryData(String champion, boolean didWon, boolean searchedUser, String username, double crowdControlScore, double creepScorePM, double visionScorePM, double damagePM, double selfMitigatedPM, double KDA, double KP, ObjectiveMatchHistoryData objectivesTaken){
+    public int getWinRateOnPlayedRole() {
+        return winRateOnPlayedRole;
+    }
+
+    public void setWinRateOnPlayedRole(int winRateOnPlayedRole) {
+        this.winRateOnPlayedRole = winRateOnPlayedRole;
+    }
+
+    public int getWinRateOnPlayedChampion() {
+        return winRateOnPlayedChampion;
+    }
+
+    public void setWinRateOnPlayedChampion(int winRateOnPlayedChampion) {
+        this.winRateOnPlayedChampion = winRateOnPlayedChampion;
+    }
+
+    public void setChampionMatchHistoryData(int winRateOnPlayedChampion, int winRateOnPlayedRole, String champion, boolean didWon, boolean searchedUser, String username, double crowdControlScore, double creepScorePM, double visionScorePM, double damagePM, double selfMitigatedPM, double KDA, double KP, ObjectiveMatchHistoryData objectivesTaken){
+        this.winRateOnPlayedChampion = winRateOnPlayedChampion;
+        this.winRateOnPlayedRole = winRateOnPlayedRole;
         this.didWon = didWon;
         this.champion = champion;
         this.searchedUser = searchedUser;

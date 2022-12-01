@@ -62,16 +62,22 @@ public class HelperServiceImpl implements HelperService {
         return -1;
     }
 
-    public ArrayList<Integer> queueIds(){
+    public ArrayList<Integer> queueIds(boolean normal, boolean solo, boolean flex){
         ArrayList<Integer> queues = new ArrayList<>();
-        queues.add(400);
-        queues.add(420);
-        queues.add(440);
+        if(normal){
+            queues.add(400);
+        }
+        if(solo){
+            queues.add(420);
+        }
+        if(flex){
+            queues.add(440);
+        }
         return queues;
     }
 
-    public GameQueueType gameQueueTypePresent(int i, ArrayList<Integer> queues){
-        Optional<GameQueueType> gameQueueType = GameQueueType.getFromId(queues.get(i));
+    public GameQueueType gameQueueTypePresent(int queueId){
+        Optional<GameQueueType> gameQueueType = GameQueueType.getFromId(queueId);
         return gameQueueType.orElse(null);
     }
 
