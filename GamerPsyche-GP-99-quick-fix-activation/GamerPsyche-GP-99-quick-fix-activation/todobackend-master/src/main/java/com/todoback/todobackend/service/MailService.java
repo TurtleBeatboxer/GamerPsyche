@@ -27,8 +27,8 @@ public class MailService {
 
         assignValuesToUser(user, uuidString);
 
-        String userName = "origami-no-reply@outlook.com";
-        String password = "KurwaPizda123Dupa123";
+        String userName = "email";
+        String password = "haslo";
         String alertEmail = userName;
 
         // NADAWCA
